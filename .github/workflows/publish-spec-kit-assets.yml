@@ -1,0 +1,87 @@
+name: Publish Spec Kit Assets
+
+on:
+  push:
+    tags:
+      - 'mrv-aidd-producao-v*'
+      - 'mrv-aidd-producao-backend-v*'
+      - 'mrv-aidd-producao-frontend-v*'
+
+permissions:
+  contents: write
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Resolve package metadata from tag
+        id: metadata
+        shell: pwsh
+        run: |
+          $tag = "${{ github.ref_name }}"
+
+          if ($tag -match '^(mrv-aidd-producao-backend)-v(.+)$') {
+            $packageId = $Matches[1]
+            $packageType = 'preset'
+            $version = $Matches[2]
+          }
+          elseif ($tag -match '^(mrv-aidd-producao-frontend)-v(.+)$') {
+            $packageId = $Matches[1]
+            $packageType = 'preset'
+            $version = $Matches[2]
+          }
+          elseif ($tag -match '^(mrv-aidd-producao)-v(.+)$') {
+            $packageId = $Matches[1]
+            $packageType = 'extension'
+            $version = $Matches[2]
+          }
+          else {
+            throw "Tag nao suportada: $tag"
+          }
+
+          $manifestPath = if ($packageType -eq 'extension') {
+            Join-Path $PWD "extensions/$packageId/extension.yml"
+          }
+          else {
+            Join-Path $PWD "presets/$packageId/preset.yml"
+          }
+
+          $manifestContent = Get-Content -Path $manifestPath -Raw
+          $versionPattern = if ($packageType -eq 'extension') {
+            'extension:\s*(?:\r?\n(?:\s+.*))*?\r?\n\s+version:\s*"([^"]+)"'
+          }
+          else {
+            'preset:\s*(?:\r?\n(?:\s+.*))*?\r?\n\s+version:\s*"([^"]+)"'
+          }
+
+          $versionMatch = [regex]::Match($manifestContent, $versionPattern)
+
+          if (-not $versionMatch.Success) {
+            throw "Versao nao encontrada em $manifestPath"
+          }
+
+          $manifestVersion = $versionMatch.Groups[1].Value
+
+          if ($manifestVersion -ne $version) {
+            throw "Tag $tag nao bate com a versao do manifesto ($manifestVersion)"
+          }
+
+          "package_id=$packageId" >> $env:GITHUB_OUTPUT
+          "package_type=$packageType" >> $env:GITHUB_OUTPUT
+          "version=$version" >> $env:GITHUB_OUTPUT
+          "asset_name=$packageId-$version.zip" >> $env:GITHUB_OUTPUT
+
+      - name: Package asset
+        shell: pwsh
+        run: |
+          ./scripts/package-spec-kit-assets.ps1 -PackageType "${{ steps.metadata.outputs.package_type }}" -PackageId "${{ steps.metadata.outputs.package_id }}"
+
+      - name: Create GitHub release and upload asset
+        uses: softprops/action-gh-release@v2
+        with:
+          files: dist/${{ steps.metadata.outputs.asset_name }}
+          generate_release_notes: true

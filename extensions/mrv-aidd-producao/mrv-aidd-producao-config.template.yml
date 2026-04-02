@@ -1,0 +1,9 @@
+# Optional defaults used by /speckit.mrv-aidd-producao.sincronizar-us-devops.
+# Parent Feature URL or ID should come from the spec generated during /speckit.specify.
+
+story_work_item_type: "User Story"
+feature_work_item_type: "Feature"
+area_path: null
+iteration_path: null
+tags: []
+mapping_file: "us-sync-map.json"

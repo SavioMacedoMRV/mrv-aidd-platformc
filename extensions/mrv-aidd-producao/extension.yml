@@ -1,0 +1,66 @@
+schema_version: "1.0"
+
+extension:
+  id: "mrv-aidd-producao"
+  name: "MRV AIDD Producao"
+  version: "0.1.0"
+  description: "Pacote operacional do ecossistema MRV para AIDD, reunindo sincronizacao com Azure DevOps, configuracao de branch e encerramento de historia"
+  author: "MRV"
+  repository: "https://github.com/SavioMacedoMRV/mrv-aidd-platformc"
+  license: "MIT"
+  homepage: "https://github.com/SavioMacedoMRV/mrv-aidd-platformc"
+
+requires:
+  speckit_version: ">=0.4.4"
+
+provides:
+  commands:
+    - name: "speckit.mrv-aidd-producao.sincronizar-us-devops"
+      file: "commands/sincronizar-us-devops.md"
+      description: "Sincroniza historias de usuario esclarecidas com o Azure DevOps como filhas da Feature pai referenciada no spec"
+    - name: "speckit.mrv-aidd-producao.configurar-us"
+      file: "commands/configurar-us.md"
+      description: "Cria ou troca para a branch de trabalho da US atual e fixa a feature base para os scripts nativos do Speckit"
+    - name: "speckit.mrv-aidd-producao.terminar-us"
+      file: "commands/terminar-us.md"
+      description: "Finaliza a US atual com validacoes, commit no padrao da constituicao e abertura de PR para a branch base da feature usando GitHub MCP"
+
+  config:
+    - name: "mrv-aidd-producao-config.yml"
+      template: "mrv-aidd-producao-config.template.yml"
+      description: "Configuracoes padrao de work item e campos do Azure DevOps para a sincronizacao de historias"
+      required: true
+
+tags:
+  - "azure-devops"
+  - "mcp"
+  - "work-items"
+  - "user-stories"
+  - "traceability"
+  - "git"
+  - "workflow"
+
+defaults:
+  story_work_item_type: "User Story"
+  feature_work_item_type: "Feature"
+  area_path: null
+  iteration_path: null
+  tags: []
+  mapping_file: "us-sync-map.json"
+
+hooks:
+  before_tasks:
+    command: "speckit.mrv-aidd-producao.configurar-us"
+    optional: true
+    prompt: "Se voce acabou de assumir uma US, execute este comando antes de gerar ou atualizar o tasks.md dessa US."
+    description: "Cria ou reutiliza a branch de trabalho da US no formato feature/<feature-branch>/usN e prepara SPECIFY_FEATURE para os scripts nativos"
+  before_implement:
+    command: "speckit.mrv-aidd-producao.configurar-us"
+    optional: true
+    prompt: "Se voce vai implementar uma US agora, execute este comando antes de iniciar o loop de implementacao."
+    description: "Cria ou reutiliza a branch de trabalho da US no formato feature/<feature-branch>/usN e prepara SPECIFY_FEATURE para os scripts nativos"
+  after_implement:
+    command: "speckit.mrv-aidd-producao.terminar-us"
+    optional: true
+    prompt: "Se a implementacao da US terminou, execute este comando para validar, commitar e abrir a PR para a branch base da feature."
+    description: "Finaliza a US atual com validacoes, commit no padrao da constituicao e abertura de PR para a branch base da feature usando GitHub MCP"

@@ -1,0 +1,41 @@
+{
+  "schema_version": "1.0",
+  "updated_at": "2026-04-02T00:00:00Z",
+  "catalog_url": "https://raw.githubusercontent.com/SavioMacedoMRV/mrv-aidd-platformc/main/extensions/catalog.json",
+  "extensions": {
+    "mrv-aidd-producao": {
+      "name": "MRV AIDD Producao",
+      "id": "mrv-aidd-producao",
+      "description": "Pacote operacional do ecossistema MRV para AIDD, reunindo sincronizacao com Azure DevOps, configuracao de branch e encerramento de historia.",
+      "author": "MRV",
+      "version": "0.1.0",
+      "download_url": "https://github.com/SavioMacedoMRV/mrv-aidd-platformc/releases/download/mrv-aidd-producao-v0.1.0/mrv-aidd-producao-0.1.0.zip",
+      "repository": "https://github.com/SavioMacedoMRV/mrv-aidd-platformc",
+      "homepage": "https://github.com/SavioMacedoMRV/mrv-aidd-platformc",
+      "documentation": "https://github.com/SavioMacedoMRV/mrv-aidd-platformc/blob/main/extensions/mrv-aidd-producao/README.md",
+      "changelog": "https://github.com/SavioMacedoMRV/mrv-aidd-platformc/blob/main/extensions/mrv-aidd-producao/CHANGELOG.md",
+      "license": "MIT",
+      "requires": {
+        "speckit_version": ">=0.4.4"
+      },
+      "provides": {
+        "commands": 3,
+        "hooks": 3
+      },
+      "tags": [
+        "azure-devops",
+        "mcp",
+        "work-items",
+        "user-stories",
+        "traceability",
+        "git",
+        "workflow"
+      ],
+      "verified": false,
+      "downloads": 0,
+      "stars": 0,
+      "created_at": "2026-04-02T00:00:00Z",
+      "updated_at": "2026-04-02T00:00:00Z"
+    }
+  }
+}
