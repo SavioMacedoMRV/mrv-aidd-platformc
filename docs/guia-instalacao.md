@@ -1,146 +1,93 @@
-# Guia de Instalacao e Uso
+# Guia de Instalacao Detalhado
 
-Este guia e para quem quer consumir o toolkit atual da plataforma MRV AIDD sem precisar estudar a estrutura interna dos pacotes.
+Este guia agora funciona como complemento ao [README raiz](../README.md). O README concentra o onboarding e os comandos principais; este documento fica com as decisoes de instalacao, os efeitos esperados no repositorio consumidor e os cuidados operacionais.
 
-## O que o repositorio entrega hoje
+## Quando usar este guia
 
-O repositorio publica tres componentes reutilizaveis sobre o Spec Kit:
+Consulte este documento quando voce precisar:
 
-| Tipo      | ID                           | Quando usar                                                            | O que instala                                                    |
-| --------- | ---------------------------- | ---------------------------------------------------------------------- | ---------------------------------------------------------------- |
-| Extension | `mrv-aidd-producao`          | Sempre que o repositorio precisar do fluxo operacional MRV de producao | Comandos adicionais, hooks e arquivo de configuracao da extensao |
-| Preset    | `mrv-aidd-producao-backend`  | Repositorios com ownership principal de backend                        | Overrides de comandos `/speckit.*` e templates de artefatos      |
-| Preset    | `mrv-aidd-producao-frontend` | Repositorios com ownership principal de frontend                       | Overrides de comandos `/speckit.*` e templates de artefatos      |
+- decidir entre catalogo e `--dev`;
+- confirmar o que muda no repositorio depois da instalacao;
+- revisar limitacoes operacionais antes de rodar o fluxo com MCP;
+- localizar os arquivos exatos para diagnostico ou manutencao.
 
-## Como extension e preset se complementam
+## Escolha do modo de instalacao
 
-- A extension adiciona capacidades novas ao toolkit base.
-- O preset adapta o fluxo nativo do Spec Kit para um contexto de time ou stack.
-- Neste repositorio, o desenho esperado e instalar a extension `mrv-aidd-producao` junto com exatamente um preset.
+### Use catalogo MRV quando
 
-## Pre-requisitos
+- o objetivo for consumir os componentes publicados sem depender desta workspace;
+- o time quiser instalacao repetivel por nome a partir dos arquivos de catalogo;
+- a validacao ja estiver feita e a release publicada existir.
 
-- Ter o Spec Kit disponivel no ambiente onde o repositorio consumidor sera configurado.
-- Ter acesso ao workspace local com este repositorio clonado quando for instalar em modo `--dev`.
-- Para usar a sincronizacao com Azure DevOps, estar autenticado e com o MCP do Azure DevOps configurado.
-- Para usar o encerramento automatizado de US, ter os MCPs necessarios para GitHub disponiveis no ambiente do agente.
-
-## Modos de instalacao
-
-### Modo catalogo MRV
-
-Use este modo quando o objetivo for apenas consumir os componentes publicados, sem depender desta workspace.
-
-#### Backend
+Fluxo esperado:
 
 ```powershell
 specify extension catalog add https://raw.githubusercontent.com/SavioMacedoMRV/mrv-aidd-platformc/main/extensions/catalog.json --name mrv --install-allowed
-specify extension add mrv-aidd-producao
 specify preset catalog add https://raw.githubusercontent.com/SavioMacedoMRV/mrv-aidd-platformc/main/presets/catalog.json --name mrv --install-allowed
-specify preset add mrv-aidd-producao-backend --priority 5
 ```
 
-#### Frontend
+Depois disso, instale a extension base e exatamente um preset, conforme o ownership do repositorio.
 
-```powershell
-specify extension catalog add https://raw.githubusercontent.com/SavioMacedoMRV/mrv-aidd-platformc/main/extensions/catalog.json --name mrv --install-allowed
-specify extension add mrv-aidd-producao
-specify preset catalog add https://raw.githubusercontent.com/SavioMacedoMRV/mrv-aidd-platformc/main/presets/catalog.json --name mrv --install-allowed
-specify preset add mrv-aidd-producao-frontend --priority 5
-```
+### Use `--dev` quando
 
-### Modo desenvolvimento local
+- voce estiver criando, ajustando ou validando os pacotes a partir desta raiz;
+- precisar testar uma mudanca ainda nao publicada em release;
+- quiser validar templates, comandos ou manifests antes de mexer no catalogo.
 
-Use este modo quando estiver criando, ajustando ou validando os pacotes a partir desta raiz.
+Ordens recomendadas:
 
-## Ordem recomendada de instalacao
-
-### Backend
+Backend:
 
 ```powershell
 specify extension add --dev .\extensions\mrv-aidd-producao
 specify preset add --dev .\presets\mrv-aidd-producao-backend --priority 5
 ```
 
-### Frontend
+Frontend:
 
 ```powershell
 specify extension add --dev .\extensions\mrv-aidd-producao
 specify preset add --dev .\presets\mrv-aidd-producao-frontend --priority 5
 ```
 
-## O que acontece ao instalar
+## Efeitos esperados da instalacao
 
-Ao adicionar a extension `mrv-aidd-producao`:
+### Ao instalar a extension base
 
-- os comandos `speckit.mrv-aidd-producao.sincronizar-us-devops`, `speckit.mrv-aidd-producao.configurar-us` e `speckit.mrv-aidd-producao.terminar-us` passam a ficar disponiveis;
-- o arquivo de configuracao `mrv-aidd-producao-config.yml` passa a ser provisionado a partir do template do pacote;
-- hooks opcionais sao registrados para sugerir `configurar-us` antes de `tasks` e `implement`, e `terminar-us` depois de `implement`.
+Depois de adicionar `mrv-aidd-producao`, o repositorio consumidor passa a ter:
 
-Ao adicionar um preset:
+- os comandos `speckit.mrv-aidd-producao.sincronizar-us-devops`, `speckit.mrv-aidd-producao.configurar-us` e `speckit.mrv-aidd-producao.terminar-us`;
+- o arquivo de configuracao `mrv-aidd-producao-config.yml`, provisionado a partir do template do pacote;
+- hooks opcionais para sugerir `configurar-us` antes de `tasks` e `implement`, e `terminar-us` depois de `implement`.
 
-- os templates `spec-template`, `plan-template`, `tasks-template` e `checklist-template` passam a ser substituidos;
-- comandos nativos do fluxo `/speckit.*` passam a executar as versoes customizadas do preset;
-- ownership, tags, idioma e handoff passam a seguir o contexto do preset instalado.
+### Ao instalar um preset
 
-## Qual preset instalar
+Depois de adicionar um preset, o repositorio consumidor passa a usar:
+
+- os templates `spec-template`, `plan-template`, `tasks-template` e `checklist-template` do contexto selecionado;
+- as versoes customizadas dos comandos `/speckit.*` sobrescritos pelo preset;
+- ownership, tags, idioma e handoff coerentes com backend ou frontend.
+
+## Decisao de ownership
 
 Instale apenas um preset por repositorio consumidor.
 
-- Use `mrv-aidd-producao-backend` quando o repositorio for o owner principal das historias de backend.
-- Use `mrv-aidd-producao-frontend` quando o repositorio for o owner principal das historias de frontend.
+- Use `mrv-aidd-producao-backend` quando o repositorio for owner principal das historias de backend.
+- Use `mrv-aidd-producao-frontend` quando o repositorio for owner principal das historias de frontend.
+- Se backend e frontend estiverem separados em repositorios diferentes, cada um instala apenas o preset do proprio ownership.
 
-Se houver backend e frontend em repositorios diferentes, cada repositorio deve instalar o preset correspondente ao proprio ownership.
-
-## Fluxo recomendado depois da instalacao
-
-1. Execute `/speckit.specify` para abrir a especificacao da funcionalidade no formato do preset.
-2. Execute `/speckit.clarify` para eliminar ambiguidades importantes.
-3. Execute `/speckit.mrv-aidd-producao.sincronizar-us-devops` quando houver rastreabilidade com Azure DevOps.
-4. Execute `/speckit.plan` depois que o escopo estiver estabilizado.
-5. Execute `/speckit.tasks` e `/speckit.implement` no fluxo normal do Spec Kit.
-
-Durante esse fluxo:
-
-- `configurar-us` pode ser sugerido antes de `tasks` e `implement` para preparar a branch `feature/<feature-branch>/usN`;
-- `terminar-us` pode ser sugerido apos `implement` para validar, commitar, fazer push e abrir PR.
-
-## O que cada componente faz
-
-### Extension `mrv-aidd-producao`
-
-- Sincroniza historias esclarecidas do `spec.md` com Azure DevOps como filhas de uma Feature existente.
-- Grava ou atualiza o mapeamento local em `.specify/extensions/mrv-aidd-producao/us-sync-map.json`.
-- Escreve de volta no `spec.md` o `ID da US no Azure DevOps` para cada historia sincronizada.
-- Ajuda a preparar a branch de trabalho da US e a finalizar a entrega com commit e PR.
-
-### Preset `mrv-aidd-producao-backend`
-
-- Obriga ownership `backend`.
-- Usa titulos e tags `[BACK]`.
-- Preserva historias de frontend e registra dependencias em `Frontend Follow-up` quando necessario.
-- Mantem os artefatos e prompts em portugues do Brasil.
-
-### Preset `mrv-aidd-producao-frontend`
-
-- Obriga ownership `frontend`.
-- Usa titulos e tags `[FRONT]`.
-- Preserva historias de backend e registra handoff para o repositorio correto.
-- Mantem os artefatos e prompts em portugues do Brasil.
-
-## Limitacoes e cuidados
+## Cuidados operacionais
 
 - O modo catalogo depende de releases zipadas publicadas com as URLs declaradas em `extensions/catalog.json` e `presets/catalog.json`.
 - O comando de sincronizacao nao cria a Feature pai. Ela deve existir antes.
 - O fluxo de Azure DevOps usa MCP exclusivamente. Nao use Azure CLI, PAT ou REST bruto para substituir esse comportamento dentro do comando.
-- Se o ambiente nao tiver autenticacao ou MCP configurado, os comandos dependentes devem falhar cedo e o ajuste deve ser feito antes de insistir no fluxo.
+- Se o ambiente nao tiver autenticacao ou MCP configurado, os comandos dependentes devem falhar cedo.
 
-## Onde olhar se precisar de detalhe
+## Onde aprofundar
 
-- `docs/publicacao-catalogo.md`
-- `extensions/mrv-aidd-producao/README.md`
-- `extensions/mrv-aidd-producao/extension.yml`
-- `presets/mrv-aidd-producao-backend/README.md`
-- `presets/mrv-aidd-producao-backend/preset.yml`
-- `presets/mrv-aidd-producao-frontend/README.md`
-- `presets/mrv-aidd-producao-frontend/preset.yml`
+- [README da plataforma](../README.md)
+- [README da extension base](../extensions/mrv-aidd-producao/README.md)
+- [README do preset backend](../presets/mrv-aidd-producao-backend/README.md)
+- [README do preset frontend](../presets/mrv-aidd-producao-frontend/README.md)
+- [Guia de contribuicao](./guia-contribuicao.md)
+- [Guia de publicacao do catalogo](./publicacao-catalogo.md)

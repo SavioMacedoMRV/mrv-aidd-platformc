@@ -1,6 +1,15 @@
 # Publicacao de Catalogo MRV
 
-Este guia prepara este repositorio para funcionar como ponto de consumo simples para times da MRV que querem apenas instalar os componentes ja prontos.
+Este guia complementa o [README raiz](../README.md) e o [Guia de Instalacao Detalhado](./guia-instalacao.md). O README explica como consumir os pacotes; este documento cobre somente a operacao de versionamento, empacotamento e publicacao do catalogo.
+
+## Quando usar este guia
+
+Consulte este documento quando voce precisar:
+
+- publicar uma nova versao da plataforma;
+- alinhar manifests, catalogos e assets antes de criar uma tag;
+- validar o formato da release compartilhada;
+- operar o workflow de empacotamento e release.
 
 ## O que foi estruturado
 
@@ -16,36 +25,7 @@ Tambem fazem parte da base de publicacao:
 - `LICENSE`: licenca MIT referenciada pelos manifests e catalogos.
 - `.gitignore`: evita versionar o diretorio `dist/`, usado apenas para empacotamento local.
 
-## Modelo de consumo
-
-### Extension
-
-O consumidor adiciona o catalogo da MRV e instala a extension por nome:
-
-```powershell
-specify extension catalog add https://raw.githubusercontent.com/SavioMacedoMRV/mrv-aidd-platformc/main/extensions/catalog.json --name mrv --install-allowed
-specify extension search mrv
-specify extension add mrv-aidd-producao
-```
-
-### Preset
-
-O consumidor adiciona o catalogo da MRV e instala o preset por nome:
-
-```powershell
-specify preset catalog add https://raw.githubusercontent.com/SavioMacedoMRV/mrv-aidd-platformc/main/presets/catalog.json --name mrv --install-allowed
-specify preset search mrv
-specify preset add mrv-aidd-producao-backend --priority 5
-```
-
-Para frontend, troque o ID do preset para `mrv-aidd-producao-frontend`.
-
-## Diferenca entre modo catalogo e modo --dev
-
-- Use `--dev` quando estiver desenvolvendo ou validando localmente o pacote a partir desta workspace.
-- Use catalogo quando o objetivo for consumo simples, repetivel e versionado em outros repositorios.
-
-Em outras palavras: `--dev` e fluxo de autoria; catalogo e fluxo de distribuicao.
+Se a sua duvida for sobre instalacao por catalogo, escolha de preset ou efeitos da configuracao no repositorio consumidor, volte para o [README raiz](../README.md) e para o [Guia de Instalacao Detalhado](./guia-instalacao.md).
 
 ## URLs publicadas pelos catalogos
 
@@ -58,11 +38,11 @@ Em outras palavras: `--dev` e fluxo de autoria; catalogo e fluxo de distribuicao
 
 Os catalogos foram preparados para uma release unica por versao da plataforma, com uma tag compartilhada e tres assets zipados:
 
-| Pacote                       | Tag compartilhada            | Asset esperado                         |
-| ---------------------------- | ---------------------------- | -------------------------------------- |
-| `mrv-aidd-producao`          | `mrv-aidd-platform-v0.1.0`  | `mrv-aidd-producao-0.1.0.zip`          |
-| `mrv-aidd-producao-backend`  | `mrv-aidd-platform-v0.1.0`  | `mrv-aidd-producao-backend-0.1.0.zip`  |
-| `mrv-aidd-producao-frontend` | `mrv-aidd-platform-v0.1.0`  | `mrv-aidd-producao-frontend-0.1.0.zip` |
+| Pacote                       | Tag compartilhada          | Asset esperado                         |
+| ---------------------------- | -------------------------- | -------------------------------------- |
+| `mrv-aidd-producao`          | `mrv-aidd-platform-v0.1.0` | `mrv-aidd-producao-0.1.0.zip`          |
+| `mrv-aidd-producao-backend`  | `mrv-aidd-platform-v0.1.0` | `mrv-aidd-producao-backend-0.1.0.zip`  |
+| `mrv-aidd-producao-frontend` | `mrv-aidd-platform-v0.1.0` | `mrv-aidd-producao-frontend-0.1.0.zip` |
 
 ## Fluxo de publicacao
 
@@ -74,6 +54,8 @@ Os catalogos foram preparados para uma release unica por versao da plataforma, c
 4. Gere os zips localmente para validar os nomes dos assets.
 5. Confirme se as URLs de `download_url` dos catalogos batem com a tag compartilhada.
 6. So depois publique a tag.
+
+Essa etapa existe para impedir drift entre manifesto, README, catalogo e asset publicado.
 
 ### 1. Ajuste a versao nos manifests da release
 
@@ -113,6 +95,15 @@ O workflow `.github/workflows/publish-spec-kit-assets.yml`:
 - cria uma release unica;
 - publica os tres assets na mesma release.
 
+## Verificacao depois da publicacao
+
+Depois que a tag subir e o workflow terminar:
+
+1. confira se a release da tag foi criada;
+2. confirme se os tres assets esperados aparecem na release;
+3. valide se as URLs declaradas em `extensions/catalog.json` e `presets/catalog.json` respondem corretamente;
+4. confirme se o README, os manifests e os catalogos ainda apontam para a mesma versao.
+
 ## Empacotamento local
 
 Se quiser validar antes da tag, use o script local:
@@ -131,3 +122,12 @@ Os zips sao gerados em `dist/`.
 - Este repositorio ainda precisa manter manifesto, README e catalogo coerentes a cada versao.
 - O `dist/` deve ser tratado como saida local de empacotamento, nao como artefato versionado no git.
 - Se a MRV decidir usar outro owner ou outro dominio de hospedagem, ajuste `catalog_url`, `repository`, `homepage`, `documentation` e `download_url`.
+
+## Veja tambem
+
+- [README da plataforma](../README.md)
+- [Guia de Instalacao Detalhado](./guia-instalacao.md)
+- [Guia de Contribuicao](./guia-contribuicao.md)
+- [README da extension base](../extensions/mrv-aidd-producao/README.md)
+- [README do preset backend](../presets/mrv-aidd-producao-backend/README.md)
+- [README do preset frontend](../presets/mrv-aidd-producao-frontend/README.md)

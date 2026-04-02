@@ -1,6 +1,15 @@
 # Guia de Contribuicao e Evolucao
 
-Este guia e para quem vai ampliar o toolkit atual da plataforma MRV AIDD sem descaracterizar o que ja existe.
+Este guia complementa o [README raiz](../README.md). O README explica como consumir a plataforma; este documento explica como evoluir a plataforma sem descaracterizar os pacotes existentes nem quebrar o modelo de reuso.
+
+## Quando usar este guia
+
+Consulte este documento quando voce precisar:
+
+- decidir se uma mudanca nova deve entrar em extension ou preset;
+- criar um pacote novo ou expandir um pacote existente;
+- revisar os criterios minimos de manifesto, README e estrutura interna;
+- validar se a mudanca continua com cara de plataforma, e nao de customizacao local de consumidor.
 
 ## Principio de desenho desta raiz
 
@@ -12,6 +21,8 @@ Isso implica algumas regras praticas:
 - evite misturar necessidade pontual de um unico repositorio consumidor com regra de plataforma;
 - preserve ids publicos existentes, salvo quando houver motivo tecnico claro e plano de migracao;
 - mantenha manifesto e README coerentes sempre que alterar um pacote.
+
+Se a sua duvida for sobre instalacao, fluxo de uso ou escolha de preset no repositorio consumidor, volte para o [README raiz](../README.md) ou para o [Guia de Instalacao Detalhado](./guia-instalacao.md).
 
 ## Modelo mental do toolkit
 
@@ -77,6 +88,20 @@ O estado atual do repositorio segue este padrao:
 - os presets tambem sobrescrevem o comando `speckit.mrv-aidd-producao.sincronizar-us-devops` para aplicar filtros e protecoes especificas de backend ou frontend.
 
 Esse desenho e uma boa referencia para crescer sem acoplar demais os componentes.
+
+## O que este guia nao cobre
+
+Este documento nao detalha:
+
+- onboarding de consumo por catalogo;
+- comandos principais de instalacao;
+- operacao de release e publicacao de assets.
+
+Para isso, use respectivamente:
+
+- [README raiz](../README.md)
+- [Guia de Instalacao Detalhado](./guia-instalacao.md)
+- [Guia de Publicacao do Catalogo](./publicacao-catalogo.md)
 
 ## Quando criar um novo componente
 
@@ -170,3 +195,12 @@ O guia operacional dessa etapa esta em `docs/publicacao-catalogo.md`.
 - O id publico e a portabilidade do pacote estao sendo preservados?
 
 Se a resposta a alguma dessas perguntas for fraca, o desenho ainda precisa amadurecer antes da mudanca entrar.
+
+## Veja tambem
+
+- [README da plataforma](../README.md)
+- [Guia de Instalacao Detalhado](./guia-instalacao.md)
+- [Guia de Publicacao do Catalogo](./publicacao-catalogo.md)
+- [README da extension base](../extensions/mrv-aidd-producao/README.md)
+- [README do preset backend](../presets/mrv-aidd-producao-backend/README.md)
+- [README do preset frontend](../presets/mrv-aidd-producao-frontend/README.md)

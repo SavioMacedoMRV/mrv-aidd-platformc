@@ -1,0 +1,138 @@
+<svg width="400" height="400" viewBox="0 0 400 400" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+        <linearGradient id="bg" x1="0" y1="0" x2="400" y2="400" gradientUnits="userSpaceOnUse">
+            <stop offset="0%" stop-color="#0C1A0E" />
+            <stop offset="100%" stop-color="#060C07" />
+        </linearGradient>
+        <radialGradient id="glow" cx="50%" cy="62%" r="48%">
+            <stop offset="0%" stop-color="#1A4D20" stop-opacity="0.7" />
+            <stop offset="100%" stop-color="#060C07" stop-opacity="0" />
+        </radialGradient>
+        <radialGradient id="budGlow" cx="50%" cy="50%" r="50%">
+            <stop offset="0%" stop-color="#FFB830" stop-opacity="0.9" />
+            <stop offset="100%" stop-color="#F7941D" stop-opacity="0" />
+        </radialGradient>
+        <linearGradient id="leafL" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0%" stop-color="#B8E04A" />
+            <stop offset="100%" stop-color="#3E8B0C" />
+        </linearGradient>
+        <linearGradient id="leafR" x1="1" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#CCEC6A" />
+            <stop offset="100%" stop-color="#52A010" />
+        </linearGradient>
+        <linearGradient id="leafTop" x1="0.5" y1="0" x2="0.5" y2="1">
+            <stop offset="0%" stop-color="#C0E84A" />
+            <stop offset="100%" stop-color="#4A9210" />
+        </linearGradient>
+        <linearGradient id="chip" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#1A3D1E" />
+            <stop offset="100%" stop-color="#0D2010" />
+        </linearGradient>
+        <filter id="leafGlow" x="-40%" y="-40%" width="180%" height="180%">
+            <feDropShadow dx="0" dy="2" stdDeviation="6" flood-color="#5CB82A" flood-opacity="0.4" />
+        </filter>
+        <filter id="budBloom" x="-80%" y="-80%" width="360%" height="360%">
+            <feDropShadow dx="0" dy="0" stdDeviation="10" flood-color="#F7941D" flood-opacity="0.8" />
+            <feDropShadow dx="0" dy="0" stdDeviation="22" flood-color="#FFB830" flood-opacity="0.4" />
+        </filter>
+        <filter id="nodeGlow" x="-100%" y="-100%" width="300%" height="300%">
+            <feDropShadow dx="0" dy="0" stdDeviation="4" flood-color="#8DC63F" flood-opacity="0.9" />
+        </filter>
+        <filter id="chipGlow" x="-10%" y="-10%" width="120%" height="140%">
+            <feDropShadow dx="0" dy="4" stdDeviation="12" flood-color="#1A6B28" flood-opacity="0.6" />
+        </filter>
+    </defs>
+
+    <rect width="400" height="400" rx="80" fill="url(#bg)" />
+    <rect width="400" height="400" rx="80" fill="url(#glow)" />
+
+    <g opacity="0.06" stroke="#8DC63F" stroke-width="0.8">
+        <line x1="40" y1="100" x2="360" y2="100" />
+        <line x1="40" y1="160" x2="360" y2="160" />
+        <line x1="40" y1="220" x2="360" y2="220" />
+        <line x1="40" y1="280" x2="360" y2="280" />
+        <line x1="40" y1="340" x2="360" y2="340" />
+        <line x1="100" y1="40" x2="100" y2="370" />
+        <line x1="160" y1="40" x2="160" y2="370" />
+        <line x1="220" y1="40" x2="220" y2="370" />
+        <line x1="280" y1="40" x2="280" y2="370" />
+        <line x1="340" y1="40" x2="340" y2="370" />
+        <circle cx="100" cy="100" r="2" fill="#8DC63F" />
+        <circle cx="160" cy="100" r="2" fill="#8DC63F" />
+        <circle cx="220" cy="100" r="2" fill="#8DC63F" />
+        <circle cx="280" cy="100" r="2" fill="#8DC63F" />
+        <circle cx="340" cy="100" r="2" fill="#8DC63F" />
+        <circle cx="100" cy="160" r="2" fill="#8DC63F" />
+        <circle cx="160" cy="160" r="2" fill="#8DC63F" />
+        <circle cx="220" cy="160" r="2" fill="#8DC63F" />
+        <circle cx="280" cy="160" r="2" fill="#8DC63F" />
+        <circle cx="340" cy="160" r="2" fill="#8DC63F" />
+        <circle cx="100" cy="220" r="2" fill="#8DC63F" />
+        <circle cx="160" cy="220" r="2" fill="#8DC63F" />
+        <circle cx="220" cy="220" r="2" fill="#8DC63F" />
+        <circle cx="280" cy="220" r="2" fill="#8DC63F" />
+        <circle cx="340" cy="220" r="2" fill="#8DC63F" />
+    </g>
+
+    <rect x="148" y="278" width="104" height="32" rx="8" fill="url(#chip)" filter="url(#chipGlow)" />
+    <rect x="132" y="285" width="16" height="4" rx="2" fill="#1E4A22" />
+    <rect x="132" y="296" width="16" height="4" rx="2" fill="#1E4A22" />
+    <rect x="252" y="285" width="16" height="4" rx="2" fill="#1E4A22" />
+    <rect x="252" y="296" width="16" height="4" rx="2" fill="#1E4A22" />
+    <line x1="168" y1="283" x2="232" y2="283" stroke="#2A5E2E" stroke-width="1.2" />
+    <line x1="168" y1="304" x2="232" y2="304" stroke="#2A5E2E" stroke-width="1.2" />
+    <circle cx="190" cy="294" r="4" fill="#1A4020" stroke="#3A7A20" stroke-width="1" />
+    <circle cx="200" cy="294" r="4" fill="#1A4020" stroke="#3A7A20" stroke-width="1" />
+    <circle cx="210" cy="294" r="4" fill="#1A4020" stroke="#3A7A20" stroke-width="1" />
+
+    <line x1="200" y1="278" x2="200" y2="122" stroke="#3A7A10" stroke-width="5"
+        stroke-linecap="square" />
+    <line x1="200" y1="278" x2="200" y2="122" stroke="#6DC020" stroke-width="2"
+        stroke-linecap="square" opacity="0.6" />
+
+    <circle cx="200" cy="248" r="5.5" fill="#1A3A10" stroke="#8DC63F" stroke-width="1.8"
+        filter="url(#nodeGlow)" />
+    <polyline points="200,248 158,248 158,238" stroke="#8DC63F" stroke-width="1.8"
+        stroke-linecap="square" fill="none" opacity="0.7" />
+    <circle cx="158" cy="235" r="3.5" fill="#F7941D" opacity="0.9" filter="url(#nodeGlow)" />
+    <line x1="150" y1="235" x2="158" y2="235" stroke="#F7941D" stroke-width="1.5" opacity="0.6" />
+
+    <circle cx="200" cy="210" r="5.5" fill="#1A3A10" stroke="#8DC63F" stroke-width="1.8"
+        filter="url(#nodeGlow)" />
+    <polyline points="200,210 242,210 242,200" stroke="#8DC63F" stroke-width="1.8"
+        stroke-linecap="square" fill="none" opacity="0.7" />
+    <circle cx="242" cy="197" r="3.5" fill="#F7941D" opacity="0.9" filter="url(#nodeGlow)" />
+    <line x1="242" y1="197" x2="250" y2="197" stroke="#F7941D" stroke-width="1.5" opacity="0.6" />
+
+    <circle cx="200" cy="170" r="5.5" fill="#1A3A10" stroke="#8DC63F" stroke-width="1.8"
+        filter="url(#nodeGlow)" />
+    <polyline points="200,170 168,170 168,162" stroke="#8DC63F" stroke-width="1.8"
+        stroke-linecap="square" fill="none" opacity="0.6" />
+    <circle cx="168" cy="159" r="3" fill="#F7941D" opacity="0.8" />
+
+    <path
+        d="M 199,242 C 186,228 163,224 151,202 C 160,199 179,203 190,215 C 195,221 198,234 199,240 Z"
+        fill="url(#leafL)" filter="url(#leafGlow)" />
+    <path d="M 199,240 C 183,224 162,206 152,203" stroke="#2A6500" stroke-width="1.4"
+        stroke-linecap="round" fill="none" opacity="0.5" />
+
+    <path
+        d="M 201,204 C 214,189 237,184 249,162 C 239,163 221,169 210,181 C 206,187 203,198 201,202 Z"
+        fill="url(#leafR)" filter="url(#leafGlow)" />
+    <path d="M 201,202 C 217,185 238,167 248,163" stroke="#2A6500" stroke-width="1.4"
+        stroke-linecap="round" fill="none" opacity="0.5" />
+
+    <path d="M 200,165 C 194,153 186,143 188,130 C 196,135 203,148 200,163 Z" fill="url(#leafTop)"
+        filter="url(#leafGlow)" />
+    <path d="M 200,163 C 194,152 189,140 188,131" stroke="#2A6500" stroke-width="1.2"
+        stroke-linecap="round" fill="none" opacity="0.5" />
+
+    <circle cx="200" cy="120" r="18" fill="url(#budGlow)" opacity="0.5" />
+    <circle cx="200" cy="120" r="9" fill="#2A1500" stroke="#F7941D" stroke-width="1.5"
+        filter="url(#budBloom)" />
+    <circle cx="200" cy="120" r="5.5" fill="#FFB830" />
+    <line x1="200" y1="112" x2="200" y2="128" stroke="#FFD870" stroke-width="1.5"
+        stroke-linecap="round" opacity="0.8" />
+    <line x1="192" y1="120" x2="208" y2="120" stroke="#FFD870" stroke-width="1.5"
+        stroke-linecap="round" opacity="0.8" />
+</svg>
