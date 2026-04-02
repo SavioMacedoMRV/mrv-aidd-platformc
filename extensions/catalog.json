@@ -9,7 +9,7 @@
       "description": "Pacote operacional do ecossistema MRV para AIDD, reunindo sincronizacao com Azure DevOps, configuracao de branch e encerramento de historia.",
       "author": "MRV",
       "version": "0.1.0",
-      "download_url": "https://github.com/SavioMacedoMRV/mrv-aidd-platformc/releases/download/mrv-aidd-producao-v0.1.0/mrv-aidd-producao-0.1.0.zip",
+      "download_url": "https://github.com/SavioMacedoMRV/mrv-aidd-platformc/releases/download/mrv-aidd-platform-v0.1.0/mrv-aidd-producao-0.1.0.zip",
       "repository": "https://github.com/SavioMacedoMRV/mrv-aidd-platformc",
       "homepage": "https://github.com/SavioMacedoMRV/mrv-aidd-platformc",
       "documentation": "https://github.com/SavioMacedoMRV/mrv-aidd-platformc/blob/main/extensions/mrv-aidd-producao/README.md",

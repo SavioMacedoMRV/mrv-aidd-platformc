@@ -3,9 +3,7 @@ name: Publish Spec Kit Assets
 on:
   push:
     tags:
-      - 'mrv-aidd-producao-v*'
-      - 'mrv-aidd-producao-backend-v*'
-      - 'mrv-aidd-producao-frontend-v*'
+      - 'mrv-aidd-platform-v*'
 
 permissions:
   contents: write
@@ -18,70 +16,65 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Resolve package metadata from tag
+      - name: Resolve release metadata from tag
         id: metadata
         shell: pwsh
         run: |
           $tag = "${{ github.ref_name }}"
 
-          if ($tag -match '^(mrv-aidd-producao-backend)-v(.+)$') {
-            $packageId = $Matches[1]
-            $packageType = 'preset'
-            $version = $Matches[2]
-          }
-          elseif ($tag -match '^(mrv-aidd-producao-frontend)-v(.+)$') {
-            $packageId = $Matches[1]
-            $packageType = 'preset'
-            $version = $Matches[2]
-          }
-          elseif ($tag -match '^(mrv-aidd-producao)-v(.+)$') {
-            $packageId = $Matches[1]
-            $packageType = 'extension'
-            $version = $Matches[2]
-          }
-          else {
+          if ($tag -notmatch '^mrv-aidd-platform-v(.+)$') {
             throw "Tag nao suportada: $tag"
           }
 
-          $manifestPath = if ($packageType -eq 'extension') {
-            Join-Path $PWD "extensions/$packageId/extension.yml"
-          }
-          else {
-            Join-Path $PWD "presets/$packageId/preset.yml"
-          }
-
-          $manifestContent = Get-Content -Path $manifestPath -Raw
-          $versionPattern = if ($packageType -eq 'extension') {
-            'extension:\s*(?:\r?\n(?:\s+.*))*?\r?\n\s+version:\s*"([^"]+)"'
-          }
-          else {
-            'preset:\s*(?:\r?\n(?:\s+.*))*?\r?\n\s+version:\s*"([^"]+)"'
-          }
-
-          $versionMatch = [regex]::Match($manifestContent, $versionPattern)
-
-          if (-not $versionMatch.Success) {
-            throw "Versao nao encontrada em $manifestPath"
-          }
-
-          $manifestVersion = $versionMatch.Groups[1].Value
-
-          if ($manifestVersion -ne $version) {
-            throw "Tag $tag nao bate com a versao do manifesto ($manifestVersion)"
-          }
-
-          "package_id=$packageId" >> $env:GITHUB_OUTPUT
-          "package_type=$packageType" >> $env:GITHUB_OUTPUT
+          $version = $Matches[1]
           "version=$version" >> $env:GITHUB_OUTPUT
-          "asset_name=$packageId-$version.zip" >> $env:GITHUB_OUTPUT
 
-      - name: Package asset
+      - name: Validate package versions
         shell: pwsh
         run: |
-          ./scripts/package-spec-kit-assets.ps1 -PackageType "${{ steps.metadata.outputs.package_type }}" -PackageId "${{ steps.metadata.outputs.package_id }}"
+          $tag = "${{ github.ref_name }}"
+          $version = "${{ steps.metadata.outputs.version }}"
+          $manifests = @(
+            @{ Path = 'extensions/mrv-aidd-producao/extension.yml'; Pattern = 'extension:\s*(?:\r?\n(?:\s+.*))*?\r?\n\s+version:\s*"([^"]+)"' },
+            @{ Path = 'presets/mrv-aidd-producao-backend/preset.yml'; Pattern = 'preset:\s*(?:\r?\n(?:\s+.*))*?\r?\n\s+version:\s*"([^"]+)"' },
+            @{ Path = 'presets/mrv-aidd-producao-frontend/preset.yml'; Pattern = 'preset:\s*(?:\r?\n(?:\s+.*))*?\r?\n\s+version:\s*"([^"]+)"' }
+          )
 
-      - name: Create GitHub release and upload asset
+          foreach ($manifest in $manifests) {
+            $content = Get-Content -Path $manifest.Path -Raw
+            $match = [regex]::Match($content, $manifest.Pattern)
+
+            if (-not $match.Success) {
+              throw "Versao nao encontrada em $($manifest.Path)"
+            }
+
+            $manifestVersion = $match.Groups[1].Value
+
+            if ($manifestVersion -ne $version) {
+              throw "Tag $tag nao bate com a versao do manifesto $($manifest.Path) ($manifestVersion)"
+            }
+          }
+
+      - name: Package extension asset
+        shell: pwsh
+        run: |
+          ./scripts/package-spec-kit-assets.ps1 -PackageType extension -PackageId mrv-aidd-producao
+
+      - name: Package backend preset asset
+        shell: pwsh
+        run: |
+          ./scripts/package-spec-kit-assets.ps1 -PackageType preset -PackageId mrv-aidd-producao-backend
+
+      - name: Package frontend preset asset
+        shell: pwsh
+        run: |
+          ./scripts/package-spec-kit-assets.ps1 -PackageType preset -PackageId mrv-aidd-producao-frontend
+
+      - name: Create GitHub release and upload assets
         uses: softprops/action-gh-release@v2
         with:
-          files: dist/${{ steps.metadata.outputs.asset_name }}
+          files: |
+            dist/mrv-aidd-producao-${{ steps.metadata.outputs.version }}.zip
+            dist/mrv-aidd-producao-backend-${{ steps.metadata.outputs.version }}.zip
+            dist/mrv-aidd-producao-frontend-${{ steps.metadata.outputs.version }}.zip
           generate_release_notes: true

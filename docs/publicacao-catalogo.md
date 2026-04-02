@@ -56,30 +56,34 @@ Em outras palavras: `--dev` e fluxo de autoria; catalogo e fluxo de distribuicao
 
 ### Releases esperados
 
-Os catalogos foram preparados para estes assets:
+Os catalogos foram preparados para uma release unica por versao da plataforma, com uma tag compartilhada e tres assets zipados:
 
-| Pacote                       | Tag esperada                        | Asset esperado                         |
-| ---------------------------- | ----------------------------------- | -------------------------------------- |
-| `mrv-aidd-producao`          | `mrv-aidd-producao-v0.1.0`          | `mrv-aidd-producao-0.1.0.zip`          |
-| `mrv-aidd-producao-backend`  | `mrv-aidd-producao-backend-v0.1.0`  | `mrv-aidd-producao-backend-0.1.0.zip`  |
-| `mrv-aidd-producao-frontend` | `mrv-aidd-producao-frontend-v0.1.0` | `mrv-aidd-producao-frontend-0.1.0.zip` |
+| Pacote                       | Tag compartilhada            | Asset esperado                         |
+| ---------------------------- | ---------------------------- | -------------------------------------- |
+| `mrv-aidd-producao`          | `mrv-aidd-platform-v0.1.0`  | `mrv-aidd-producao-0.1.0.zip`          |
+| `mrv-aidd-producao-backend`  | `mrv-aidd-platform-v0.1.0`  | `mrv-aidd-producao-backend-0.1.0.zip`  |
+| `mrv-aidd-producao-frontend` | `mrv-aidd-platform-v0.1.0`  | `mrv-aidd-producao-frontend-0.1.0.zip` |
 
 ## Fluxo de publicacao
 
 ### Checklist rapido antes de publicar
 
 1. Confirme se o manifesto do pacote esta com a versao correta.
-2. Confirme se `README.md`, `CHANGELOG.md` e o catalogo correspondente estao coerentes.
-3. Gere o zip localmente para validar o nome do asset.
-4. Confirme se a URL de `download_url` do catalogo bate com a tag esperada.
-5. So depois publique a tag.
+2. Confirme se os tres manifests compartilham a mesma versao da release de plataforma.
+3. Confirme se `README.md`, `CHANGELOG.md` e os catalogos estao coerentes.
+4. Gere os zips localmente para validar os nomes dos assets.
+5. Confirme se as URLs de `download_url` dos catalogos batem com a tag compartilhada.
+6. So depois publique a tag.
 
-### 1. Ajuste a versao no manifesto do pacote
+### 1. Ajuste a versao nos manifests da release
 
-- Extension: `extensions/<id>/extension.yml`
-- Preset: `presets/<id>/preset.yml`
+- Extension: `extensions/mrv-aidd-producao/extension.yml`
+- Preset backend: `presets/mrv-aidd-producao-backend/preset.yml`
+- Preset frontend: `presets/mrv-aidd-producao-frontend/preset.yml`
 
-### 2. Atualize o catalogo correspondente
+Os tres manifests precisam carregar a mesma versao quando a distribuicao for feita na mesma release de plataforma.
+
+### 2. Atualize os catalogos
 
 Para cada nova versao, atualize:
 
@@ -87,30 +91,27 @@ Para cada nova versao, atualize:
 - `download_url`
 - `updated_at`
 
-Se for um pacote novo, adicione uma nova entrada no catalogo.
+Todos os `download_url` devem apontar para a mesma tag compartilhada, mudando apenas o nome do asset zip.
+
+Se for um pacote novo, adicione uma nova entrada no catalogo correspondente.
 
 ### 3. Publique uma tag no formato esperado
 
-Exemplos:
+Exemplo:
 
 ```powershell
-git tag mrv-aidd-producao-v0.1.0
-git push origin mrv-aidd-producao-v0.1.0
-```
-
-```powershell
-git tag mrv-aidd-producao-backend-v0.1.0
-git push origin mrv-aidd-producao-backend-v0.1.0
+git tag mrv-aidd-platform-v0.1.0
+git push origin mrv-aidd-platform-v0.1.0
 ```
 
 ### 4. Deixe o workflow publicar o asset
 
 O workflow `.github/workflows/publish-spec-kit-assets.yml`:
 
-- identifica o pacote pelo nome da tag;
-- valida se a versao da tag bate com o manifesto;
-- gera o zip do pacote;
-- cria a release e publica o asset.
+- valida se a versao da tag bate com os tres manifests publicados juntos;
+- gera os tres zips da versao;
+- cria uma release unica;
+- publica os tres assets na mesma release.
 
 ## Empacotamento local
 
