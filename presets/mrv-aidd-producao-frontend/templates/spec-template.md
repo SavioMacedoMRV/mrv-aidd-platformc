@@ -5,7 +5,15 @@
 **Status**: Rascunho  
 **Entrada**: Descricao do usuario: "$ARGUMENTS"
 
-## Rastreabilidade Azure DevOps *(opcional)*
+## Guardrails AIDD _(obrigatorio)_
+
+- A feature de upstream e a entrada principal desta especificacao, mas pode conter gaps funcionais.
+- Este fluxo deve clarificar e fechar os gaps relevantes antes de validar o `spec.md`.
+- Este `spec.md` e a fonte de verdade funcional consolidada da feature.
+- O board deve espelhar apenas as USs derivadas deste spec validado.
+- Cada historia precisa permanecer testavel, rastreavel e com ownership explicito.
+
+## Rastreabilidade Azure DevOps _(opcional)_
 
 <!--
   Inclua esta secao apenas quando a funcionalidade tiver sido originada a partir de um item do Azure DevOps.
@@ -18,7 +26,7 @@
 - **Projeto**: [Nome do projeto no Azure DevOps]
 - **Intencao de sincronizacao**: [Normalmente: publicar historias de usuario esclarecidas apos `/speckit.clarify` e antes de `/speckit.mrv-aidd-producao.sincronizar-us-devops`]
 
-## Cenarios de usuario e testes *(obrigatorio)*
+## Cenarios de usuario e testes _(obrigatorio)_
 
 <!--
   Este template representa o repositorio de frontend.
@@ -41,6 +49,7 @@
 **Descricao**: [Detalhamento da necessidade, contexto funcional e comportamento esperado]
 
 **Valor para o Negocio**:
+
 - [Beneficio de negocio 1]
 - [Beneficio de negocio 2]
 
@@ -72,6 +81,7 @@
 **Descricao**: [Detalhamento da necessidade, contexto funcional e comportamento esperado]
 
 **Valor para o Negocio**:
+
 - [Beneficio de negocio 1]
 - [Beneficio de negocio 2]
 
@@ -102,6 +112,7 @@
 **Descricao**: [Detalhamento da necessidade, contexto funcional e comportamento esperado]
 
 **Valor para o Negocio**:
+
 - [Beneficio de negocio 1]
 - [Beneficio de negocio 2]
 
@@ -122,7 +133,13 @@
 - O que acontece quando [condicao limite]?
 - Como o sistema trata [cenario de erro]?
 
-## Backend Follow-up *(opcional)*
+## Publicacao no board _(obrigatorio antes do plan)_
+
+- **Regra de espelhamento**: a Feature e as USs publicadas no board devem derivar deste `spec.md` validado.
+- **Ownership publicado**: [Confirme se todas as historias derivadas deste repositorio permanecem com ownership frontend]
+- **Pronto para sincronizar**: [Informe se o spec ja pode seguir para `/speckit.mrv-aidd-producao.sincronizar-us-devops`]
+
+## Backend Follow-up _(opcional)_
 
 <!--
   Use esta secao apenas quando a entrega do frontend exigir trabalho no repositorio de backend.
@@ -132,7 +149,7 @@
 
 - [Descreva a dependencia de backend descoberta durante a especificacao ou clarificacao]
 
-## Expectativas de cobertura de testes *(obrigatorio)*
+## Expectativas de cobertura de testes _(obrigatorio)_
 
 - **Cobertura unitaria**: [Liste modulos, componentes, servicos, validadores ou regras de negocio que exigem testes unitarios]
 - **Cobertura de contrato**: [Liste APIs, eventos, schemas, contratos de integracao ou superfícies publicas que exigem validacao de contrato]
@@ -140,7 +157,7 @@
 - **Ativos compartilhados de teste**: [Liste fixtures, builders, stubs, mocks, dados de teste ou utilitarios compartilhados que precisam ser criados ou estendidos]
 - **Estrategia de execucao**: [Informe qual ambiente, runner ou abordagem de validacao e suficiente, ou justifique necessidades especiais]
 
-## Requisitos *(obrigatorio)*
+## Requisitos _(obrigatorio)_
 
 ### Requisitos funcionais
 
@@ -150,12 +167,12 @@
 - **RF-004**: O sistema DEVE [requisito de dados]
 - **RF-005**: O sistema DEVE [comportamento]
 
-### Entidades principais *(inclua se a funcionalidade envolver dados)*
+### Entidades principais _(inclua se a funcionalidade envolver dados)_
 
 - **[Entidade 1]**: [O que representa, atributos principais sem detalhes de implementacao]
 - **[Entidade 2]**: [O que representa, relacoes com outras entidades]
 
-## Criterios de sucesso *(obrigatorio)*
+## Criterios de sucesso _(obrigatorio)_
 
 ### Resultados mensuraveis
 

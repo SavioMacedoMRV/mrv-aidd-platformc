@@ -1,6 +1,6 @@
 ---
 description: Executar o fluxo de planejamento de implementacao usando o template de plano para gerar artefatos de design em portugues do Brasil.
-handoffs: 
+handoffs:
   - label: Criar tarefas
     agent: speckit.tasks
     prompt: Quebre o plano em tarefas
@@ -21,6 +21,7 @@ You **MUST** consider the user input before proceeding (if not empty).
 ## Pre-Execution Checks
 
 **Check for extension hooks (before planning)**:
+
 - Check if `.specify/extensions.yml` exists in the project root.
 - If it exists, read it and look for entries under the `hooks.before_plan` key
 - If the YAML cannot be parsed or is invalid, skip hook checking silently and continue normally
@@ -30,6 +31,7 @@ You **MUST** consider the user input before proceeding (if not empty).
   - If the hook defines a non-empty `condition`, skip the hook and leave condition evaluation to the HookExecutor implementation
 - For each executable hook, output the following based on its `optional` flag:
   - **Optional hook** (`optional: true`):
+
     ```
     ## Extension Hooks
 
@@ -40,7 +42,9 @@ You **MUST** consider the user input before proceeding (if not empty).
     Prompt: {prompt}
     To execute: `/{command}`
     ```
+
   - **Mandatory hook** (`optional: false`):
+
     ```
     ## Extension Hooks
 
@@ -50,6 +54,7 @@ You **MUST** consider the user input before proceeding (if not empty).
 
     Wait for the result of the hook command before proceeding to the Outline.
     ```
+
 - If no hooks are registered or `.specify/extensions.yml` does not exist, skip silently
 
 ## Outline
@@ -78,6 +83,7 @@ You **MUST** consider the user input before proceeding (if not empty).
      - If the hook defines a non-empty `condition`, skip the hook and leave condition evaluation to the HookExecutor implementation
    - For each executable hook, output the following based on its `optional` flag:
      - **Optional hook** (`optional: true`):
+
        ```
        ## Extension Hooks
 
@@ -88,7 +94,9 @@ You **MUST** consider the user input before proceeding (if not empty).
        Prompt: {prompt}
        To execute: `/{command}`
        ```
+
      - **Mandatory hook** (`optional: false`):
+
        ```
        ## Extension Hooks
 
@@ -96,6 +104,7 @@ You **MUST** consider the user input before proceeding (if not empty).
        Executing: `/{command}`
        EXECUTE_COMMAND: {command}
        ```
+
    - If no hooks are registered or `.specify/extensions.yml` does not exist, skip silently
 
 ## Phases
@@ -145,7 +154,7 @@ You **MUST** consider the user input before proceeding (if not empty).
    - Add only new technology from current plan
    - Preserve manual additions between markers
 
-**Output**: data-model.md, /contracts/*, quickstart.md, agent-specific file
+**Output**: data-model.md, /contracts/\*, quickstart.md, agent-specific file
 
 ## Key rules
 
@@ -155,4 +164,7 @@ You **MUST** consider the user input before proceeding (if not empty).
 ## Regras adicionais do preset
 
 - Sempre que este comando precisar pedir informacoes, confirmacoes ou desambiguacoes ao usuario, voce **DEVE** usar a ferramenta `vscode_askQuestions`.
+- O `plan.md` produzido aqui deve ser tratado como a fonte de verdade tecnica da feature.
+- Este comando so deve fechar o plano depois que o `spec.md` estiver validado e o board refletir esse spec de forma coerente.
+- O plano nao deve reabrir discussoes funcionais resolvidas no `spec.md`; ele deve registrar fundacao, contratos, riscos e readiness de execucao.
 - Todas as mensagens voltadas ao usuario e todos os artefatos gerados por este comando DEVEM estar em portugues do Brasil, incluindo `plan.md`, `research.md`, `data-model.md`, `quickstart.md` e os arquivos em `contracts/`, salvo nomes tecnicos, caminhos, comandos, identificadores e termos oficiais que precisem permanecer no idioma original.

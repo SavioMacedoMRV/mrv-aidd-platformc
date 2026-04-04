@@ -1,46 +1,56 @@
-# Guia de Contribuicao e Evolucao
+﻿# Guia de Contribuição e Evolução da Plataforma
 
-Este guia complementa o [README raiz](../README.md). O README explica como consumir a plataforma; este documento explica como evoluir a plataforma sem descaracterizar os pacotes existentes nem quebrar o modelo de reuso.
+Este guia é para quem mantém o MRV AIDD Platform. Se você quer instalar ou usar a plataforma em um repositório consumidor, veja [../README.md](../README.md) e [./guia-instalacao.md](./guia-instalacao.md).
 
-## Quando usar este guia
+---
 
-Consulte este documento quando voce precisar:
+## Índice
 
-- decidir se uma mudanca nova deve entrar em extension ou preset;
-- criar um pacote novo ou expandir um pacote existente;
-- revisar os criterios minimos de manifesto, README e estrutura interna;
-- validar se a mudanca continua com cara de plataforma, e nao de customizacao local de consumidor.
+- [O que este repositório mantém](#o-que-este-repositório-mantém)
+- [Modelo mental de manutenção](#modelo-mental-de-manutenção)
+- [Estrutura esperada dos pacotes](#estrutura-esperada-dos-pacotes)
+- [Como decidir onde mexer](#como-decidir-onde-mexer)
+- [O que preservar sempre](#o-que-preservar-sempre)
+- [Superfícies que precisam ficar sincronizadas](#superfícies-que-precisam-ficar-sincronizadas)
+- [Checklist de mudança em extension](#checklist-de-mudança-em-extension)
+- [Checklist de mudança em preset](#checklist-de-mudança-em-preset)
+- [Checklist documental da plataforma](#checklist-documental-da-plataforma)
+- [Armadilhas comuns de manutenção](#armadilhas-comuns-de-manutenção)
+- [Quando a mudança afeta o fluxo AIDD](#quando-a-mudança-afeta-o-fluxo-aidd)
+- [Publicação e distribuição](#publicação-e-distribuição)
+- [Veja também](#veja-também)
 
-## Principio de desenho desta raiz
+---
 
-Esta raiz nao e um repositorio consumidor. Ela e a base compartilhada de componentes reaproveitaveis do time.
+## O que este repositório mantém
 
-Isso implica algumas regras praticas:
+Ao contribuir aqui, você não está mexendo em um projeto de negócio. Você está mexendo em uma base compartilhada que sustenta ao mesmo tempo:
 
-- prefira componentes desacoplados, portaveis e com fronteira clara;
-- evite misturar necessidade pontual de um unico repositorio consumidor com regra de plataforma;
-- preserve ids publicos existentes, salvo quando houver motivo tecnico claro e plano de migracao;
-- mantenha manifesto e README coerentes sempre que alterar um pacote.
+- A documentação oficial do fluxo MRV AIDD.
+- O catálogo versionado de extensions e presets.
+- Pacotes reutilizáveis instalados por repositórios consumidores.
 
-Se a sua duvida for sobre instalacao, fluxo de uso ou escolha de preset no repositorio consumidor, volte para o [README raiz](../README.md) ou para o [Guia de Instalacao Detalhado](./guia-instalacao.md).
+O critério de design muda por causa disso. O objetivo não é resolver uma dor local de um único repositório. O objetivo é manter um acervo portável, coerente e reaproveitável.
 
-## Modelo mental do toolkit
+---
 
-Hoje o toolkit cresce em dois eixos:
+## Modelo mental de manutenção
 
-- **Extension**: adiciona capacidades novas ao Spec Kit, como comandos operacionais, hooks e configuracoes.
-- **Preset**: altera o comportamento do fluxo base do Spec Kit para um contexto, substituindo templates e comandos existentes.
+O ecossistema cresce em dois eixos:
 
-Use esse criterio para decidir onde mexer:
+- `extension` adiciona capacidade nova ao fluxo.
+- `preset` customiza templates, comandos, linguagem e ownership de capacidades existentes.
 
-- se a necessidade e um comando novo ou um hook novo reutilizavel entre varios contextos, a mudanca tende a ser extension;
-- se a necessidade e alterar linguagem, ownership, estrutura de artefato ou comportamento de comandos nativos em um contexto especifico, a mudanca tende a ser preset.
+**Regra prática:**
 
-## Estrutura minima de cada tipo de pacote
+- Se a mudança cria comando novo, hook novo ou integração nova → tende a ser extension.
+- Se a mudança altera ownership, linguagem, formato de artefato ou governança de um fluxo que já existe → tende a ser preset.
+
+---
+
+## Estrutura esperada dos pacotes
 
 ### Extension
-
-Estrutura esperada:
 
 ```text
 extensions/<id-da-extension>/
@@ -51,16 +61,7 @@ extensions/<id-da-extension>/
   <arquivos auxiliares opcionais>
 ```
 
-Responsabilidades tipicas:
-
-- declarar metadados e compatibilidade em `extension.yml`;
-- listar comandos em `provides.commands` apontando para arquivos em `commands/`;
-- declarar configuracoes em `provides.config` quando houver template de configuracao;
-- registrar hooks em `hooks` quando o fluxo precisar sugerir ou automatizar comandos antes ou depois de etapas do Spec Kit.
-
 ### Preset
-
-Estrutura esperada:
 
 ```text
 presets/<id-do-preset>/
@@ -72,135 +73,116 @@ presets/<id-do-preset>/
     <template>.md
 ```
 
-Responsabilidades tipicas:
+---
 
-- declarar metadados e compatibilidade em `preset.yml`;
-- sobrescrever templates nativos em `provides.templates` com `replaces`;
-- sobrescrever comandos nativos ou comandos de extension quando o contexto exigir;
-- documentar claramente o ownership, idioma, handoffs e dependencias do preset.
+## Como decidir onde mexer
 
-## Como o pacote atual foi construido
+### Crie ou evolua uma extension quando
 
-O estado atual do repositorio segue este padrao:
+- A capacidade precisa existir independentemente de ownership backend ou frontend.
+- O fluxo demanda integração com sistema externo.
+- Existe um comando novo que o core do Spec Kit não oferece.
+- O comportamento precisa ser compartilhado por vários presets.
 
-- `extensions/mrv-aidd-producao` concentra comandos operacionais que nao existem no Spec Kit base;
-- `presets/mrv-aidd-producao-backend` e `presets/mrv-aidd-producao-frontend` reaproveitam a mesma extension e mudam o comportamento do fluxo `/speckit.*` por ownership;
-- os presets tambem sobrescrevem o comando `speckit.mrv-aidd-producao.sincronizar-us-devops` para aplicar filtros e protecoes especificas de backend ou frontend.
+### Crie ou evolua um preset quando
 
-Esse desenho e uma boa referencia para crescer sem acoplar demais os componentes.
+- A mudança é de linguagem, ownership ou formato de artefato.
+- O fluxo base continua o mesmo, mas a forma de escrever e operar muda.
+- A organização precisa aplicar regras específicas de uma trilha sem inventar nova capacidade.
 
-## O que este guia nao cobre
+---
 
-Este documento nao detalha:
+## O que preservar sempre
 
-- onboarding de consumo por catalogo;
-- comandos principais de instalacao;
-- operacao de release e publicacao de assets.
+- IDs públicos dos pacotes (salvo quando houver motivo técnico claro e plano de migração documentado).
+- Coerência entre manifesto, README, catálogo e comportamento real.
+- Documentação operacional em pt-BR.
+- Separação clara entre plataforma compartilhada e regra específica de consumidor.
+- Coerência entre [../README.md](../README.md), [./aidd/README.md](./aidd/README.md), pacotes e catálogos.
 
-Para isso, use respectivamente:
+---
 
-- [README raiz](../README.md)
-- [Guia de Instalacao Detalhado](./guia-instalacao.md)
-- [Guia de Publicacao do Catalogo](./publicacao-catalogo.md)
+## Superfícies que precisam ficar sincronizadas
 
-## Quando criar um novo componente
+Quando a mudança for pública, revise o conjunto inteiro afetado:
 
-Crie uma nova extension quando:
+1. Manifesto do pacote (`extension.yml` ou `preset.yml`)
+2. README do pacote
+3. Catálogo correspondente (`extensions/catalog.json` ou `presets/catalog.json`)
+4. [../README.md](../README.md) quando a experiência pública mudar
+5. [./aidd/README.md](./aidd/README.md) quando o fluxo AIDD mudar
+6. [./guia-instalacao.md](./guia-instalacao.md) quando instalação ou consumo mudarem
 
-- o comando ou hook for reutilizavel em mais de um preset;
-- a capacidade fizer sentido sem depender de ownership backend ou frontend;
-- houver configuracao propria que nao deveria morar dentro de um preset.
+---
 
-Crie um novo preset quando:
+## Checklist de mudança em extension
 
-- existir um contexto novo de uso, stack ou ownership com regras proprias;
-- os overrides de templates e comandos nativos forem especificos daquele contexto;
-- a variacao nao puder ser explicada apenas com uma opcao de configuracao da extension atual.
-
-Expanda um pacote existente quando:
-
-- a necessidade for uma extensao natural do papel atual do pacote;
-- a mudanca mantiver compatibilidade com os consumidores ja esperados;
-- a documentacao puder continuar simples sem transformar o pacote em um agregador confuso.
-
-## Checklist para evoluir uma extension
-
-1. Confirme se o comportamento novo realmente pertence a uma extension e nao a um preset.
-2. Atualize `extension.yml` com comandos, configuracoes, tags e hooks necessarios.
+1. Confirme se a necessidade realmente pede capacidade nova.
+2. Atualize `extension.yml`.
 3. Crie ou ajuste os arquivos em `commands/`.
-4. Se houver configuracao obrigatoria, mantenha um template versionado no pacote.
-5. Atualize o `README.md` da extension com objetivo, pre-requisitos, instalacao e saida esperada.
-6. Preserve o id publico da extension e evite renomear comandos ja publicados sem plano de migracao.
+4. Atualize o `README.md` da extension.
+5. Revise impactos em configuração, hooks e catálogo.
 
-## Checklist para evoluir um preset
+---
 
-1. Confirme qual contexto o preset representa e qual ownership ele governa.
-2. Atualize `preset.yml` com todos os `replaces` necessarios.
-3. Mantenha `commands/` e `templates/` alinhados com o manifesto.
-4. Garanta que os prompts e artefatos continuem coerentes no idioma e no ownership do preset.
-5. Atualize o `README.md` do preset explicando escopo, dependencia e comportamento esperado.
-6. Evite sobrescrever mais comandos do que o necessario.
+## Checklist de mudança em preset
 
-## Padroes que valem preservar
+1. Confirme qual ownership ou contexto o preset representa.
+2. Atualize `preset.yml`.
+3. Ajuste `templates/` e `commands/` com o menor escopo possível.
+4. Atualize o `README.md` do preset.
+5. Revise coerência com a extension base e com o acervo AIDD.
 
-- Documentacao operacional em portugues do Brasil.
-- Caminhos relativos dentro do pacote, sem dependencias em caminhos absolutos.
-- Separacao clara entre comando da extension e override do preset.
-- Uso de ids estaveis em `extension.yml` e `preset.yml`.
-- Compatibilidade declarada com `speckit_version`.
-- Coerencia entre manifesto, README, catalogo e asset publicado em release.
+---
 
-## Erros de desenho que devem ser evitados
+## Checklist documental da plataforma
 
-- colocar logica de um repositorio consumidor especifico dentro da raiz da plataforma;
-- criar preset novo quando bastava ajustar um template do preset existente;
-- colocar em um preset um comando que na verdade deveria ser compartilhado por varios contextos via extension;
-- alterar README sem refletir a mesma mudanca no manifesto, ou o inverso;
-- introduzir referencia a repositorio antigo, caminho local de maquina ou automacao externa nao documentada.
+Sempre que a experiência pública mudar, revise também:
 
-## Roteiro recomendado para contribuicao
+1. [../README.md](../README.md)
+2. [./guia-instalacao.md](./guia-instalacao.md)
+3. [./aidd/README.md](./aidd/README.md)
+4. README do pacote afetado
+5. Catálogo correspondente, quando houver impacto de distribuição
 
-1. Comece pelo pacote mais proximo da mudanca: extension ou preset.
-2. Leia o manifesto e o README do pacote antes de editar qualquer comando ou template.
-3. Faça a menor mudanca que resolva o problema sem ampliar escopo indevidamente.
-4. Atualize a documentacao do proprio pacote.
-5. Se a mudanca alterar instalacao, inventario ou a forma de crescer a plataforma, atualize tambem o README raiz, os guias em `docs/` e o catalogo correspondente.
+---
 
-## Publicacao por catalogo
+## Armadilhas comuns de manutenção
 
-Se a intencao for disponibilizar um pacote para consumo simples por outros times, nao basta editar o manifesto.
+- Tratar esta raiz como se fosse um repositório consumidor.
+- Adicionar regra local de um time como se fosse regra geral da plataforma.
+- Mexer em manifesto sem refletir no README, ou o inverso.
+- Criar preset novo quando um ajuste pequeno em preset existente resolveria.
+- Colocar em preset uma capacidade que deveria ser extension.
+- Quebrar IDs públicos sem plano de migração.
 
-Tambem e necessario:
+---
 
-1. Atualizar `extensions/catalog.json` ou `presets/catalog.json`.
-2. Garantir que a versao do manifesto bate com a versao publicada no catalogo.
-3. Publicar a tag no formato esperado pelo workflow.
-4. Verificar se o asset zipado da release corresponde exatamente ao pacote distribuido.
+## Quando a mudança afeta o fluxo AIDD
 
-O guia operacional dessa etapa esta em `docs/publicacao-catalogo.md`.
+Quando a mudança afetar o processo AIDD, a revisão não termina no arquivo editado. Valide coerência em:
 
-## Inventario atual para referencia
+- [./aidd/README.md](./aidd/README.md)
+- [./aidd/modelos-operacionais.md](./aidd/modelos-operacionais.md)
+- [./aidd/colaboracao-e-paralelismo.md](./aidd/colaboracao-e-paralelismo.md)
+- [./aidd/prompt-pack.md](./aidd/prompt-pack.md)
+- Templates e prompts instalados pelos presets
+- SVG do fluxo, quando a narrativa textual depender dele
 
-| Caminho                              | Tipo      | Papel                                                        |
-| ------------------------------------ | --------- | ------------------------------------------------------------ |
-| `extensions/mrv-aidd-producao`       | Extension | Fluxo operacional de US, Azure DevOps, branch e encerramento |
-| `presets/mrv-aidd-producao-backend`  | Preset    | Ownership backend e artefatos pt-BR                          |
-| `presets/mrv-aidd-producao-frontend` | Preset    | Ownership frontend e artefatos pt-BR                         |
+---
 
-## Perguntas de decisao antes de abrir uma mudanca
+## Publicação e distribuição
 
-- Isso aumenta reuso de plataforma ou resolve um caso isolado de consumidor?
-- Isso deve ser compartilhado via extension ou especializado via preset?
-- O manifesto, o README e os arquivos reais do pacote continuarao coerentes depois da mudanca?
-- O id publico e a portabilidade do pacote estao sendo preservados?
+Alterar pacote não basta. Se a mudança for pública, ela também precisa aparecer em versão, catálogo e release. O processo completo está em [./publicacao-catalogo.md](./publicacao-catalogo.md).
 
-Se a resposta a alguma dessas perguntas for fraca, o desenho ainda precisa amadurecer antes da mudanca entrar.
+---
 
-## Veja tambem
+## Veja também
 
-- [README da plataforma](../README.md)
-- [Guia de Instalacao Detalhado](./guia-instalacao.md)
-- [Guia de Publicacao do Catalogo](./publicacao-catalogo.md)
-- [README da extension base](../extensions/mrv-aidd-producao/README.md)
-- [README do preset backend](../presets/mrv-aidd-producao-backend/README.md)
-- [README do preset frontend](../presets/mrv-aidd-producao-frontend/README.md)
+- [../README.md](../README.md)
+- [./guia-instalacao.md](./guia-instalacao.md)
+- [./publicacao-catalogo.md](./publicacao-catalogo.md)
+- [./aidd/README.md](./aidd/README.md)
+- [../extensions/mrv-aidd-producao/README.md](../extensions/mrv-aidd-producao/README.md)
+- [../presets/mrv-aidd-producao-backend/README.md](../presets/mrv-aidd-producao-backend/README.md)
+- [../presets/mrv-aidd-producao-frontend/README.md](../presets/mrv-aidd-producao-frontend/README.md)

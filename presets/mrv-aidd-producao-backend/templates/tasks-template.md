@@ -1,5 +1,4 @@
 ---
-
 description: "Template de lista de tarefas para implementacao da funcionalidade"
 ---
 
@@ -11,6 +10,19 @@ description: "Template de lista de tarefas para implementacao da funcionalidade"
 **Testes**: Tarefas de teste sao OBRIGATORIAS sempre que a funcionalidade alterar comportamento, contratos, validacao, persistencia, fluxos de UI, observabilidade, autenticacao, autorizacao ou integracoes. Omita apenas em atividades nao comportamentais e documente o motivo no plano.
 
 **Organizacao**: As tarefas sao agrupadas por historia de usuario para permitir implementacao e validacao independentes de cada historia.
+
+## Guardrails AIDD
+
+- Este `tasks.md` organiza a feature por US, mas cada execucao de `/speckit.tasks` deve informar a US em foco.
+- `/tasks` so pode ser refinado depois que a US foi assumida e o escopo ficou explicito.
+- Sem escopo explicito, o agente tende a decompor a feature inteira; isso deve ser evitado.
+- Hotfix nao deve reaproveitar este fluxo como se fosse uma feature normal.
+
+## Recorte operacional desta execucao
+
+- **USs em foco nesta execucao**: [Liste as USs realmente assumidas pelo dev ou par]
+- **Branch recomendada por US**: `feature/<feature-branch>/usN`
+- **Regra de atualizacao**: detalhar apenas as secoes das USs em escopo e preservar as demais, exceto quando `US1` carregar foundation compartilhada.
 
 ## Formato: `[ID] [P?] [Historia] Descricao`
 
@@ -204,15 +216,15 @@ Tarefa: "Criar ou atualizar [Entidade2/schema/componente] em [CAMINHO_REAL_DO_AR
 
 1. Concluir o bloco compartilhado e fundacional dentro da Historia de Usuario 1
 2. Concluir o restante da Historia de Usuario 1
-4. **PARAR E VALIDAR**: Testar a Historia de Usuario 1 de forma independente
-5. Fazer deploy ou demonstracao se estiver pronta
+3. **PARAR E VALIDAR**: Testar a Historia de Usuario 1 de forma independente
+4. Fazer deploy ou demonstracao se estiver pronta
 
 ### Entrega incremental
 
 1. Concluir a Historia de Usuario 1, incluindo setup e fundacao compartilhados → Testar de forma independente → Deploy/Demo (MVP!)
-3. Adicionar Historia de Usuario 2 → Testar de forma independente → Deploy/Demo
-4. Adicionar Historia de Usuario 3 → Testar de forma independente → Deploy/Demo
-5. Cada historia agrega valor sem quebrar as anteriores
+2. Adicionar Historia de Usuario 2 → Testar de forma independente → Deploy/Demo
+3. Adicionar Historia de Usuario 3 → Testar de forma independente → Deploy/Demo
+4. Cada historia agrega valor sem quebrar as anteriores
 
 ### Estrategia de equipe em paralelo
 

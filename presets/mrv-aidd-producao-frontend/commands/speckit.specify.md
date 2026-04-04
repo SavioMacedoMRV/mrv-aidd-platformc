@@ -13,6 +13,7 @@ You **MUST** consider the user input before proceeding (if not empty).
 ## Pre-Execution Checks
 
 **Check for extension hooks (before specification)**:
+
 - Check if `.specify/extensions.yml` exists in the project root.
 - If it exists, read it and look for entries under the `hooks.before_specify` key
 - If the YAML cannot be parsed or is invalid, skip hook checking silently and continue normally
@@ -22,6 +23,7 @@ You **MUST** consider the user input before proceeding (if not empty).
   - If the hook defines a non-empty `condition`, skip the hook and leave condition evaluation to the HookExecutor implementation
 - For each executable hook, output the following based on its `optional` flag:
   - **Optional hook** (`optional: true`):
+
     ```
     ## Extension Hooks
 
@@ -32,7 +34,9 @@ You **MUST** consider the user input before proceeding (if not empty).
     Prompt: {prompt}
     To execute: `/{command}`
     ```
+
   - **Mandatory hook** (`optional: false`):
+
     ```
     ## Extension Hooks
 
@@ -42,6 +46,7 @@ You **MUST** consider the user input before proceeding (if not empty).
 
     Wait for the result of the hook command before proceeding to the Outline.
     ```
+
 - If no hooks are registered or `.specify/extensions.yml` does not exist, skip silently
 
 ## Outline
@@ -70,6 +75,9 @@ The text the user typed after `/speckit.specify` is the feature description.
 ## Regras adicionais do preset
 
 - Sempre que informacoes faltarem, estiverem ambiguas ou exigirem confirmacao, use `vscode_askQuestions`.
+- Trate a feature do upstream como entrada principal, nao como verdade final; ela pode conter gaps funcionais relevantes.
+- O papel deste comando e clarificar, aprofundar e fechar esses gaps antes de consolidar a especificacao.
+- O `spec.md` gerado por este fluxo deve ser tratado como a fonte de verdade funcional consolidada da feature.
 - Preserve `## Azure DevOps Traceability` quando houver contexto de Azure DevOps no input.
 - Este preset so pode criar ou atualizar historias de ownership `frontend`.
 - Se a demanda for puramente de backend, interrompa e direcione para o preset `mrv-aidd-producao-backend`.
@@ -82,23 +90,29 @@ The text the user typed after `/speckit.specify` is the feature description.
 - Quando houver dependencia de backend, registre em `## Backend Follow-up` em vez de criar historia owned pelo backend neste spec.
 - Ao concluir, recomende `/speckit.clarify` e depois `/speckit.plan`.
 
-    **Optional Pre-Hook**: {extension}
-    Command: `/{command}`
-    Description: {description}
+  **Optional Pre-Hook**: {extension}
+  Command: `/{command}`
+  Description: {description}
 
-    Prompt: {prompt}
-    To execute: `/{command}`
-    ```
+  Prompt: {prompt}
+  To execute: `/{command}`
+
+  ```
   - **Mandatory hook** (`optional: false`):
-    ```
-    ## Extension Hooks
+  ```
 
-    **Automatic Pre-Hook**: {extension}
-    Executing: `/{command}`
-    EXECUTE_COMMAND: {command}
+  ## Extension Hooks
 
-    Wait for the result of the hook command before proceeding to the Outline.
-    ```
+  **Automatic Pre-Hook**: {extension}
+  Executing: `/{command}`
+  EXECUTE_COMMAND: {command}
+
+  Wait for the result of the hook command before proceeding to the Outline.
+
+  ```
+
+  ```
+
 - If no hooks are registered or `.specify/extensions.yml` does not exist, skip silently
 
 ## Outline

@@ -1,53 +1,62 @@
-<div align="center">
-	<img src="../../media/mrv-aidd-platform.svg" alt="MRV AIDD Producao Backend" width="120" />
+﻿<div align="center">
+<img src="../../media/mrv-aidd-platform.svg" alt="MRV AIDD Producao Backend" width="120" />
 
-    <h1>MRV AIDD Producao Backend</h1>
+    <h1>MRV AIDD Produção Backend</h1>
 
-    <h3>Preset plug and play para repositorios backend da MRV com ownership em pt-BR, handoff controlado e rastreabilidade Azure DevOps.</h3>
+    <h3>Preset para repositórios backend da MRV com ownership em pt-BR, handoff controlado e rastreabilidade Azure DevOps.</h3>
 
     <p>
-    	<img src="https://img.shields.io/badge/type-preset-264D1F?style=for-the-badge" alt="Type preset" />
-    	<img src="https://img.shields.io/badge/foco-backend-F7941D?style=for-the-badge" alt="Foco backend" />
-    	<img src="https://img.shields.io/badge/templates-4-7FB239?style=for-the-badge" alt="4 templates" />
-    	<img src="https://img.shields.io/badge/comandos-7-0C1A0E?style=for-the-badge" alt="7 comandos" />
+    <img src="https://img.shields.io/badge/type-preset-264D1F?style=for-the-badge" alt="Type preset" />
+    <img src="https://img.shields.io/badge/foco-backend-F7941D?style=for-the-badge" alt="Foco backend" />
+    <img src="https://img.shields.io/badge/templates-4-7FB239?style=for-the-badge" alt="4 templates" />
+    <img src="https://img.shields.io/badge/comandos-7-0C1A0E?style=for-the-badge" alt="7 comandos" />
     </p>
 
 </div>
 
-Este preset adapta o fluxo do Spec Kit para o contexto de backend da MRV sem criar novas capacidades. Ele reescreve templates e comandos para refletir ownership backend, manter os artefatos em portugues do Brasil e preservar o handoff para frontend quando necessario.
+---
 
-Use este preset junto com a extension [`mrv-aidd-producao`](../../extensions/mrv-aidd-producao/README.md). O preset customiza a experiencia; a extension executa o fluxo operacional novo.
+## Índice
 
-Navegacao rapida:
+- [O que este preset faz](#o-que-este-preset-faz)
+- [Quando usar](#quando-usar)
+- [Instalação](#instalação)
+- [Escopo de customização](#escopo-de-customização)
+- [Comportamento aplicado](#comportamento-aplicado)
+- [Dependência](#dependência)
+- [Veja também](#veja-também)
 
-- [Voltar para a plataforma](../../README.md)
-- [Ver extension base](../../extensions/mrv-aidd-producao/README.md)
-- [Ver preset frontend](../../presets/mrv-aidd-producao-frontend/README.md)
-- [Guia de instalacao](../../docs/guia-instalacao.md)
-- [Guia de contribuicao](../../docs/guia-contribuicao.md)
-
-## Sumario
-
-- O que este preset faz
-- Instalacao
-- Escopo de customizacao
-- Quando usar
-- Dependencia
-- Veja tambem
+---
 
 ## O que este preset faz
 
-O preset `mrv-aidd-producao-backend` concentra em um unico pacote:
+Este preset adapta a experiência do Spec Kit para o contexto de backend da MRV. Ele não cria capacidades novas. Ele muda templates, comandos e linguagem operacional para que o ownership backend seja o centro do fluxo naquele repositório consumidor.
 
-- artefatos em portugues do Brasil;
-- ownership principal de backend;
-- rastreabilidade Azure DevOps no fluxo de especificacao;
-- handoff controlado para frontend;
-- orientacao de branch por US em conjunto com a extension da plataforma.
+O preset `mrv-aidd-producao-backend` concentra em um único pacote:
 
-## Instalacao
+- Artefatos em português do Brasil.
+- Ownership principal de backend.
+- Rastreabilidade Azure DevOps no fluxo de especificação.
+- Handoff controlado para frontend.
+- Orientação de branch por US em conjunto com a extension da plataforma.
 
-### Via catalogo MRV
+---
+
+## Quando usar
+
+Use este preset quando o repositório consumidor for majoritariamente backend e precisar:
+
+- Conduzir o fluxo principal do spec sob responsabilidade de backend.
+- Manter rastreabilidade com Azure DevOps sem perder o contexto da outra ponta.
+- Gerar artefatos padronizados para o time em pt-BR.
+
+---
+
+## Instalação
+
+Antes de instalar este preset, o repositório consumidor precisa ter a extension `mrv-aidd-producao` e uma base funcional de Spec Kit.
+
+### Via catálogo MRV
 
 ```powershell
 specify preset catalog add https://raw.githubusercontent.com/SavioMacedoMRV/mrv-aidd-platformc/main/presets/catalog.json --name mrv --install-allowed
@@ -61,9 +70,11 @@ specify preset add mrv-aidd-producao-backend --priority 5
 specify preset add --dev .\presets\mrv-aidd-producao-backend --priority 5
 ```
 
-Instale apenas um preset por repositorio consumidor. Neste caso, o preset backend deve ser o unico ativo para evitar conflito de ownership.
+Instale apenas um preset por repositório consumidor.
 
-## Escopo de customizacao
+---
+
+## Escopo de customização
 
 ### Templates sobrescritos
 
@@ -82,29 +93,26 @@ Instale apenas um preset por repositorio consumidor. Neste caso, o preset backen
 - `speckit.checklist`
 - `speckit.mrv-aidd-producao.sincronizar-us-devops`
 
-### Comportamento aplicado
+---
 
-- define ownership backend com tags `[BACK]`;
-- preserva historias owned pelo frontend;
-- gera handoff quando necessario;
-- mantem mensagens e artefatos em portugues do Brasil.
+## Comportamento aplicado
 
-## Quando usar
+- Define ownership backend com tags `[BACK]`.
+- Preserva histórias owned pelo frontend.
+- Gera handoff quando necessário.
+- Mantém mensagens e artefatos em pt-BR.
 
-Use este preset quando o repositorio consumidor for majoritariamente backend e precisar:
+---
 
-- conduzir o fluxo principal do spec sob responsabilidade de backend;
-- manter rastreabilidade com Azure DevOps sem perder o contexto da outra ponta;
-- gerar artefatos padronizados para o time em pt-BR.
+## Dependência
 
-## Dependencia
+Este preset depende da extension `mrv-aidd-producao` para sincronização, configuração de US e encerramento. Instale a extension antes de instalar este preset.
 
-Este preset depende da extension [`mrv-aidd-producao`](../../extensions/mrv-aidd-producao/README.md) para o fluxo operacional de sincronizacao, configuracao de US e encerramento.
+---
 
-## Veja tambem
+## Veja também
 
-- [README da plataforma](../../README.md)
-- [Extension base](../../extensions/mrv-aidd-producao/README.md)
-- [Preset frontend](../../presets/mrv-aidd-producao-frontend/README.md)
-- [Guia de instalacao](../../docs/guia-instalacao.md)
-- [Guia de contribuicao](../../docs/guia-contribuicao.md)
+- [../../README.md](../../README.md)
+- [../../docs/guia-instalacao.md](../../docs/guia-instalacao.md)
+- [../../extensions/mrv-aidd-producao/README.md](../../extensions/mrv-aidd-producao/README.md)
+- [../mrv-aidd-producao-frontend/README.md](../mrv-aidd-producao-frontend/README.md)

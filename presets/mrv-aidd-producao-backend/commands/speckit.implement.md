@@ -13,35 +13,40 @@ You **MUST** consider the user input before proceeding (if not empty).
 ## Pre-Execution Checks
 
 **Check for extension hooks (before implementation)**:
+
 - Check if `.specify/extensions.yml` exists in the project root.
 - If it exists, read it and look for entries under the `hooks.before_implement` key
 - If the YAML cannot be parsed or is invalid, skip hook checking silently and continue normally
 - Filter out hooks where `enabled` is explicitly `false`. Treat hooks without an `enabled` field as enabled by default.
 - For each remaining hook, do **not** attempt to interpret or evaluate hook `condition` expressions:
-	- If the hook has no `condition` field, or it is null/empty, treat the hook as executable
-	- If the hook defines a non-empty `condition`, skip the hook and leave condition evaluation to the HookExecutor implementation
+  - If the hook has no `condition` field, or it is null/empty, treat the hook as executable
+  - If the hook defines a non-empty `condition`, skip the hook and leave condition evaluation to the HookExecutor implementation
 - For each executable hook, output the following based on its `optional` flag:
-	- **Optional hook** (`optional: true`):
-		```
-		## Extension Hooks
+  - **Optional hook** (`optional: true`):
 
-		**Optional Pre-Hook**: {extension}
-		Command: `/{command}`
-		Description: {description}
+    ```
+    ## Extension Hooks
 
-		Prompt: {prompt}
-		To execute: `/{command}`
-		```
-	- **Mandatory hook** (`optional: false`):
-		```
-		## Extension Hooks
+    **Optional Pre-Hook**: {extension}
+    Command: `/{command}`
+    Description: {description}
 
-		**Automatic Pre-Hook**: {extension}
-		Executing: `/{command}`
-		EXECUTE_COMMAND: {command}
-    
-		Wait for the result of the hook command before proceeding to the Outline.
-		```
+    Prompt: {prompt}
+    To execute: `/{command}`
+    ```
+
+  - **Mandatory hook** (`optional: false`):
+
+    ```
+    ## Extension Hooks
+
+    **Automatic Pre-Hook**: {extension}
+    Executing: `/{command}`
+    EXECUTE_COMMAND: {command}
+
+    Wait for the result of the hook command before proceeding to the Outline.
+    ```
+
 - If no hooks are registered or `.specify/extensions.yml` does not exist, skip silently
 
 ## Outline
@@ -49,162 +54,156 @@ You **MUST** consider the user input before proceeding (if not empty).
 1. Run `.specify/scripts/powershell/check-prerequisites.ps1 -Json -RequireTasks -IncludeTasks` from repo root and parse FEATURE_DIR and AVAILABLE_DOCS list. All paths must be absolute. For single quotes in args like "I'm Groot", use escape syntax: e.g 'I'\''m Groot' (or double-quote if possible: "I'm Groot"). If the current git branch is a child branch like `feature/<feature-branch>/usN`, first set `SPECIFY_FEATURE=<feature-branch>` in the same terminal session before invoking the script so the native PowerShell flow resolves the base feature correctly.
 
 2. **Check checklists status** (if FEATURE_DIR/checklists/ exists):
-	 - Scan all checklist files in the checklists/ directory
-	 - For each checklist, count:
-		 - Total items: All lines matching `- [ ]` or `- [X]` or `- [x]`
-		 - Completed items: Lines matching `- [X]` or `- [x]`
-		 - Incomplete items: Lines matching `- [ ]`
-	 - Create a status table:
+   - Scan all checklist files in the checklists/ directory
+   - For each checklist, count:
+     - Total items: All lines matching `- [ ]` or `- [X]` or `- [x]`
+     - Completed items: Lines matching `- [X]` or `- [x]`
+     - Incomplete items: Lines matching `- [ ]`
+   - Create a status table:
 
-		 ```text
-		 | Checklist | Total | Completed | Incomplete | Status |
-		 |-----------|-------|-----------|------------|--------|
-		 | ux.md     | 12    | 12        | 0          | ✓ PASS |
-		 | test.md   | 8     | 5         | 3          | ✗ FAIL |
-		 | security.md | 6   | 6         | 0          | ✓ PASS |
-		 ```
+     ```text
+     | Checklist | Total | Completed | Incomplete | Status |
+     |-----------|-------|-----------|------------|--------|
+     | ux.md     | 12    | 12        | 0          | ✓ PASS |
+     | test.md   | 8     | 5         | 3          | ✗ FAIL |
+     | security.md | 6   | 6         | 0          | ✓ PASS |
+     ```
 
-	 - Calculate overall status:
-		 - **PASS**: All checklists have 0 incomplete items
-		 - **FAIL**: One or more checklists have incomplete items
+   - Calculate overall status:
+     - **PASS**: All checklists have 0 incomplete items
+     - **FAIL**: One or more checklists have incomplete items
 
-	 - **If any checklist is incomplete**:
-		 - Display the table with incomplete item counts
-		 - **STOP** and ask whether to proceed with implementation anyway
-		 - Wait for user response before continuing
-		 - If user says "no" or equivalent, halt execution
-		 - If user says "yes" or equivalent, proceed to step 3
+   - **If any checklist is incomplete**:
+     - Display the table with incomplete item counts
+     - **STOP** and ask whether to proceed with implementation anyway
+     - Wait for user response before continuing
+     - If user says "no" or equivalent, halt execution
+     - If user says "yes" or equivalent, proceed to step 3
 
-	 - **If all checklists are complete**:
-		 - Display the table showing all checklists passed
-		 - Automatically proceed to step 3
+   - **If all checklists are complete**:
+     - Display the table showing all checklists passed
+     - Automatically proceed to step 3
 
 3. Load and analyze the implementation context:
-	 - **REQUIRED**: Read tasks.md for the complete task list and execution plan
-	 - **REQUIRED**: Read plan.md for tech stack, architecture, and file structure
-	 - **IF EXISTS**: Read data-model.md for entities and relationships
-	 - **IF EXISTS**: Read contracts/ for API specifications and test requirements
-	 - **IF EXISTS**: Read research.md for technical decisions and constraints
-	 - **IF EXISTS**: Read quickstart.md for integration scenarios
+   - **REQUIRED**: Read tasks.md for the complete task list and execution plan
+   - **REQUIRED**: Read plan.md for tech stack, architecture, and file structure
+   - **IF EXISTS**: Read data-model.md for entities and relationships
+   - **IF EXISTS**: Read contracts/ for API specifications and test requirements
+   - **IF EXISTS**: Read research.md for technical decisions and constraints
+   - **IF EXISTS**: Read quickstart.md for integration scenarios
 
 4. **Project Setup Verification**:
-	 - **REQUIRED**: Create/verify ignore files based on actual project setup:
+   - **REQUIRED**: Create/verify ignore files based on actual project setup:
 
-	 **Detection & Creation Logic**:
-	 - Check if the following command succeeds to determine if the repository is a git repo (create/verify .gitignore if so):
+   **Detection & Creation Logic**:
+   - Check if the following command succeeds to determine if the repository is a git repo (create/verify .gitignore if so):
 
-		 ```sh
-		 git rev-parse --git-dir 2>/dev/null
-		 ```
+     ```sh
+     git rev-parse --git-dir 2>/dev/null
+     ```
 
-	 - Check if Dockerfile* exists or Docker in plan.md → create/verify .dockerignore
-	 - Check if .eslintrc* exists → create/verify .eslintignore
-	 - Check if eslint.config.* exists → ensure the config's `ignores` entries cover required patterns
-	 - Check if .prettierrc* exists → create/verify .prettierignore
-	 - Check if .npmrc or package.json exists → create/verify .npmignore (if publishing)
-	 - Check if terraform files (*.tf) exist → create/verify .terraformignore
-	 - Check if .helmignore needed (helm charts present) → create/verify .helmignore
+   - Check if Dockerfile\* exists or Docker in plan.md → create/verify .dockerignore
+   - Check if .eslintrc\* exists → create/verify .eslintignore
+   - Check if eslint.config.\* exists → ensure the config's `ignores` entries cover required patterns
+   - Check if .prettierrc\* exists → create/verify .prettierignore
+   - Check if .npmrc or package.json exists → create/verify .npmignore (if publishing)
+   - Check if terraform files (\*.tf) exist → create/verify .terraformignore
+   - Check if .helmignore needed (helm charts present) → create/verify .helmignore
 
-	 **If ignore file already exists**: Verify it contains essential patterns, append missing critical patterns only
-	 **If ignore file missing**: Create with full pattern set for detected technology
+   **If ignore file already exists**: Verify it contains essential patterns, append missing critical patterns only
+   **If ignore file missing**: Create with full pattern set for detected technology
 
-	 **Common Patterns by Technology** (from plan.md tech stack):
-	 - **Node.js/JavaScript/TypeScript**: `node_modules/`, `dist/`, `build/`, `*.log`, `.env*`
-	 - **Python**: `__pycache__/`, `*.pyc`, `.venv/`, `venv/`, `dist/`, `*.egg-info/`
-	 - **Java**: `target/`, `*.class`, `*.jar`, `.gradle/`, `build/`
-	 - **C#/.NET**: `bin/`, `obj/`, `*.user`, `*.suo`, `packages/`
-	 - **Go**: `*.exe`, `*.test`, `vendor/`, `*.out`
-	 - **Ruby**: `.bundle/`, `log/`, `tmp/`, `*.gem`, `vendor/bundle/`
-	 - **PHP**: `vendor/`, `*.log`, `*.cache`, `*.env`
-	 - **Rust**: `target/`, `debug/`, `release/`, `*.rs.bk`, `*.rlib`, `*.prof*`, `.idea/`, `*.log`, `.env*`
-	 - **Kotlin**: `build/`, `out/`, `.gradle/`, `.idea/`, `*.class`, `*.jar`, `*.iml`, `*.log`, `.env*`
-	 - **C++**: `build/`, `bin/`, `obj/`, `out/`, `*.o`, `*.so`, `*.a`, `*.exe`, `*.dll`, `.idea/`, `*.log`, `.env*`
-	 - **C**: `build/`, `bin/`, `obj/`, `out/`, `*.o`, `*.a`, `*.so`, `*.exe`, `*.dll`, `autom4te.cache/`, `config.status`, `config.log`, `.idea/`, `*.log`, `.env*`
-	 - **Swift**: `.build/`, `DerivedData/`, `*.swiftpm/`, `Packages/`
-	 - **R**: `.Rproj.user/`, `.Rhistory`, `.RData`, `.Ruserdata`, `*.Rproj`, `packrat/`, `renv/`
-	 - **Universal**: `.DS_Store`, `Thumbs.db`, `*.tmp`, `*.swp`, `.vscode/`, `.idea/`
+   **Common Patterns by Technology** (from plan.md tech stack):
+   - **Node.js/JavaScript/TypeScript**: `node_modules/`, `dist/`, `build/`, `*.log`, `.env*`
+   - **Python**: `__pycache__/`, `*.pyc`, `.venv/`, `venv/`, `dist/`, `*.egg-info/`
+   - **Java**: `target/`, `*.class`, `*.jar`, `.gradle/`, `build/`
+   - **C#/.NET**: `bin/`, `obj/`, `*.user`, `*.suo`, `packages/`
+   - **Go**: `*.exe`, `*.test`, `vendor/`, `*.out`
+   - **Ruby**: `.bundle/`, `log/`, `tmp/`, `*.gem`, `vendor/bundle/`
+   - **PHP**: `vendor/`, `*.log`, `*.cache`, `*.env`
+   - **Rust**: `target/`, `debug/`, `release/`, `*.rs.bk`, `*.rlib`, `*.prof*`, `.idea/`, `*.log`, `.env*`
+   - **Kotlin**: `build/`, `out/`, `.gradle/`, `.idea/`, `*.class`, `*.jar`, `*.iml`, `*.log`, `.env*`
+   - **C++**: `build/`, `bin/`, `obj/`, `out/`, `*.o`, `*.so`, `*.a`, `*.exe`, `*.dll`, `.idea/`, `*.log`, `.env*`
+   - **C**: `build/`, `bin/`, `obj/`, `out/`, `*.o`, `*.a`, `*.so`, `*.exe`, `*.dll`, `autom4te.cache/`, `config.status`, `config.log`, `.idea/`, `*.log`, `.env*`
+   - **Swift**: `.build/`, `DerivedData/`, `*.swiftpm/`, `Packages/`
+   - **R**: `.Rproj.user/`, `.Rhistory`, `.RData`, `.Ruserdata`, `*.Rproj`, `packrat/`, `renv/`
+   - **Universal**: `.DS_Store`, `Thumbs.db`, `*.tmp`, `*.swp`, `.vscode/`, `.idea/`
 
-	 **Tool-Specific Patterns**:
-	 - **Docker**: `node_modules/`, `.git/`, `Dockerfile*`, `.dockerignore`, `*.log*`, `.env*`, `coverage/`
-	 - **ESLint**: `node_modules/`, `dist/`, `build/`, `coverage/`, `*.min.js`
-	 - **Prettier**: `node_modules/`, `dist/`, `build/`, `coverage/`, `package-lock.json`, `yarn.lock`, `pnpm-lock.yaml`
-	 - **Terraform**: `.terraform/`, `*.tfstate*`, `*.tfvars`, `.terraform.lock.hcl`
-	 - **Kubernetes/k8s**: `*.secret.yaml`, `secrets/`, `.kube/`, `kubeconfig*`, `*.key`, `*.crt`
+   **Tool-Specific Patterns**:
+   - **Docker**: `node_modules/`, `.git/`, `Dockerfile*`, `.dockerignore`, `*.log*`, `.env*`, `coverage/`
+   - **ESLint**: `node_modules/`, `dist/`, `build/`, `coverage/`, `*.min.js`
+   - **Prettier**: `node_modules/`, `dist/`, `build/`, `coverage/`, `package-lock.json`, `yarn.lock`, `pnpm-lock.yaml`
+   - **Terraform**: `.terraform/`, `*.tfstate*`, `*.tfvars`, `.terraform.lock.hcl`
+   - **Kubernetes/k8s**: `*.secret.yaml`, `secrets/`, `.kube/`, `kubeconfig*`, `*.key`, `*.crt`
 
 5. Parse tasks.md structure and extract:
-	 - **Task phases**: Setup, Tests, Core, Integration, Polish
-	 - **Task dependencies**: Sequential vs parallel execution rules
-	 - **Task details**: ID, description, file paths, parallel markers [P]
-	 - **Execution flow**: Order and dependency requirements
+   - **Task phases**: Setup, Tests, Core, Integration, Polish
+   - **Task dependencies**: Sequential vs parallel execution rules
+   - **Task details**: ID, description, file paths, parallel markers [P]
+   - **Execution flow**: Order and dependency requirements
 
 6. Execute implementation following the task plan:
-	 - **Phase-by-phase execution**: Complete each phase before moving to the next
-	 - **Respect dependencies**: Run sequential tasks in order, parallel tasks [P] can run together  
-	 - **Follow TDD approach**: Execute test tasks before their corresponding implementation tasks
-	 - **File-based coordination**: Tasks affecting the same files must run sequentially
-	 - **Validation checkpoints**: Verify each phase completion before proceeding
+   - **Phase-by-phase execution**: Complete each phase before moving to the next
+   - **Respect dependencies**: Run sequential tasks in order, parallel tasks [P] can run together
+   - **Follow TDD approach**: Execute test tasks before their corresponding implementation tasks
+   - **File-based coordination**: Tasks affecting the same files must run sequentially
+   - **Validation checkpoints**: Verify each phase completion before proceeding
 
 7. Implementation execution rules:
-	 - **Setup first**: Initialize project structure, dependencies, configuration
-	 - **Tests before code**: If you need to write tests for contracts, entities, and integration scenarios
-	 - **Core development**: Implement models, services, CLI commands, endpoints
-	 - **Integration work**: Database connections, middleware, logging, external services
-	 - **Polish and validation**: Unit tests, performance optimization, documentation
+   - **Setup first**: Initialize project structure, dependencies, configuration
+   - **Tests before code**: If you need to write tests for contracts, entities, and integration scenarios
+   - **Core development**: Implement models, services, CLI commands, endpoints
+   - **Integration work**: Database connections, middleware, logging, external services
+   - **Polish and validation**: Unit tests, performance optimization, documentation
 
 8. Progress tracking and error handling:
-	 - Report progress after each completed task
-	 - Halt execution if any non-parallel task fails
-	 - For parallel tasks [P], continue with successful tasks, report failed ones
-	 - Provide clear error messages with context for debugging
-	 - Suggest next steps if implementation cannot proceed
-	 - **IMPORTANT** For completed tasks, make sure to mark the task off as [X] in the tasks file.
+   - Report progress after each completed task
+   - Halt execution if any non-parallel task fails
+   - For parallel tasks [P], continue with successful tasks, report failed ones
+   - Provide clear error messages with context for debugging
+   - Suggest next steps if implementation cannot proceed
+   - **IMPORTANT** For completed tasks, make sure to mark the task off as [X] in the tasks file.
 
 9. Completion validation:
-	 - Verify all required tasks are completed
-	 - Check that implemented features match the original specification
-	 - Validate that tests pass and coverage meets requirements
-	 - Confirm the implementation follows the technical plan
-	 - Report final status with summary of completed work
+   - Verify all required tasks are completed
+   - Check that implemented features match the original specification
+   - Validate that tests pass and coverage meets requirements
+   - Confirm the implementation follows the technical plan
+   - Report final status with summary of completed work
 
 Note: This command assumes a complete task breakdown exists in tasks.md. If tasks are incomplete or missing, suggest running `/speckit.tasks` first to regenerate the task list.
 
-10. **Check for extension hooks**: After completion validation, check if `.specify/extensions.yml` exists in the project root.
-		- If it exists, read it and look for entries under the `hooks.after_implement` key
-		- If the YAML cannot be parsed or is invalid, skip hook checking silently and continue normally
-		- Filter out hooks where `enabled` is explicitly `false`. Treat hooks without an `enabled` field as enabled by default.
-		- For each remaining hook, do **not** attempt to interpret or evaluate hook `condition` expressions:
-			- If the hook has no `condition` field, or it is null/empty, treat the hook as executable
-			- If the hook defines a non-empty `condition`, skip the hook and leave condition evaluation to the HookExecutor implementation
-		- For each executable hook, output the following based on its `optional` flag:
-			- **Optional hook** (`optional: true`):
-				```
-				## Extension Hooks
+10. **Check for extension hooks**: After completion validation, check if `.specify/extensions.yml` exists in the project root. - If it exists, read it and look for entries under the `hooks.after_implement` key - If the YAML cannot be parsed or is invalid, skip hook checking silently and continue normally - Filter out hooks where `enabled` is explicitly `false`. Treat hooks without an `enabled` field as enabled by default. - For each remaining hook, do **not** attempt to interpret or evaluate hook `condition` expressions: - If the hook has no `condition` field, or it is null/empty, treat the hook as executable - If the hook defines a non-empty `condition`, skip the hook and leave condition evaluation to the HookExecutor implementation - For each executable hook, output the following based on its `optional` flag: - **Optional hook** (`optional: true`):
+    ``` ## Extension Hooks
 
-				**Optional Hook**: {extension}
-				Command: `/{command}`
-				Description: {description}
+        		**Optional Hook**: {extension}
+        		Command: `/{command}`
+        		Description: {description}
 
-				Prompt: {prompt}
-				To execute: `/{command}`
-				```
-			- **Mandatory hook** (`optional: false`):
-				```
-				## Extension Hooks
+        		Prompt: {prompt}
+        		To execute: `/{command}`
+        		```
+        	- **Mandatory hook** (`optional: false`):
+        		```
+        		## Extension Hooks
 
-				**Automatic Hook**: {extension}
-				Executing: `/{command}`
-				EXECUTE_COMMAND: {command}
-				```
-		- If no hooks are registered or `.specify/extensions.yml` does not exist, skip silently
+        		**Automatic Hook**: {extension}
+        		Executing: `/{command}`
+        		EXECUTE_COMMAND: {command}
+        		```
+        - If no hooks are registered or `.specify/extensions.yml` does not exist, skip silently
 
 ## Regras adicionais do preset
 
 - Sempre que este comando precisar pedir informacoes, confirmacoes ou desambiguacoes ao usuario, voce **DEVE** usar a ferramenta `vscode_askQuestions`.
+- Trate `spec.md` como a fonte de verdade funcional e `plan.md` como a fonte de verdade tecnica durante toda a execucao.
+- `/speckit.implement` so pode operar por US assumida e com escopo explicito; nao implemente a feature inteira por inferencia.
 - Isso inclui a confirmacao para seguir quando houver checklist incompleto e a coleta de escopo por US.
 - O texto informado em `$ARGUMENTS` e a fonte primaria do escopo da US nesta execucao. Se o usuario ja informar `US1`, `US2` ou equivalente no argumento, nao repita a pergunta de escopo.
 - Antes de iniciar a implementacao, voce **DEVE** identificar explicitamente qual US ou quais USs o desenvolvedor vai trabalhar nesta execucao.
 - Se o usuario nao informar com clareza qual US ou quais USs entram no escopo atual, voce **DEVE** perguntar isso usando `vscode_askQuestions` antes de continuar.
 - Aceite uma ou mais USs por identificador, titulo ou outra referencia equivalente que permita reconhecer o escopo.
+- Se a execucao caracterizar hotfix, trate como fluxo alternativo e nao como implementacao normal por feature ou por varias USs.
 - Limite a implementacao, a leitura das tarefas relevantes e a marcacao de progresso apenas ao escopo das USs informadas.
 - Nao implemente nem marque tarefas de USs fora do escopo informado pelo usuario.
 - Considere a branch principal nativa da feature criada pelo Speckit, como `001-feature-name`, como branch integradora da funcionalidade.

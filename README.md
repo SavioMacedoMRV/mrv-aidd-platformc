@@ -1,294 +1,391 @@
-<div align="center">
+﻿<div align="center">
   <img src="./media/mrv-aidd-platform.svg" alt="MRV AIDD Platform" width="168" />
 
   <h1>MRV AIDD Platform</h1>
 
-  <h3>Catalogo compartilhado da MRV para estender o Spec Kit com fluxo operacional, presets plug and play e distribuicao versionada.</h3>
+  <h3>Documentação oficial, catálogo de extensions e presets, e base operacional da jornada MRV AIDD.</h3>
 
   <p>
     <a href="https://github.com/SavioMacedoMRV/mrv-aidd-platformc/releases/latest"><img src="https://img.shields.io/github/v/release/SavioMacedoMRV/mrv-aidd-platformc?display_name=tag&style=for-the-badge&label=release" alt="Latest release" /></a>
     <a href="./LICENSE"><img src="https://img.shields.io/badge/license-MIT-7FB239?style=for-the-badge" alt="License MIT" /></a>
     <a href="https://github.com/github/spec-kit/releases"><img src="https://img.shields.io/badge/spec%20kit-%3E%3D0.4.4-F7941D?style=for-the-badge" alt="Spec Kit version" /></a>
-    <img src="https://img.shields.io/badge/catalogo-1%20extension%20%2B%202%20presets-264D1F?style=for-the-badge" alt="Catalogo MRV" />
+    <img src="https://img.shields.io/badge/cat%C3%A1logo-1%20extension%20%2B%202%20presets-264D1F?style=for-the-badge" alt="Catálogo MRV" />
   </p>
 </div>
 
-O MRV AIDD Platform pega a base do Spec Kit e entrega um pacote mais pronto para o contexto operacional da MRV: sincronizacao com Azure DevOps via MCP, fluxo de branch por historia, encerramento de US com PR e presets em portugues do Brasil para backend e frontend.
+---
 
-Assim como o proprio Spec Kit, a ideia aqui nao e espalhar customizacao ad hoc por repositorio consumidor. A proposta e manter os componentes compartilhados em um catalogo versionado, com instalacao simples, comportamento previsivel e evolucao centralizada.
+## Índice
 
-Navegacao rapida:
+- [🤔 O que é AIDD?](#-o-que-é-aidd)
+- [🧭 Referências do AIDD](#-referências-do-aidd)
+- [🔄 Fluxo de Trabalho MRV AIDD](#-fluxo-de-trabalho-mrv-aidd)
+- [👥 Personas e Responsabilidades](#-personas-e-responsabilidades)
+- [🚦 Gates e Artefatos](#-gates-e-artefatos)
+- [📚 Core Philosophy](#-core-philosophy)
+- [🎯 Objetivos](#-objetivos)
+- [⚡ Get Started](#-get-started)
+- [🧩 Spec Kit e os Pacotes MRV](#-spec-kit-e-os-pacotes-mrv)
+- [📦 Catálogo de Extensions](#-catálogo-de-extensions)
+- [🎨 Catálogo de Presets](#-catálogo-de-presets)
+- [⌨️ Comandos Disponíveis](#️-comandos-disponíveis)
+- [🗺️ Mapa da Documentação](#️-mapa-da-documentação)
+- [🤝 Como Contribuir](#-como-contribuir)
+- [📄 Licença](#-licença)
 
-- [Extension MRV AIDD Producao](./extensions/mrv-aidd-producao/README.md)
-- [Preset MRV AIDD Producao Backend](./presets/mrv-aidd-producao-backend/README.md)
-- [Preset MRV AIDD Producao Frontend](./presets/mrv-aidd-producao-frontend/README.md)
-- [Guia de Instalacao](./docs/guia-instalacao.md)
-- [Guia de Contribuicao](./docs/guia-contribuicao.md)
-- [Guia de Publicacao do Catalogo](./docs/publicacao-catalogo.md)
+---
 
-## Sumario
+## 🤔 O que é AIDD?
 
-- O que e esta plataforma?
-- Comece rapido
-- Qual preset instalar
-- O que acontece ao instalar
-- O que existe no catalogo
-- Como usar cada item do catalogo
-- Como extension e preset se encaixam
-- Quando usar cada pacote
-- Cuidados operacionais
-- Pre-requisitos
-- Aprenda mais
-- Licenca
+**AIDD** é a estratégia de **AI Driven Development** da MRV — usar inteligência artificial para reduzir gaps, sanar problemas e trazer efetividade ao fluxo de desenvolvimento, mantendo **humans in the loop** o tempo inteiro.
 
-## O que e esta plataforma?
+A hierarquia conceitual da plataforma é esta:
 
-Esta raiz e a base compartilhada da MRV para distribuir componentes reutilizaveis sobre o Spec Kit.
+| Camada                | O que é                                                                                                      |
+| --------------------- | ------------------------------------------------------------------------------------------------------------ |
+| **AIDD**              | Estratégia maior da MRV de inserir IA em toda a jornada de desenvolvimento                                   |
+| **BDD + SDD**         | Jornada operacional que transforma a estratégia em entrega: discovery, clarificação, planejamento e execução |
+| **Spec Kit**          | Um dos toolkits usados na camada SDD, com CLI, comandos core e mecanismo de extensions e presets             |
+| **MRV AIDD Platform** | Camada da MRV que operacionaliza tudo isso: documentação oficial, catálogo versionado e pacotes instaláveis  |
 
-- Centraliza extensoes e presets que precisam ser mantidos de forma unificada.
-- Publica assets zipados consumiveis por catalogo, sem depender de `--dev` para uso normal.
-- Preserva ids publicos e portabilidade dos pacotes distribuidos para repositorios consumidores.
-- Reduz duplicacao de instrucoes, templates e fluxos operacionais entre times.
+O ponto central desta plataforma não é substituir pessoas por agentes. O modelo assume que **pessoas definem objetivo, restrições, qualidade, ownership e gates** — agentes operam o _how loop_ com guardrails.
 
-Hoje o repositorio entrega uma extension operacional e dois presets plug and play:
+Para a definição operacional completa do fluxo, veja [docs/aidd/README.md](./docs/aidd/README.md).
 
-- [`mrv-aidd-producao`](./extensions/mrv-aidd-producao/README.md): fluxo operacional MRV para Azure DevOps, branch e finalizacao de US.
-- [`mrv-aidd-producao-backend`](./presets/mrv-aidd-producao-backend/README.md): preset com ownership backend e artefatos em pt-BR.
-- [`mrv-aidd-producao-frontend`](./presets/mrv-aidd-producao-frontend/README.md): preset com ownership frontend e artefatos em pt-BR.
+---
 
-## Comece rapido
+## 🧭 Referências do AIDD
 
-### 1. Garanta um repositorio consumidor com Spec Kit
+### MRV AIDD Platform
 
-Os componentes deste catalogo foram feitos para um projeto que ja usa o Spec Kit.
+Este repositório é a camada operacional compartilhada mantida pela MRV. Ele existe para centralizar o que é compartilhado entre times: o modelo operacional do fluxo, a documentação canônica e os pacotes instaláveis que estendem ou customizam o Spec Kit. Não é um repositório consumidor nem uma aplicação de negócio.
+
+### BDD — Behavior-Driven Development
+
+O BDD é usado para amadurecer comportamentos, bordas de escopo e validação de negócio antes da execução. Ele garante que as histórias de usuário sejam testáveis de forma independente e que os critérios de aceite estejam explícitos antes de qualquer planejamento técnico.
+
+### SDD — Spec-Driven Development
+
+O SDD organiza os artefatos que sustentam execução e rastreabilidade. Ele posiciona o `spec.md` como fonte de verdade funcional e o `plan.md` como fonte de verdade técnica, garantindo que a implementação seja sempre derivada de especificação validada — nunca de código ad hoc.
+
+### Spec Kit
+
+O Spec Kit é o toolkit open source do GitHub que fornece a CLI `specify`, comandos core de SDD e o mecanismo de extensions e presets. Esta plataforma consome o Spec Kit como base e adiciona, sobre ele, os pacotes MRV.
+
+- Repositório: [github.com/github/spec-kit](https://github.com/github/spec-kit)
+- Documentação: [github.github.io/spec-kit](https://github.github.io/spec-kit/)
+
+---
+
+## 🔄 Fluxo de Trabalho MRV AIDD
+
+![Diagrama do fluxo MRV AIDD](./docs/aidd/diagrama-aidd.png)
+
+O fluxo MRV AIDD não parte do código. Ele parte de clarificação, definição de artefatos e recorte de escopo.
+
+| #   | Etapa                                                                                          | Quem         |
+| --- | ---------------------------------------------------------------------------------------------- | ------------ |
+| 1   | **Imersão no problema** — PO, UX, arquitetura e TL alinham o problema e o objetivo             | PO + TL      |
+| 2   | **Mapeamento de features** — impacto, riscos, jornada e hipóteses ficam visíveis               | PO + UX      |
+| 3   | **Protótipos UX** — fluxos, validações e fronteiras de escopo são amadurecidos                 | UX           |
+| 4   | **Protótipo validado** — upstream fecha a referência funcional de entrada                      | Upstream     |
+| 5   | **Feature framing** — objetivo, métricas, NFRs e dependências são consolidados                 | PO           |
+| 6   | **Recebimento do downstream** — a feature chega como entrada principal do trabalho             | PO → Dev     |
+| 7   | `/speckit.specify` + `/speckit.clarify` — downstream fecha gaps e gera `spec.md` testável      | Dev + Agente |
+| 8   | **Publicação no board** — feature e USs derivadas do spec são sincronizadas                    | Dev + Agente |
+| 9   | **Ready para técnico** — spec está validado, publicado e rastreável                            | TL           |
+| 10  | `/speckit.plan` — TL fecha o recorte técnico e os contratos da feature                         | TL + Agente  |
+| 11  | **Refinamento técnico** — devs e TL alinham riscos, dependências e estratégia                  | TL + Dev     |
+| 12  | **Planning e readiness** — USs ficam prontas para assunção operacional                         | TL + Dev     |
+| 13  | **US assumida** — dev ou par assume ownership explícito de uma US                              | Dev          |
+| 14  | `/speckit.mrv-aidd-producao.configurar-us USn` — branch da US é preparada                      | Dev + Agente |
+| 15  | `/speckit.tasks USn` — US é detalhada em tarefas acionáveis                                    | Agente       |
+| 16  | `/speckit.implement USn` — agente implementa somente a US assumida                             | Agente       |
+| 17  | `/speckit.mrv-aidd-producao.terminar-us USn` — entrega é validada, commitada e enviada para PR | Agente       |
+| 18  | **Validação e merge** — branch da US retorna para a branch integradora da feature              | Dev + TL     |
+| 19  | **Flywheel** — feedback do delivery volta para melhoria da plataforma e do backlog             | Time         |
+
+Para detalhes de gates, critérios de passagem, paralelismo e hotfix, veja [docs/aidd/README.md](./docs/aidd/README.md).
+
+---
+
+## 👥 Personas e Responsabilidades
+
+| Persona    | Entrada principal                    | Responsabilidade                                                                                    | Saída esperada                               |
+| ---------- | ------------------------------------ | --------------------------------------------------------------------------------------------------- | -------------------------------------------- |
+| **PO**     | Feature de upstream                  | Confirmar objetivo de negócio, gaps funcionais, bordas de escopo, prioridades e readiness funcional | Spec claro, validado e publicável            |
+| **TL**     | Spec suficientemente clarificado     | Fechar o recorte técnico, contratos, fundação compartilhada, riscos e readiness de execução         | `plan.md`, estratégia e commitment           |
+| **Dev**    | US assumida com ownership claro      | Executar o recorte certo, preservar rastreabilidade e validar a entrega                             | Branch da US, PR da US, checks verdes        |
+| **Agente** | Spec, plan, tasks e escopo explícito | Operar o _how loop_ sem redefinir o problema nem expandir escopo indevidamente                      | Artefatos e alterações aderentes ao contexto |
+
+---
+
+## 🚦 Gates e Artefatos
+
+### Gates de passagem
+
+| Gate                              | O que garante                                                         |
+| --------------------------------- | --------------------------------------------------------------------- |
+| **Protótipo da feature validado** | Fecha a entrada de descoberta                                         |
+| **Feature framing fechado**       | Consolida objetivo, métricas, NFRs e dependências antes do downstream |
+| **Ready para técnico**            | Garante que o spec está validado, publicado e rastreável no board     |
+| **Escopo explícito da US**        | Garante que o _how loop_ não opera com escopo solto                   |
+
+### Artefatos oficiais
+
+| Artefato                       | Papel no fluxo                       | Fonte de verdade               |
+| ------------------------------ | ------------------------------------ | ------------------------------ |
+| Feature de upstream            | Entrada de negócio                   | Upstream                       |
+| `spec.md`                      | Verdade funcional consolidada        | Downstream (após clarificação) |
+| Board                          | Espelho operacional do spec validado | Derivado do spec               |
+| `plan.md`                      | Verdade técnica consolidada          | Planejamento técnico           |
+| `tasks.md`                     | Detalhamento operacional da US       | Derivado do plan e do spec     |
+| Branch `feature/<feature>/usN` | Isolamento operacional da US         | Execução                       |
+| PR da US                       | Integração na branch da feature      | Execução                       |
+
+---
+
+## 📚 Core Philosophy
+
+O AIDD desta plataforma se apoia em cinco princípios.
+
+### Humans in the loop
+
+Pessoas continuam definindo objetivo, restrições, ownership, qualidade e gates. Agentes operam o _how loop_ com guardrails. A plataforma não existe para remover pessoas do processo — existe para amplificar o que elas entregam.
+
+### Spec before code
+
+O fluxo não parte de implementação solta. Ele fecha o entendimento funcional antes de aprofundar o desenho técnico e antes de decompor o trabalho. A feature do upstream é entrada, nunca verdade final — ela passa por clarificação e validação antes de gerar qualquer artefato de execução.
+
+### Source of truth explícita
+
+- `spec.md` é a fonte de verdade funcional — somente depois de clarificação e validação
+- `plan.md` é a fonte de verdade técnica
+- O board espelha o `spec.md` validado — nunca o upstream bruto
+
+### Execução por recorte
+
+`/tasks` e `/implement` operam por US assumida e com escopo explícito. Sem isso, o agente tende a decompor ou implementar a feature inteira, o que é um risco operacional real.
+
+### Melhoria contínua
+
+O fluxo não termina em merge. Ele volta para o flywheel de melhoria: guardrails, harness, aprendizado operacional e backlog evoluem a cada ciclo.
+
+---
+
+## 🎯 Objetivos
+
+Esta plataforma existe para perseguir objetivos claros:
+
+- Reduzir ambiguidade entre feature recebida, spec validado, board e implementação
+- Aumentar previsibilidade do fluxo com artefatos e gates bem definidos
+- Manter rastreabilidade entre negócio, execução e entrega
+- Dar um caminho instalável para uso de AIDD em repositórios reais de produção
+- Separar com clareza capacidade nova de fluxo (`extension`) de customização de experiência (`preset`)
+- Permitir evolução da plataforma sem acoplamento desnecessário a um único repositório consumidor
+
+---
+
+## ⚡ Get Started
+
+Se você quer instalar e operar o fluxo o mais rápido possível, este é o caminho.
+
+### 1. Inicialize o Spec Kit no repositório consumidor
 
 ```powershell
+specify init . --ai copilot --script ps
 specify check
 ```
 
-Se o repositorio consumidor ainda nao estiver inicializado, prepare primeiro o projeto com o fluxo normal do Spec Kit.
-
-### 2. Adicione os catalogos MRV
+### 2. Adicione os catálogos MRV
 
 ```powershell
 specify extension catalog add https://raw.githubusercontent.com/SavioMacedoMRV/mrv-aidd-platformc/main/extensions/catalog.json --name mrv --install-allowed
 specify preset catalog add https://raw.githubusercontent.com/SavioMacedoMRV/mrv-aidd-platformc/main/presets/catalog.json --name mrv --install-allowed
 ```
 
-Depois disso, voce pode procurar e instalar os pacotes por nome.
-
-```powershell
-specify extension search mrv
-specify preset search mrv
-```
-
 ### 3. Instale a extension base e um preset
 
-Backend:
+**Backend:**
 
 ```powershell
 specify extension add mrv-aidd-producao
 specify preset add mrv-aidd-producao-backend --priority 5
 ```
 
-Frontend:
+**Frontend:**
 
 ```powershell
 specify extension add mrv-aidd-producao
 specify preset add mrv-aidd-producao-frontend --priority 5
 ```
 
-Use apenas um preset por repositorio consumidor. Os dois presets dependem da extension [`mrv-aidd-producao`](./extensions/mrv-aidd-producao/README.md).
+Instale apenas um preset por repositório consumidor.
 
-### 4. Execute o fluxo recomendado
+### 4. Execute o fluxo operacional
 
-Depois da instalacao, o fluxo sugerido fica assim:
+```text
+/speckit.specify
+/speckit.clarify
+/speckit.mrv-aidd-producao.sincronizar-us-devops
+/speckit.plan
+/speckit.mrv-aidd-producao.configurar-us USn
+/speckit.tasks USn
+/speckit.implement USn
+/speckit.mrv-aidd-producao.terminar-us USn
+```
 
-1. Execute `/speckit.specify` com o contexto da funcionalidade.
-2. Execute `/speckit.clarify` para reduzir ambiguidade antes do plano.
-3. Execute `/speckit.mrv-aidd-producao.sincronizar-us-devops` quando houver rastreabilidade com Azure DevOps.
-4. Execute `/speckit.plan` quando o escopo estiver estabilizado.
-5. Execute `/speckit.tasks` e `/speckit.implement` no fluxo normal do Spec Kit.
-6. Use `/speckit.mrv-aidd-producao.configurar-us` e `/speckit.mrv-aidd-producao.terminar-us` para operar a US no fluxo MRV.
+O racional, os gates e os artefatos estão detalhados em [docs/aidd/README.md](./docs/aidd/README.md). O passo a passo de instalação está em [docs/guia-instalacao.md](./docs/guia-instalacao.md).
 
-## Qual preset instalar
+---
 
-Instale apenas um preset por repositorio consumidor.
+## 🧩 Spec Kit e os Pacotes MRV
 
-- Use [`mrv-aidd-producao-backend`](./presets/mrv-aidd-producao-backend/README.md) quando o repositorio for o owner principal das historias de backend.
-- Use [`mrv-aidd-producao-frontend`](./presets/mrv-aidd-producao-frontend/README.md) quando o repositorio for o owner principal das historias de frontend.
-- Se backend e frontend estiverem em repositorios diferentes, cada repositorio deve instalar apenas o preset correspondente ao proprio ownership.
+O Spec Kit pode ser estendido e customizado por meio de dois mecanismos complementares: **extensions** e **presets**. Os pacotes desta plataforma usam ambos.
 
-## O que acontece ao instalar
+### Extensions — Adicionar Capacidades Novas
 
-Ao adicionar a extension [`mrv-aidd-producao`](./extensions/mrv-aidd-producao/README.md):
-
-- os comandos `speckit.mrv-aidd-producao.sincronizar-us-devops`, `speckit.mrv-aidd-producao.configurar-us` e `speckit.mrv-aidd-producao.terminar-us` passam a ficar disponiveis;
-- o arquivo de configuracao `mrv-aidd-producao-config.yml` passa a ser provisionado a partir do template do pacote;
-- hooks opcionais podem sugerir `configurar-us` antes de `tasks` e `implement`, e `terminar-us` depois de `implement`.
-
-Ao adicionar um preset:
-
-- os templates `spec-template`, `plan-template`, `tasks-template` e `checklist-template` passam a ser substituidos;
-- comandos nativos do fluxo `/speckit.*` passam a executar as versoes customizadas do preset;
-- ownership, tags, idioma e handoff passam a seguir o contexto do preset instalado.
-
-## O que existe no catalogo
-
-### Extensions
-
-| Pacote              | Papel                                                              | Categoria             | Efeito                                                    |
-| ------------------- | ------------------------------------------------------------------ | --------------------- | --------------------------------------------------------- |
-| `mrv-aidd-producao` | Fluxo operacional MRV para US, Azure DevOps, branch e encerramento | integration / process | Registra 3 comandos, 3 hooks e um arquivo de configuracao |
-
-### Presets
-
-| Pacote                       | Foco                        | O que customiza          | Dependencia         |
-| ---------------------------- | --------------------------- | ------------------------ | ------------------- |
-| `mrv-aidd-producao-backend`  | Ownership backend em pt-BR  | 4 templates e 7 comandos | `mrv-aidd-producao` |
-| `mrv-aidd-producao-frontend` | Ownership frontend em pt-BR | 4 templates e 7 comandos | `mrv-aidd-producao` |
-
-### URLs publicas do catalogo
-
-- Extension catalog: `https://raw.githubusercontent.com/SavioMacedoMRV/mrv-aidd-platformc/main/extensions/catalog.json`
-- Preset catalog: `https://raw.githubusercontent.com/SavioMacedoMRV/mrv-aidd-platformc/main/presets/catalog.json`
-
-Os downloads publicados hoje saem de uma release unica por versao da plataforma, com tres assets zipados separados.
-
-## Como usar cada item do catalogo
-
-### `mrv-aidd-producao`
-
-Use esta extension quando voce precisa adicionar capacidade nova ao Spec Kit, e nao apenas mudar o formato dos artefatos.
-
-Ela entrega:
-
-- `/speckit.mrv-aidd-producao.sincronizar-us-devops`
-- `/speckit.mrv-aidd-producao.configurar-us`
-- `/speckit.mrv-aidd-producao.terminar-us`
-
-Tambem registra hooks opcionais para sugerir `configurar-us` antes de `tasks` e `implement`, e `terminar-us` depois de `implement`.
-
-Instalacao por catalogo:
+Use uma extension quando precisar de funcionalidade que vai além do core do Spec Kit: novos comandos, integração com ferramentas externas, hooks ou fluxos adicionais. Extensions _expandem_ o que o Spec Kit pode fazer.
 
 ```powershell
+specify extension add <nome-da-extension>
+```
+
+### Presets — Customizar Comportamento Existente
+
+Use um preset quando quiser mudar _como_ o Spec Kit opera sem adicionar capacidades novas. Presets sobrescrevem templates, comandos e linguagem — por exemplo, aplicando terminologia, ownership ou padrões organizacionais específicos. Presets _customizam_ os artefatos que o Spec Kit e suas extensions produzem.
+
+```powershell
+specify preset add <nome-do-preset> --priority 5
+```
+
+### Quando usar qual
+
+| Necessidade                                                   | Use       |
+| ------------------------------------------------------------- | --------- |
+| Adicionar comando ou workflow novo                            | Extension |
+| Customizar formato de spec, plan ou tasks                     | Preset    |
+| Integrar com ferramenta ou serviço externo                    | Extension |
+| Aplicar ownership, linguagem ou padrão organizacional         | Preset    |
+| Adicionar hook de ciclo de vida                               | Extension |
+| Adaptar terminologia ou templates para um contexto de negócio | Preset    |
+
+Para mais detalhes sobre como criar e publicar pacotes, veja [docs/guia-contribuicao.md](./docs/guia-contribuicao.md).
+
+---
+
+## 📦 Catálogo de Extensions
+
+O catálogo público de extensions desta plataforma está em [extensions/catalog.json](./extensions/catalog.json).
+
+**URL pública:**
+
+```
+https://raw.githubusercontent.com/SavioMacedoMRV/mrv-aidd-platformc/main/extensions/catalog.json
+```
+
+| ID                  | Nome              | O que adiciona                                                                 | Comandos | Hooks |
+| ------------------- | ----------------- | ------------------------------------------------------------------------------ | -------- | ----- |
+| `mrv-aidd-producao` | MRV AIDD Produção | Sincronização com Azure DevOps, preparo de branch por US e encerramento com PR | 3        | 3     |
+
+Para instalar:
+
+```powershell
+specify extension catalog add https://raw.githubusercontent.com/SavioMacedoMRV/mrv-aidd-platformc/main/extensions/catalog.json --name mrv --install-allowed
 specify extension add mrv-aidd-producao
 ```
 
-Instalacao local para desenvolvimento:
+Veja mais em [extensions/mrv-aidd-producao/README.md](./extensions/mrv-aidd-producao/README.md).
 
-```powershell
-specify extension add --dev .\extensions\mrv-aidd-producao
+---
+
+## 🎨 Catálogo de Presets
+
+O catálogo público de presets desta plataforma está em [presets/catalog.json](./presets/catalog.json).
+
+**URL pública:**
+
+```
+https://raw.githubusercontent.com/SavioMacedoMRV/mrv-aidd-platformc/main/presets/catalog.json
 ```
 
-### `mrv-aidd-producao-backend`
+| ID                           | Ownership principal | O que customiza                                                                            | Templates | Comandos |
+| ---------------------------- | ------------------- | ------------------------------------------------------------------------------------------ | --------- | -------- |
+| `mrv-aidd-producao-backend`  | Backend             | Templates, comandos e linguagem operacional para backend com rastreabilidade Azure DevOps  | 4         | 7        |
+| `mrv-aidd-producao-frontend` | Frontend            | Templates, comandos e linguagem operacional para frontend com rastreabilidade Azure DevOps | 4         | 7        |
 
-Use este preset quando o repositorio consumidor tiver ownership principal de backend e precisar manter historias de frontend sem assumir todo o fluxo delas.
-
-Ele:
-
-- sobrescreve `spec-template`, `plan-template`, `tasks-template` e `checklist-template`;
-- sobrescreve os comandos principais `/speckit.*` relevantes ao fluxo;
-- aplica ownership backend com tags `[BACK]`;
-- mantem os artefatos em portugues do Brasil.
-
-Instalacao por catalogo:
+Para instalar:
 
 ```powershell
-specify preset add mrv-aidd-producao-backend --priority 5
+specify preset catalog add https://raw.githubusercontent.com/SavioMacedoMRV/mrv-aidd-platformc/main/presets/catalog.json --name mrv --install-allowed
+specify preset add mrv-aidd-producao-backend --priority 5   # ou mrv-aidd-producao-frontend
 ```
 
-Instalacao local para desenvolvimento:
+Instale **apenas um preset** por repositório consumidor.
 
-```powershell
-specify preset add --dev .\presets\mrv-aidd-producao-backend --priority 5
-```
+- [presets/mrv-aidd-producao-backend/README.md](./presets/mrv-aidd-producao-backend/README.md)
+- [presets/mrv-aidd-producao-frontend/README.md](./presets/mrv-aidd-producao-frontend/README.md)
 
-### `mrv-aidd-producao-frontend`
+---
 
-Use este preset quando o repositorio consumidor tiver ownership principal de frontend e precisar preservar o handoff para backend.
+## ⌨️ Comandos Disponíveis
 
-Ele:
+Após instalar a base do Spec Kit mais os pacotes MRV, os seguintes comandos ficam disponíveis no agente.
 
-- sobrescreve `spec-template`, `plan-template`, `tasks-template` e `checklist-template`;
-- sobrescreve os comandos principais `/speckit.*` relevantes ao fluxo;
-- aplica ownership frontend com tags `[FRONT]`;
-- mantem os artefatos em portugues do Brasil.
+### Comandos core do Spec Kit
 
-Instalacao por catalogo:
+| Comando                  | O que faz                                                              |
+| ------------------------ | ---------------------------------------------------------------------- |
+| `/speckit.specify`       | Transforma a feature de upstream em `spec.md` testável                 |
+| `/speckit.clarify`       | Clarifica ambiguidades do spec antes do planejamento técnico           |
+| `/speckit.plan`          | Cria o `plan.md` com stack, contratos, riscos e estratégia de execução |
+| `/speckit.tasks USn`     | Gera `tasks.md` com tarefas acionáveis para a US assumida              |
+| `/speckit.implement USn` | Executa as tarefas da US assumida segundo o plan                       |
+| `/speckit.checklist`     | Gera checklist de qualidade para validar completude e consistência     |
+| `/speckit.analyze`       | Analisa consistência entre artefatos (spec, plan, tasks)               |
 
-```powershell
-specify preset add mrv-aidd-producao-frontend --priority 5
-```
+### Comandos da extension `mrv-aidd-producao`
 
-Instalacao local para desenvolvimento:
+| Comando                                            | O que faz                                                                           |
+| -------------------------------------------------- | ----------------------------------------------------------------------------------- |
+| `/speckit.mrv-aidd-producao.sincronizar-us-devops` | Sincroniza histórias do spec com a Feature pai no Azure DevOps via MCP              |
+| `/speckit.mrv-aidd-producao.configurar-us USn`     | Cria ou reutiliza a branch `feature/<feature>/usN` e prepara o contexto operacional |
+| `/speckit.mrv-aidd-producao.terminar-us USn`       | Valida, commita, faz push e abre PR para a branch base da feature                   |
 
-```powershell
-specify preset add --dev .\presets\mrv-aidd-producao-frontend --priority 5
-```
+---
 
-## Como extension e preset se encaixam
+## 🗺️ Mapa da Documentação
 
-O modelo segue a mesma ideia do Spec Kit: extensoes adicionam capacidades novas; presets mudam como essas capacidades se apresentam no dia a dia.
+| Para...                                               | Abra                                                                                           |
+| ----------------------------------------------------- | ---------------------------------------------------------------------------------------------- |
+| Entender o que é AIDD e o modelo operacional completo | [docs/aidd/README.md](./docs/aidd/README.md)                                                   |
+| Instalar em um repositório consumidor (passo a passo) | [docs/guia-instalacao.md](./docs/guia-instalacao.md)                                           |
+| Entender a extension operacional base                 | [extensions/mrv-aidd-producao/README.md](./extensions/mrv-aidd-producao/README.md)             |
+| Escolher ou entender o preset backend                 | [presets/mrv-aidd-producao-backend/README.md](./presets/mrv-aidd-producao-backend/README.md)   |
+| Escolher ou entender o preset frontend                | [presets/mrv-aidd-producao-frontend/README.md](./presets/mrv-aidd-producao-frontend/README.md) |
+| Cenários de paralelismo e múltiplos devs              | [docs/aidd/colaboracao-e-paralelismo.md](./docs/aidd/colaboracao-e-paralelismo.md)             |
+| Prompts operacionais por etapa do fluxo               | [docs/aidd/prompt-pack.md](./docs/aidd/prompt-pack.md)                                         |
+| Modelos e convenções reutilizáveis de artefatos       | [docs/aidd/modelos-operacionais.md](./docs/aidd/modelos-operacionais.md)                       |
+| Evoluir a plataforma com segurança                    | [docs/guia-contribuicao.md](./docs/guia-contribuicao.md)                                       |
+| Publicar nova versão do catálogo                      | [docs/publicacao-catalogo.md](./docs/publicacao-catalogo.md)                                   |
 
-### Extensions adicionam capacidades novas
+---
 
-Use extension quando precisar de um comando novo, de uma integracao externa ou de hooks adicionais que nao existem no fluxo base.
+## 🤝 Como Contribuir
 
-Neste repositorio, `mrv-aidd-producao` encapsula o fluxo operacional da MRV para sincronizacao com Azure DevOps, preparacao de branch por US e encerramento de entrega.
+O ponto de entrada para evoluir esta base é [docs/guia-contribuicao.md](./docs/guia-contribuicao.md).
 
-### Presets customizam artefatos e instrucoes
+Em resumo:
 
-Use preset quando quiser mudar como o Spec Kit produz specs, planos, tarefas e instrucoes, sem criar uma nova capacidade separada.
+- Use `extension` para capacidades novas, hooks ou integrações — quando a mudança cria algo que não existe no core
+- Use `preset` para ownership, linguagem, templates e comportamento de capacidades existentes — quando a mudança é de forma, não de função
+- Mantenha manifesto, README, catálogo e comportamento real sempre coerentes
+- Preserve os IDs públicos dos pacotes salvo quando houver motivo técnico claro e plano de migração documentado
+- Preserve a hierarquia AIDD > BDD + SDD > Spec Kit > MRV AIDD Platform em toda documentação pública
+- Documentação e textos operacionais em português do Brasil
 
-Os presets desta plataforma aplicam ownership, idioma pt-BR, handoff controlado e filtros de sincronizacao por contexto de backend ou frontend.
+---
 
-### Resolucao e registro
+## 📄 Licença
 
-Seguindo o modelo do Spec Kit:
-
-1. Templates locais em `.specify/templates/overrides/` tem prioridade maxima no projeto consumidor.
-2. Presets instalados resolvem templates por prioridade.
-3. Templates fornecidos por extensions entram abaixo dos presets.
-4. Templates core do Spec Kit ficam como fallback.
-
-Comandos e overrides sao aplicados no momento da instalacao. Ou seja, quando voce instala um preset ou extension, o Spec Kit escreve os comandos nos diretorios do agente detectado.
-
-## Quando usar cada pacote
-
-| Necessidade                                            | Pacote recomendado           |
-| ------------------------------------------------------ | ---------------------------- |
-| Adicionar um comando novo ou um fluxo novo             | `mrv-aidd-producao`          |
-| Integrar Azure DevOps, GitHub ou outro sistema externo | `mrv-aidd-producao`          |
-| Aplicar ownership backend em pt-BR                     | `mrv-aidd-producao-backend`  |
-| Aplicar ownership frontend em pt-BR                    | `mrv-aidd-producao-frontend` |
-| Mudar formato de spec, plan, tasks ou checklist        | Um dos presets               |
-| Desenvolver ou validar os pacotes desta workspace      | Instalacao local com `--dev` |
-
-## Cuidados operacionais
-
-- O modo catalogo depende de releases zipadas publicadas com as URLs declaradas em `extensions/catalog.json` e `presets/catalog.json`.
-- O comando de sincronizacao nao cria a Feature pai no Azure DevOps. Ela deve existir antes.
-- O fluxo de Azure DevOps usa MCP exclusivamente. Nao substitua esse comportamento por Azure CLI, PAT ou REST bruto dentro dos comandos da plataforma.
-- Se o ambiente nao tiver autenticacao ou MCP configurado, os comandos dependentes vao falhar cedo e o ajuste deve ser feito antes de insistir no fluxo.
-
-## Pre-requisitos
-
-- `specify` instalado e funcional no ambiente.
-- Repositorio consumidor ja preparado para usar Spec Kit.
-- Git disponivel no ambiente.
-- Para sincronizacao com Azure DevOps: autenticacao e MCP do Azure DevOps configurados, com a Feature pai ja existente.
-- Para encerramento automatizado de US com PR: MCPs do GitHub disponiveis no ambiente do agente.
-
-## Aprenda mais
-
-- [docs/guia-instalacao.md](./docs/guia-instalacao.md): referencia detalhada de instalacao, efeitos da configuracao e cuidados de uso.
-- [docs/guia-contribuicao.md](./docs/guia-contribuicao.md): guia para evoluir extensions e presets sem quebrar compatibilidade.
-- [docs/publicacao-catalogo.md](./docs/publicacao-catalogo.md): guia para publicar releases zipadas e operar este repositorio como catalogo MRV.
-- [extensions/mrv-aidd-producao/README.md](./extensions/mrv-aidd-producao/README.md): detalhes operacionais da extension.
-- [presets/mrv-aidd-producao-backend/README.md](./presets/mrv-aidd-producao-backend/README.md): detalhes do preset de backend.
-- [presets/mrv-aidd-producao-frontend/README.md](./presets/mrv-aidd-producao-frontend/README.md): detalhes do preset de frontend.
-
-## Licenca
-
-Este projeto e distribuido sob a licenca MIT. Veja `LICENSE` para os termos completos.
+Este projeto é distribuído sob a licença MIT. Veja [LICENSE](./LICENSE).

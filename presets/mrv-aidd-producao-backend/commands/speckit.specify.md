@@ -13,6 +13,7 @@ You **MUST** consider the user input before proceeding (if not empty).
 ## Pre-Execution Checks
 
 **Check for extension hooks (before specification)**:
+
 - Check if `.specify/extensions.yml` exists in the project root.
 - If it exists, read it and look for entries under the `hooks.before_specify` key
 - If the YAML cannot be parsed or is invalid, skip hook checking silently and continue normally
@@ -22,6 +23,7 @@ You **MUST** consider the user input before proceeding (if not empty).
   - If the hook defines a non-empty `condition`, skip the hook and leave condition evaluation to the HookExecutor implementation
 - For each executable hook, output the following based on its `optional` flag:
   - **Optional hook** (`optional: true`):
+
     ```
     ## Extension Hooks
 
@@ -32,7 +34,9 @@ You **MUST** consider the user input before proceeding (if not empty).
     Prompt: {prompt}
     To execute: `/{command}`
     ```
+
   - **Mandatory hook** (`optional: false`):
+
     ```
     ## Extension Hooks
 
@@ -42,6 +46,7 @@ You **MUST** consider the user input before proceeding (if not empty).
 
     Wait for the result of the hook command before proceeding to the Outline.
     ```
+
 - If no hooks are registered or `.specify/extensions.yml` does not exist, skip silently
 
 ## Outline
@@ -70,6 +75,9 @@ The text the user typed after `/speckit.specify` is the feature description.
 ## Regras adicionais do preset
 
 - Sempre que informacoes faltarem, estiverem ambiguas ou exigirem confirmacao, use `vscode_askQuestions`.
+- Trate a feature do upstream como entrada principal, nao como verdade final; ela pode conter gaps funcionais relevantes.
+- O papel deste comando e clarificar, aprofundar e fechar esses gaps antes de consolidar a especificacao.
+- O `spec.md` gerado por este fluxo deve ser tratado como a fonte de verdade funcional consolidada da feature.
 - Preserve `## Azure DevOps Traceability` quando houver contexto de Azure DevOps no input.
 - Este preset so pode criar ou atualizar historias de ownership `backend`.
 - Se a demanda for puramente de frontend, interrompa e direcione para o preset `mrv-aidd-producao-frontend`.
@@ -88,16 +96,19 @@ The text the user typed after `/speckit.specify` is the feature description.
       Prompt: {prompt}
       To execute: `/{command}`
       ```
-   - **Mandatory hook** (`optional: false`):
-      ```
-      ## Extension Hooks
 
-      **Automatic Pre-Hook**: {extension}
-      Executing: `/{command}`
-      EXECUTE_COMMAND: {command}
+  - **Mandatory hook** (`optional: false`):
 
-      Wait for the result of the hook command before proceeding to the Outline.
-      ```
+    ```
+    ## Extension Hooks
+
+    **Automatic Pre-Hook**: {extension}
+    Executing: `/{command}`
+    EXECUTE_COMMAND: {command}
+
+    Wait for the result of the hook command before proceeding to the Outline.
+    ```
+
 - If no hooks are registered or `.specify/extensions.yml` does not exist, skip silently
 
 ## Outline
@@ -110,14 +121,14 @@ Given that feature description, do this:
 2. **Create the feature branch** by running the feature creation script once, with `-Json` and `-ShortName`, respecting `.specify/init-options.json` when present.
 3. Load `.specify/templates/spec-template.md` to understand required sections.
 4. Follow the native Spec Kit specification workflow:
-    - Parse the user description
-    - Extract actors, actions, data, and constraints
-    - Use informed guesses where reasonable
-    - Limit `[NEEDS CLARIFICATION]` markers to the most critical cases
-    - Fill user scenarios and testing
-    - Generate testable functional requirements
-    - Define measurable, technology-agnostic success criteria
-    - Identify key entities when data is involved
+   - Parse the user description
+   - Extract actors, actions, data, and constraints
+   - Use informed guesses where reasonable
+   - Limit `[NEEDS CLARIFICATION]` markers to the most critical cases
+   - Fill user scenarios and testing
+   - Generate testable functional requirements
+   - Define measurable, technology-agnostic success criteria
+   - Identify key entities when data is involved
 5. Write the specification to SPEC_FILE using the resolved template structure.
 6. Run specification quality validation, maintain the requirements checklist, and resolve validation failures before reporting completion.
 7. Report completion with branch name, spec file path, checklist results, and readiness for `/speckit.clarify` or `/speckit.plan`.
@@ -137,9 +148,9 @@ Given that feature description, do this:
 - Este preset so pode criar ou atualizar historias de ownership `backend`.
 - Se a demanda for puramente de frontend, interrompa e oriente o uso do preset `mrv-aidd-producao-frontend` no repositorio correto.
 - Para cada historia owned por este repositorio:
-   - `**Ownership Scope**` deve permanecer `backend`
-   - o titulo deve comecar com `[BACK] `
-   - `**Azure DevOps Tags**` deve usar `[BACK]`
+  - `**Ownership Scope**` deve permanecer `backend`
+  - o titulo deve comecar com `[BACK] `
+  - `**Azure DevOps Tags**` deve usar `[BACK]`
 - Preserve historias de escopo oposto verbatim quando estiverem marcadas por `**Ownership Scope**: frontend`, `**Azure DevOps Tags**: [FRONT]` ou titulo iniciado por `[FRONT]`.
 - Quando houver dependencia de frontend, registre em `## Frontend Follow-up` em vez de criar historia owned pelo frontend neste spec.
 - Ao concluir, recomende `/speckit.clarify` como proximo comando e `/speckit.plan` na sequencia natural do fluxo.
