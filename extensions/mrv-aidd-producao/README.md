@@ -115,15 +115,15 @@ Use quando a US atual estiver pronta para sair da branch de trabalho e seguir pa
 
 ## Artefatos e efeitos gerados
 
-| Artefato / Efeito | Quando |
-| --- | --- |
-| Work items filhos no Azure DevOps | Após `sincronizar-us-devops` |
+| Artefato / Efeito                       | Quando                       |
+| --------------------------------------- | ---------------------------- |
+| Work items filhos no Azure DevOps       | Após `sincronizar-us-devops` |
 | IDs de work items escritos no `spec.md` | Após `sincronizar-us-devops` |
-| Branch `feature/<feature>/usN` | Após `configurar-us` |
-| US movida para `DEV` no board | Após `configurar-us` |
-| Commit no padrão `feature AB#...` | Após `terminar-us` |
-| Push da branch | Após `terminar-us` |
-| PR aberta na branch base da feature | Após `terminar-us` |
+| Branch `feature/<feature>/usN`          | Após `configurar-us`         |
+| US movida para `DEV` no board           | Após `configurar-us`         |
+| Commit no padrão `feature AB#...`       | Após `terminar-us`           |
+| Push da branch                          | Após `terminar-us`           |
+| PR aberta na branch base da feature     | Após `terminar-us`           |
 
 ---
 
