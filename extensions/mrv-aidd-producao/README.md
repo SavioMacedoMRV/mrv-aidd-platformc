@@ -9,7 +9,7 @@
     <img src="https://img.shields.io/badge/type-extension-264D1F?style=for-the-badge" alt="Type extension" />
     <img src="https://img.shields.io/badge/comandos-3-F7941D?style=for-the-badge" alt="3 comandos" />
     <img src="https://img.shields.io/badge/hooks-3-7FB239?style=for-the-badge" alt="3 hooks" />
-    <img src="https://img.shields.io/badge/spec%20kit-%3E%3D0.4.4-0C1A0E?style=for-the-badge" alt="Spec Kit version" />
+    <img src="https://img.shields.io/badge/spec%20kit-%3E%3D0.5.0-0C1A0E?style=for-the-badge" alt="Spec Kit version" />
     </p>
 
 </div>
