@@ -1,5 +1,8 @@
 ---
 description: Executar a implementacao em portugues do Brasil exigindo que o escopo informe uma ou mais USs alvo.
+scripts:
+  sh: scripts/bash/check-prerequisites.sh --json --require-tasks --include-tasks
+  ps: scripts/powershell/check-prerequisites.ps1 -Json -RequireTasks -IncludeTasks
 ---
 
 ## User Input
@@ -174,7 +177,8 @@ You **MUST** consider the user input before proceeding (if not empty).
 Note: This command assumes a complete task breakdown exists in tasks.md. If tasks are incomplete or missing, suggest running `/speckit.tasks` first to regenerate the task list.
 
 10. **Check for extension hooks**: After completion validation, check if `.specify/extensions.yml` exists in the project root. - If it exists, read it and look for entries under the `hooks.after_implement` key - If the YAML cannot be parsed or is invalid, skip hook checking silently and continue normally - Filter out hooks where `enabled` is explicitly `false`. Treat hooks without an `enabled` field as enabled by default. - For each remaining hook, do **not** attempt to interpret or evaluate hook `condition` expressions: - If the hook has no `condition` field, or it is null/empty, treat the hook as executable - If the hook defines a non-empty `condition`, skip the hook and leave condition evaluation to the HookExecutor implementation - For each executable hook, output the following based on its `optional` flag: - **Optional hook** (`optional: true`):
-    ``` ## Extension Hooks
+
+    ````## Extension Hooks
 
         		**Optional Hook**: {extension}
         		Command: `/{command}`
@@ -192,6 +196,7 @@ Note: This command assumes a complete task breakdown exists in tasks.md. If task
         		EXECUTE_COMMAND: {command}
         		```
         - If no hooks are registered or `.specify/extensions.yml` does not exist, skip silently
+    ````
 
 ## Regras adicionais do preset
 

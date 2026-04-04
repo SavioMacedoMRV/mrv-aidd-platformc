@@ -1,5 +1,16 @@
 ---
 description: Criar ou atualizar a spec com ownership de historias de frontend, rastreabilidade Azure DevOps e handoff para backend quando necessario.
+handoffs:
+  - label: Esclarecer requisitos da spec
+    agent: speckit.clarify
+    prompt: Clarify specification requirements
+    send: true
+  - label: Construir plano tecnico
+    agent: speckit.plan
+    prompt: Create a plan for the spec. I am building with...
+scripts:
+  sh: scripts/bash/create-new-feature.sh "{ARGS}"
+  ps: scripts/powershell/create-new-feature.ps1 "{ARGS}"
 ---
 
 ## User Input

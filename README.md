@@ -8,7 +8,7 @@
   <p>
     <a href="https://github.com/SavioMacedoMRV/mrv-aidd-platformc/releases/latest"><img src="https://img.shields.io/github/v/release/SavioMacedoMRV/mrv-aidd-platformc?display_name=tag&style=for-the-badge&label=release" alt="Latest release" /></a>
     <a href="./LICENSE"><img src="https://img.shields.io/badge/license-MIT-7FB239?style=for-the-badge" alt="License MIT" /></a>
-    <a href="https://github.com/github/spec-kit/releases"><img src="https://img.shields.io/badge/spec%20kit-%3E%3D0.4.4-F7941D?style=for-the-badge" alt="Spec Kit version" /></a>
+    <a href="https://github.com/github/spec-kit/releases"><img src="https://img.shields.io/badge/spec%20kit-%3E%3D0.5.0-F7941D?style=for-the-badge" alt="Spec Kit version" /></a>
     <img src="https://img.shields.io/badge/cat%C3%A1logo-1%20extension%20%2B%202%20presets-264D1F?style=for-the-badge" alt="Catálogo MRV" />
   </p>
 </div>
