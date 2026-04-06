@@ -12,6 +12,7 @@ handoffs:
 scripts:
   sh: scripts/bash/check-prerequisites.sh --json
   ps: scripts/powershell/check-prerequisites.ps1 -Json
+tools: [read, edit, execute, search, agent, web, askQuestions]
 ---
 
 ## User Input
@@ -21,6 +22,12 @@ $ARGUMENTS
 ```
 
 You **MUST** consider the user input before proceeding (if not empty).
+
+## Skills
+
+Before proceeding, load the following skills by reading their SKILL.md files:
+
+- **portal360-framework-frontend**: `.github/skills/portal360-framework-frontend/SKILL.md`
 
 ## Pre-Execution Checks
 

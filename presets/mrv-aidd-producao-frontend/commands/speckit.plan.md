@@ -14,6 +14,7 @@ scripts:
 agent_scripts:
   sh: scripts/bash/update-agent-context.sh __AGENT__
   ps: scripts/powershell/update-agent-context.ps1 -AgentType __AGENT__
+tools: [read, edit, execute, search, agent, web, askQuestions, "com.figma.mcp/mcp/*", "microsoft/azure-devops-mcp/*"]
 ---
 
 ## User Input
@@ -23,6 +24,13 @@ $ARGUMENTS
 ```
 
 You **MUST** consider the user input before proceeding (if not empty).
+
+## Skills
+
+Before proceeding, load the following skills by reading their SKILL.md files:
+
+- **portal360-framework-frontend**: `.github/skills/portal360-framework-frontend/SKILL.md`
+- **figma-implement-react-styled-components**: `.github/skills/figma-implement-react-styled-components/SKILL.md`
 
 ## Pre-Execution Checks
 

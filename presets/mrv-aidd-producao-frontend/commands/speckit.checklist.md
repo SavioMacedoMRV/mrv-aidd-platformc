@@ -3,6 +3,7 @@ description: Gerar um checklist customizado para a funcionalidade atual com said
 scripts:
   sh: scripts/bash/check-prerequisites.sh --json
   ps: scripts/powershell/check-prerequisites.ps1 -Json
+tools: [read, edit, execute, search, web, askQuestions, "com.figma.mcp/mcp/*"]
 ---
 
 ## Checklist Purpose: "Unit Tests for English"
@@ -33,6 +34,12 @@ $ARGUMENTS
 ```
 
 You **MUST** consider the user input before proceeding (if not empty).
+
+## Skills
+
+Before proceeding, load the following skills by reading their SKILL.md files:
+
+- **portal360-framework-frontend**: `.github/skills/portal360-framework-frontend/SKILL.md`
 
 ## Execution Steps
 

@@ -3,6 +3,7 @@ description: Executar a implementacao em portugues do Brasil exigindo que o esco
 scripts:
   sh: scripts/bash/check-prerequisites.sh --json --require-tasks --include-tasks
   ps: scripts/powershell/check-prerequisites.ps1 -Json -RequireTasks -IncludeTasks
+tools: [read, edit, execute, search, agent, web, askQuestions, todo, memory, "com.figma.mcp/mcp/*", "playwright/*"]
 ---
 
 ## User Input
@@ -12,6 +13,14 @@ $ARGUMENTS
 ```
 
 You **MUST** consider the user input before proceeding (if not empty).
+
+## Skills
+
+Before proceeding, load the following skills by reading their SKILL.md files:
+
+- **portal360-framework-frontend**: `.github/skills/portal360-framework-frontend/SKILL.md`
+- **figma-implement-react-styled-components**: `.github/skills/figma-implement-react-styled-components/SKILL.md`
+- **playwright-cli**: `.github/skills/playwright-cli/SKILL.md`
 
 ## Pre-Execution Checks
 
