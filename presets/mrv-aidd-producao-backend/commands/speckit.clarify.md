@@ -8,6 +8,7 @@ handoffs:
 scripts:
   sh: scripts/bash/check-prerequisites.sh --json --paths-only
   ps: scripts/powershell/check-prerequisites.ps1 -Json -PathsOnly
+tools: [read, edit, execute, search, agent, web, askQuestions, "microsoft/azure-devops-mcp/*"]
 ---
 
 ## User Input
@@ -17,6 +18,13 @@ $ARGUMENTS
 ```
 
 You **MUST** consider the user input before proceeding (if not empty).
+
+## Skills
+
+Before proceeding, load the following skills by reading their SKILL.md files:
+
+- **dotnet**: `.github/skills/dotnet/SKILL.md`
+- **dotnet-aspnet**: `.github/skills/dotnet-aspnet/SKILL.md`
 
 ## Outline
 

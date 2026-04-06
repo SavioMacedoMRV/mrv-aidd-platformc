@@ -1,5 +1,6 @@
 ---
 description: Sincronizar apenas historias de backend com o Azure DevOps, protegendo work items marcados como [FRONT].
+tools: [read, edit, execute, web, askQuestions, "microsoft/azure-devops-mcp/*"]
 ---
 
 ## User Input

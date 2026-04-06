@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.4.0
+
+- Bump de versão alinhado à release compartilhada `mrv-aidd-platform-v0.4.0`. Sem mudanças funcionais neste pacote.
+
 ## 0.3.0
 
 - Adicionada declaração explícita de `tools` no frontmatter de todos os comandos, incluindo aliases VS Code (`read`, `edit`, `execute`, `search`, `agent`, `web`, `askQuestions`), ferramentas específicas (`todo`, `memory` em `implement`) e MCPs por etapa.

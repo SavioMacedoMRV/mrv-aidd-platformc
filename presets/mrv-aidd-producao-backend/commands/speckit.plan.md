@@ -14,6 +14,7 @@ scripts:
 agent_scripts:
   sh: scripts/bash/update-agent-context.sh __AGENT__
   ps: scripts/powershell/update-agent-context.ps1 -AgentType __AGENT__
+tools: [read, edit, execute, search, agent, web, askQuestions, "microsoft/azure-devops-mcp/*"]
 ---
 
 ## User Input
@@ -23,6 +24,14 @@ $ARGUMENTS
 ```
 
 You **MUST** consider the user input before proceeding (if not empty).
+
+## Skills
+
+Before proceeding, load the following skills by reading their SKILL.md files:
+
+- **dotnet**: `.github/skills/dotnet/SKILL.md`
+- **dotnet-aspnet**: `.github/skills/dotnet-aspnet/SKILL.md`
+- **dotnet-data**: `.github/skills/dotnet-data/SKILL.md`
 
 ## Pre-Execution Checks
 
