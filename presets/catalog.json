@@ -6,11 +6,11 @@
     "mrv-aidd-producao-backend": {
       "name": "MRV AIDD Producao Backend",
       "id": "mrv-aidd-producao-backend",
-      "version": "0.2.0",
+      "version": "0.3.0",
       "description": "Preset plug and play de backend para AIDD na MRV, reunindo ownership Azure DevOps e artefatos em portugues do Brasil.",
       "author": "MRV",
       "repository": "https://github.com/SavioMacedoMRV/mrv-aidd-platformc",
-      "download_url": "https://github.com/SavioMacedoMRV/mrv-aidd-platformc/releases/download/mrv-aidd-platform-v0.2.0/mrv-aidd-producao-backend-0.2.0.zip",
+      "download_url": "https://github.com/SavioMacedoMRV/mrv-aidd-platformc/releases/download/mrv-aidd-platform-v0.3.0/mrv-aidd-producao-backend-0.3.0.zip",
       "homepage": "https://github.com/SavioMacedoMRV/mrv-aidd-platformc",
       "documentation": "https://github.com/SavioMacedoMRV/mrv-aidd-platformc/blob/main/presets/mrv-aidd-producao-backend/README.md",
       "license": "MIT",
