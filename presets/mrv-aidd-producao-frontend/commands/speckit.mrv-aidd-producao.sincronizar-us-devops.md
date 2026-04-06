@@ -93,9 +93,44 @@ Publish only frontend-owned user stories from the active `spec.md` into Azure De
    - Mention that the Azure DevOps IDs were written back to the `spec.md` when applicable.
    - Recommend `/speckit.plan` after a successful sync.
 
+13. Backend Handoff _(skip entirely if `--dry-run` is active)_.
+   - Use `vscode_askQuestions` to ask: "Este projeto tem um repositório de backend?"
+     - Options: **Sim** _(recommended)_ / **Não**
+   - If **Não**: end the workflow silently.
+   - If **Sim**:
+     - Use the Feature name, URL, ID, organization, and project already resolved in step 2.
+     - Read the `## Backend Follow-up` section from the active `spec.md`.
+     - If `## Backend Follow-up` is absent or its content is empty, replace it in the generated prompt with:
+       ```
+       > Nenhum Backend Follow-up foi registrado na spec do frontend.
+       > Execute /speckit.clarify logo após o /speckit.specify para mapear
+       > dependências e contratos com o frontend antes de prosseguir para o plan.
+       ```
+     - Build and display the following copyable code block:
+
+       ````text
+       /speckit.specify Feature: [NOME_FEATURE] ([URL_FEATURE])
+
+       ## Contexto derivado do Frontend
+       **Feature pai no Azure DevOps**
+       - ID: [FEATURE_ID]
+       - URL: [FEATURE_URL]
+       - Organização: [ORG]
+       - Projeto: [PROJETO]
+
+       ## Backend Follow-up (extraído do spec.md do frontend)
+       [CONTEÚDO DO ## Backend Follow-up — ou aviso de ausência conforme regra acima]
+
+       > Preserve a rastreabilidade com o mesmo ID/URL de Feature pai.
+       > Use o preset mrv-aidd-producao-backend.
+       ````
+
+     - After displaying the block, tell the user to open the backend repository and paste the prompt into the agent chat.
+
 ## Behavior Rules
 
 - This command synchronizes only frontend-owned stories.
 - Stories tagged `[BACK]` or titled com `[BACK]` must never be modified by this preset.
 - If a story is untagged in the spec, default it to frontend ownership instead of leaving ownership ambiguous.
 - In dry-run mode, do not perform Azure DevOps writes and do not update the local mapping file.
+- In dry-run mode, suppress step 13 (Backend Handoff) entirely — do not ask the backend question and do not generate the handoff prompt.

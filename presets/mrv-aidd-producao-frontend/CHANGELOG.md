@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.5.0
+
+- Adicionado step 13 (Backend Handoff) ao comando `speckit.mrv-aidd-producao.sincronizar-us-devops`: ao final da sincronizacao, o agente pergunta se o projeto tem backend e, se sim, gera um bloco copiavel com o prompt `/speckit.specify` completo para o repositorio backend, contendo a rastreabilidade da Feature pai no Azure DevOps e o conteudo de `## Backend Follow-up` da spec do frontend.
+- Adicionada salvaguarda: quando `## Backend Follow-up` estiver ausente ou vazio, o prompt gerado instrui o agente backend a executar `/speckit.clarify` antes de prosseguir para o plan.
+- Adicionada Behavior Rule: em dry-run mode, o step 13 e suprimido inteiramente.
+
 ## 0.4.0
 
 - Bump de versão alinhado à release compartilhada `mrv-aidd-platform-v0.4.0`. Sem mudanças funcionais neste pacote.
