@@ -3,7 +3,7 @@ schema_version: "1.0"
 extension:
   id: "mrv-aidd-producao"
   name: "MRV AIDD Producao"
-  version: "0.5.0"
+  version: "0.6.0"
   description: "Pacote operacional do ecossistema MRV para AIDD, reunindo sincronizacao com Azure DevOps, configuracao de branch e encerramento de historia"
   author: "MRV"
   repository: "https://github.com/SavioMacedoMRV/mrv-aidd-platformc"

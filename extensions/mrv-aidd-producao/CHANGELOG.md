@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.6.0
+
+- Bump de versão alinhado à release compartilhada `mrv-aidd-platform-v0.6.0`. Sem mudanças funcionais neste pacote.
+
 ## 0.5.0
 
 - Corrigido formato da declaração `tools` no frontmatter de todos os comandos: migração de bloco YAML com nomes individuais de ferramentas para array inline com grupos built-in e ferramentas MCP com separador `/`.
