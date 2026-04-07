@@ -12,7 +12,7 @@ handoffs:
 scripts:
   sh: scripts/bash/check-prerequisites.sh --json
   ps: scripts/powershell/check-prerequisites.ps1 -Json
-tools: [read, edit, execute, search, agent, web, askQuestions]
+tools: [read, edit, execute, search, agent, vscode, todo]
 ---
 
 ## User Input

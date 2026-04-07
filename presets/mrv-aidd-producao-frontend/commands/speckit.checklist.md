@@ -3,7 +3,7 @@ description: Gerar um checklist customizado para a funcionalidade atual com said
 scripts:
   sh: scripts/bash/check-prerequisites.sh --json
   ps: scripts/powershell/check-prerequisites.ps1 -Json
-tools: [read, edit, execute, search, web, askQuestions, "com.figma.mcp/mcp/*"]
+tools: [read, edit, search, vscode, "com.figma.mcp/mcp/get_design_context", "com.figma.mcp/mcp/get_metadata", "com.figma.mcp/mcp/search_design_system"]
 ---
 
 ## Checklist Purpose: "Unit Tests for English"
@@ -40,6 +40,12 @@ You **MUST** consider the user input before proceeding (if not empty).
 Before proceeding, load the following skills by reading their SKILL.md files:
 
 - **portal360-framework-frontend**: `.github/skills/portal360-framework-frontend/SKILL.md`
+
+## MCP Prerequisites
+
+Before proceeding, verify that the **Figma MCP** server is active:
+- Call `com.figma.mcp/mcp/whoami` to confirm the server is reachable and the user is authenticated.
+- If the call fails or the tool is unavailable, **stop immediately** and tell the user to enable the `com.figma.mcp/mcp` server in VS Code before retrying.
 
 ## Execution Steps
 

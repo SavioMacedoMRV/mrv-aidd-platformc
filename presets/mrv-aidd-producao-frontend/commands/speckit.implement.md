@@ -3,7 +3,7 @@ description: Executar a implementacao em portugues do Brasil exigindo que o esco
 scripts:
   sh: scripts/bash/check-prerequisites.sh --json --require-tasks --include-tasks
   ps: scripts/powershell/check-prerequisites.ps1 -Json -RequireTasks -IncludeTasks
-tools: [read, edit, execute, search, agent, web, askQuestions, todo, memory, "com.figma.mcp/mcp/*", "playwright/*"]
+tools: [read, edit, execute, search, agent, vscode, todo, "com.figma.mcp/mcp/get_design_context", "com.figma.mcp/mcp/get_metadata", "com.figma.mcp/mcp/get_screenshot", "com.figma.mcp/mcp/get_variable_defs", "com.figma.mcp/mcp/search_design_system", "com.figma.mcp/mcp/get_code_connect_suggestions", "com.figma.mcp/mcp/get_code_connect_map", "microsoft/playwright-mcp/browser_navigate", "microsoft/playwright-mcp/browser_snapshot", "microsoft/playwright-mcp/browser_click", "microsoft/playwright-mcp/browser_fill_form", "microsoft/playwright-mcp/browser_take_screenshot", "microsoft/playwright-mcp/browser_evaluate", "microsoft/playwright-mcp/browser_wait_for", "microsoft/playwright-mcp/browser_run_code", "microsoft/playwright-mcp/browser_console_messages", "microsoft/playwright-mcp/browser_press_key", "microsoft/playwright-mcp/browser_network_requests"]
 ---
 
 ## User Input
@@ -21,6 +21,13 @@ Before proceeding, load the following skills by reading their SKILL.md files:
 - **portal360-framework-frontend**: `.github/skills/portal360-framework-frontend/SKILL.md`
 - **figma-implement-react-styled-components**: `.github/skills/figma-implement-react-styled-components/SKILL.md`
 - **playwright-cli**: `.github/skills/playwright-cli/SKILL.md`
+
+## MCP Prerequisites
+
+Before proceeding, verify that the required MCP servers are active:
+- **Figma MCP**: call `com.figma.mcp/mcp/whoami` to confirm the server is reachable and the user is authenticated.
+- **Playwright MCP**: call `microsoft/playwright-mcp/browser_snapshot` to confirm the server is reachable.
+- If any call fails or the tool is unavailable, **stop immediately** and tell the user to enable the corresponding MCP server in VS Code before retrying.
 
 ## Pre-Execution Checks
 

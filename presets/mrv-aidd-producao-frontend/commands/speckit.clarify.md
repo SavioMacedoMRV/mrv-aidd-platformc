@@ -8,7 +8,7 @@ handoffs:
 scripts:
   sh: scripts/bash/check-prerequisites.sh --json --paths-only
   ps: scripts/powershell/check-prerequisites.ps1 -Json -PathsOnly
-tools: [read, edit, execute, search, agent, web, askQuestions, "com.figma.mcp/mcp/*", "microsoft/azure-devops-mcp/*"]
+tools: [read, edit, execute, search, web, agent, vscode, "com.figma.mcp/mcp/get_design_context", "com.figma.mcp/mcp/get_metadata", "com.figma.mcp/mcp/get_screenshot", "com.figma.mcp/mcp/get_variable_defs", "com.figma.mcp/mcp/search_design_system", "microsoft/azure-devops-mcp/wit_get_work_item", "microsoft/azure-devops-mcp/wit_get_work_items_batch_by_ids", "microsoft/azure-devops-mcp/wit_list_backlog_work_items", "microsoft/azure-devops-mcp/search_workitem", "microsoft/azure-devops-mcp/core_list_projects"]
 ---
 
 ## User Input
@@ -24,6 +24,13 @@ You **MUST** consider the user input before proceeding (if not empty).
 Before proceeding, load the following skills by reading their SKILL.md files:
 
 - **portal360-framework-frontend**: `.github/skills/portal360-framework-frontend/SKILL.md`
+
+## MCP Prerequisites
+
+Before proceeding, verify that the required MCP servers are active:
+- **Azure DevOps MCP**: call `microsoft/azure-devops-mcp/core_list_projects` to confirm the server is reachable.
+- **Figma MCP**: call `com.figma.mcp/mcp/whoami` to confirm the server is reachable and the user is authenticated.
+- If any call fails or the tool is unavailable, **stop immediately** and tell the user to enable the corresponding MCP server in VS Code before retrying.
 
 ## Outline
 

@@ -3,7 +3,7 @@ description: Executar a implementacao em portugues do Brasil exigindo que o esco
 scripts:
   sh: scripts/bash/check-prerequisites.sh --json --require-tasks --include-tasks
   ps: scripts/powershell/check-prerequisites.ps1 -Json -RequireTasks -IncludeTasks
-tools: [read, edit, execute, search, agent, web, askQuestions, todo, memory]
+tools: [read, edit, execute, search, agent, vscode, todo]
 ---
 
 ## User Input

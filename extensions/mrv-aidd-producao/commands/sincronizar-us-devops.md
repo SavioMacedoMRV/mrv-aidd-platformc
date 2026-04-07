@@ -1,5 +1,6 @@
 ---
 description: "Sync clarified user stories from the active spec to Azure DevOps under the parent Feature stored in the spec"
+tools: [read, edit, execute, vscode, "microsoft/azure-devops-mcp/wit_get_work_item", "microsoft/azure-devops-mcp/wit_create_work_item", "microsoft/azure-devops-mcp/wit_update_work_item", "microsoft/azure-devops-mcp/wit_get_work_items_batch_by_ids", "microsoft/azure-devops-mcp/wit_add_child_work_items", "microsoft/azure-devops-mcp/wit_add_artifact_link", "microsoft/azure-devops-mcp/wit_work_items_link", "microsoft/azure-devops-mcp/wit_add_work_item_comment", "microsoft/azure-devops-mcp/wit_list_backlog_work_items", "microsoft/azure-devops-mcp/search_workitem", "microsoft/azure-devops-mcp/core_list_projects", "microsoft/azure-devops-mcp/core_get_identity_ids", "microsoft/azure-devops-mcp/work_list_iterations", "microsoft/azure-devops-mcp/work_get_team_settings"]
 ---
 
 ## User Input
@@ -13,6 +14,12 @@ You **MUST** use Azure DevOps MCP tools for every Azure DevOps read or write in 
 If MCP access fails, authentication is missing, or the Azure DevOps MCP server is not configured, stop immediately and tell the user to authenticate and configure the Azure DevOps MCP integration before retrying.
 
 If `$ARGUMENTS` contains `--dry-run` or `dry-run`, execute the full validation and reconciliation workflow but do **NOT** create, update, or link any Azure DevOps work items and do **NOT** persist the sync map. Report the actions that would have been taken.
+
+## MCP Prerequisites
+
+Before proceeding, verify that the **Azure DevOps MCP** server is active:
+- Call `microsoft/azure-devops-mcp/core_list_projects` to confirm the server is reachable.
+- If the call fails or the tool is unavailable, **stop immediately** and tell the user to enable the `microsoft/azure-devops-mcp` server in VS Code before retrying.
 
 ## Goal
 

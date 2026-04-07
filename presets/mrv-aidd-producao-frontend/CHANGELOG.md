@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.6.0
+
+- Corrigido formato da declaração `tools` no frontmatter de todos os comandos: migração de bloco YAML com nomes individuais de ferramentas para array inline com grupos built-in (`read`, `edit`, `execute`, `search`, `web`, `agent`, `vscode`, `todo`) e ferramentas MCP com separador `/` (ex: `"com.figma.mcp/mcp/get_design_context"`, `"microsoft/playwright-mcp/browser_navigate"`).
+- Adicionada seção `## MCP Prerequisites` em todos os comandos que dependem de MCP (`specify`, `clarify`, `plan`, `implement`, `checklist`, `sincronizar-us-devops`): o agente verifica a disponibilidade dos servidores MCP necessários (Azure DevOps, Figma, Playwright, MicrosoftDocs) antes de iniciar o fluxo e interrompe com orientação clara ao usuário caso algum servidor não esteja acessível.
+
 ## 0.5.0
 
 - Adicionado step 13 (Backend Handoff) ao comando `speckit.mrv-aidd-producao.sincronizar-us-devops`: ao final da sincronizacao, o agente pergunta se o projeto tem backend e, se sim, gera um bloco copiavel com o prompt `/speckit.specify` completo para o repositorio backend, contendo a rastreabilidade da Feature pai no Azure DevOps e o conteudo de `## Backend Follow-up` da spec do frontend.

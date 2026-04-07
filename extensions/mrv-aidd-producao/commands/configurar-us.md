@@ -1,5 +1,6 @@
 ---
 description: Criar ou reutilizar a branch de trabalho da historia de usuario ativa preservando a branch base da feature para os scripts nativos do Speckit.
+tools: [read, edit, execute, vscode, "microsoft/azure-devops-mcp/wit_get_work_item", "microsoft/azure-devops-mcp/wit_get_work_items_batch_by_ids", "microsoft/azure-devops-mcp/search_workitem", "microsoft/azure-devops-mcp/repo_get_branch_by_name", "microsoft/azure-devops-mcp/repo_list_branches_by_repo", "microsoft/azure-devops-mcp/repo_get_repo_by_name_or_id"]
 ---
 
 ## User Input
@@ -11,6 +12,12 @@ $ARGUMENTS
 You **MUST** consider the user input before proceeding (if not empty).
 
 You **MUST** use Azure DevOps MCP tools for every Azure DevOps read or write in this workflow. Do **NOT** use Azure CLI, PATs, raw REST calls, browser automation, or shell scripts to consultar ou atualizar work items.
+
+## MCP Prerequisites
+
+Before proceeding, verify that the **Azure DevOps MCP** server is active:
+- Call `microsoft/azure-devops-mcp/core_list_projects` to confirm the server is reachable.
+- If the call fails or the tool is unavailable, **stop immediately** and tell the user to enable the `microsoft/azure-devops-mcp` server in VS Code before retrying.
 
 ## Outline
 

@@ -1,5 +1,6 @@
 ---
 description: Finalizar a historia de usuario ativa com validacoes finais, commit no padrao da constituicao e abertura de PR para a branch base da feature usando os MCPs do GitHub.
+tools: [read, edit, execute, vscode, "GitHub/create_pull_request", "GitHub/list_branches", "GitHub/pull_request_read", "GitHub/list_pull_requests", "GitHub/get_commit", "GitHub/push_files", "GitHub/get_me"]
 ---
 
 ## User Input
@@ -11,6 +12,12 @@ $ARGUMENTS
 You **MUST** consider the user input before proceeding (if not empty).
 
 You **MUST** use the GitHub MCP pull request management tools to create the pull request for this workflow. Do **NOT** ask the user to open the PR manually if the MCP tools are available.
+
+## MCP Prerequisites
+
+Before proceeding, verify that the **GitHub MCP** server is active:
+- Call `GitHub/get_me` to confirm the server is reachable and the user is authenticated.
+- If the call fails or the tool is unavailable, **stop immediately** and tell the user to enable the GitHub MCP server in VS Code before retrying.
 
 ## Goal
 

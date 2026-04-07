@@ -11,7 +11,7 @@ handoffs:
 scripts:
   sh: scripts/bash/create-new-feature.sh "{ARGS}"
   ps: scripts/powershell/create-new-feature.ps1 "{ARGS}"
-tools: [read, edit, execute, search, agent, web, askQuestions, "microsoft/azure-devops-mcp/*"]
+tools: [read, edit, execute, search, web, agent, vscode, "microsoft/azure-devops-mcp/wit_get_work_item", "microsoft/azure-devops-mcp/wit_create_work_item", "microsoft/azure-devops-mcp/wit_update_work_item", "microsoft/azure-devops-mcp/wit_get_work_items_batch_by_ids", "microsoft/azure-devops-mcp/core_list_projects", "microsoft/azure-devops-mcp/repo_get_repo_by_name_or_id", "microsoft/azure-devops-mcp/repo_list_branches_by_repo"]
 ---
 
 ## User Input
@@ -28,6 +28,12 @@ Before proceeding, load the following skills by reading their SKILL.md files:
 
 - **dotnet**: `.github/skills/dotnet/SKILL.md`
 - **dotnet-aspnet**: `.github/skills/dotnet-aspnet/SKILL.md`
+
+## MCP Prerequisites
+
+Before proceeding, verify that the **Azure DevOps MCP** server is active:
+- Call `microsoft/azure-devops-mcp/core_list_projects` to confirm the server is reachable.
+- If the call fails or the tool is unavailable, **stop immediately** and tell the user to enable the `microsoft/azure-devops-mcp` server in VS Code before retrying.
 
 ## Pre-Execution Checks
 

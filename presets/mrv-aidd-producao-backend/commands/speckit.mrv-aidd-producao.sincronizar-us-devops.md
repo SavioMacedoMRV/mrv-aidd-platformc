@@ -1,6 +1,6 @@
 ---
 description: Sincronizar apenas historias de backend com o Azure DevOps, protegendo work items marcados como [FRONT].
-tools: [read, edit, execute, web, askQuestions, "microsoft/azure-devops-mcp/*"]
+tools: [read, edit, execute, vscode, "microsoft/azure-devops-mcp/wit_get_work_item", "microsoft/azure-devops-mcp/wit_create_work_item", "microsoft/azure-devops-mcp/wit_update_work_item", "microsoft/azure-devops-mcp/wit_get_work_items_batch_by_ids", "microsoft/azure-devops-mcp/wit_add_child_work_items", "microsoft/azure-devops-mcp/wit_add_artifact_link", "microsoft/azure-devops-mcp/wit_work_items_link", "microsoft/azure-devops-mcp/wit_add_work_item_comment", "microsoft/azure-devops-mcp/wit_list_backlog_work_items", "microsoft/azure-devops-mcp/search_workitem", "microsoft/azure-devops-mcp/core_list_projects", "microsoft/azure-devops-mcp/core_get_identity_ids", "microsoft/azure-devops-mcp/work_list_iterations", "microsoft/azure-devops-mcp/work_get_team_settings"]
 ---
 
 ## User Input
@@ -12,6 +12,12 @@ $ARGUMENTS
 You **MUST** use Azure DevOps MCP tools for every Azure DevOps read or write in this workflow. Do **NOT** use Azure CLI, PATs, raw REST calls, browser automation, or shell scripts.
 
 If `$ARGUMENTS` contains `--dry-run` or `dry-run`, execute the full reconciliation workflow but do not persist local or remote writes.
+
+## MCP Prerequisites
+
+Before proceeding, verify that the **Azure DevOps MCP** server is active:
+- Call `microsoft/azure-devops-mcp/core_list_projects` to confirm the server is reachable.
+- If the call fails or the tool is unavailable, **stop immediately** and tell the user to enable the `microsoft/azure-devops-mcp` server in VS Code before retrying.
 
 ## Question Rules
 

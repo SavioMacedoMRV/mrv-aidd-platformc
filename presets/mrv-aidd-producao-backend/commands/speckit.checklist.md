@@ -3,7 +3,7 @@ description: Gerar um checklist customizado para a funcionalidade atual com said
 scripts:
   sh: scripts/bash/check-prerequisites.sh --json
   ps: scripts/powershell/check-prerequisites.ps1 -Json
-tools: [read, edit, execute, search, web, askQuestions]
+tools: [read, edit, search, vscode]
 ---
 
 ## Checklist Purpose: "Unit Tests for English"

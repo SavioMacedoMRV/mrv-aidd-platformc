@@ -14,7 +14,7 @@ scripts:
 agent_scripts:
   sh: scripts/bash/update-agent-context.sh __AGENT__
   ps: scripts/powershell/update-agent-context.ps1 -AgentType __AGENT__
-tools: [read, edit, execute, search, agent, web, askQuestions, "microsoft/azure-devops-mcp/*"]
+tools: [read, edit, execute, search, web, agent, vscode, "microsoftdocs/mcp/microsoft_docs_search", "microsoftdocs/mcp/microsoft_code_sample_search", "microsoft/azure-devops-mcp/wit_get_work_item", "microsoft/azure-devops-mcp/wit_get_work_items_batch_by_ids"]
 ---
 
 ## User Input
@@ -32,6 +32,13 @@ Before proceeding, load the following skills by reading their SKILL.md files:
 - **dotnet**: `.github/skills/dotnet/SKILL.md`
 - **dotnet-aspnet**: `.github/skills/dotnet-aspnet/SKILL.md`
 - **dotnet-data**: `.github/skills/dotnet-data/SKILL.md`
+
+## MCP Prerequisites
+
+Before proceeding, verify that the required MCP servers are active:
+- **Azure DevOps MCP**: call `microsoft/azure-devops-mcp/core_list_projects` to confirm the server is reachable.
+- **Microsoft Docs MCP**: call `microsoftdocs/mcp/microsoft_docs_search` with a minimal query (e.g. `"test"`) to confirm the server is reachable.
+- If any call fails or the tool is unavailable, **stop immediately** and tell the user to enable the corresponding MCP server in VS Code before retrying.
 
 ## Pre-Execution Checks
 

@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.5.0
+
+- Corrigido formato da declaração `tools` no frontmatter de todos os comandos: migração de bloco YAML com nomes individuais de ferramentas para array inline com grupos built-in (`read`, `edit`, `execute`, `search`, `web`, `agent`, `vscode`, `todo`) e ferramentas MCP com separador `/` (ex: `"microsoft/azure-devops-mcp/wit_get_work_item"`).
+- Adicionada seção `## MCP Prerequisites` em todos os comandos que dependem de MCP (`specify`, `clarify`, `plan`, `sincronizar-us-devops`): o agente verifica a disponibilidade do servidor MCP antes de iniciar o fluxo e interrompe com orientação clara ao usuário caso o servidor não esteja acessível.
+
 ## 0.4.0
 
 - Adicionada declaração explícita de `tools` no frontmatter de todos os comandos, incluindo aliases VS Code (`read`, `edit`, `execute`, `search`, `agent`, `web`, `askQuestions`), ferramentas específicas (`todo`, `memory` em `implement`) e `microsoft/azure-devops-mcp/*` nas etapas que interagem com Azure DevOps.
