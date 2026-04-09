@@ -26,6 +26,8 @@ Este documento é a fonte de verdade textual do fluxo AIDD dentro do MRV AIDD Pl
 - [Paralelismo real](#paralelismo-real)
 - [Hotfix como exceção](#hotfix-como-exceção)
 - [Anti-patterns](#anti-patterns)
+- [Referências conceituais](#referências-conceituais)
+- [Alinhamento com referências externas](#alinhamento-com-referências-externas)
 - [Como usar este acervo](#como-usar-este-acervo)
 
 ---
@@ -109,12 +111,48 @@ O fluxo não termina em merge. Ele volta para o flywheel de melhoria, ajustando 
 
 ## Personas e responsabilidades
 
+### Visão por persona
+
 | Persona    | Entrada principal                    | Responsabilidade                                                                                    | Saída esperada                               |
 | ---------- | ------------------------------------ | --------------------------------------------------------------------------------------------------- | -------------------------------------------- |
+| **UX**     | Problema, dores, hipóteses           | Conduzir M1-M5, construir protótipos, mapear jornadas e entregar os 4 artefatos do Gate Handover   | Artefatos M5 validados                       |
+| **Stakeholder** | Metas da diretoria, restrições  | Participar de M1-M2, validar jornada e protótipos, aceitar handover                                | Alinhamento estratégico                      |
+| **Arquiteto** | Contexto Geral (M5)              | Desenhar diagrama C4 e definir `constitution.md`                                                    | C4 + constitution.md                         |
 | **PO**     | Feature de upstream                  | Confirmar objetivo de negócio, gaps funcionais, bordas de escopo, prioridades e readiness funcional | Spec claro, validado e publicável            |
 | **TL**     | Spec suficientemente clarificado     | Fechar o recorte técnico, contratos, fundação compartilhada, riscos e readiness de execução         | `plan.md`, estratégia e commitment           |
 | **Dev**    | US assumida com ownership claro      | Executar o recorte certo, preservar rastreabilidade e validar a entrega                             | Branch da US, PR da US, checks verdes        |
 | **Agente** | Spec, plan, tasks e escopo explícito | Operar o _how loop_ sem redefinir o problema nem expandir escopo indevidamente                      | Artefatos e alterações aderentes ao contexto |
+
+### Participação por fase
+
+| Persona | UX Upstream (M1-M5) | Gate Handover + Arquitetura | Ciclo Features SDD | Entrega SDD |
+| --- | --- | --- | --- | --- |
+| **UX** | Conduz M1-M5, constrói protótipos, mapeia jornadas | Entrega artefatos, valida checklist | — | — |
+| **Stakeholder** | Participa de M1-M2, valida jornada e protótipos | Aceita handover | — | — |
+| **Arquiteto** | Observa restrições técnicas (M4) | Desenha C4 + constitution.md | Referência técnica | — |
+| **PO** | Participa de M2-M5, valida prioridades | Valida completude do handover | Escreve features (/specify), valida (/clarify), publica (/sincronizar) | Valida spec |
+| **TL** | Observa viabilidade (M4-M5) | — | Valida features (/clarify) | Fecha plan, contratos |
+| **Dev** | — | — | — | Assume US, executa /tasks + /implement |
+| **Agente** | Input IA nos módulos M1-M5 | — | Gera USs no /specify, executa /sincronizar | Opera /tasks + /implement + checks |
+
+**Regra invariante**: O agente nunca decide. Ele gera, executa e valida dentro do harness. Decisões são das pessoas. Isso preserva o princípio **humans in the loop** do AIDD.
+
+### Modelo de assistência de IA
+
+| Etapa | Papel humano | Papel do agente | Modelo |
+| --- | --- | --- | --- |
+| M1-M5 (UX) | UX conduz workshops e prototipa | IA recebe transcrições, atas, resumos e gera inputs | **Assistente** |
+| Gate Handover | PO valida completude | — | — |
+| Arquitetura | Arquiteto desenha C4 + constitution | IA pode auxiliar na geração de rascunhos | **Assistente** |
+| /specify | PO escreve a feature | Agente gera USs a partir da feature escrita | **Gerador** |
+| /clarify | PO + TL validam e refinam | Agente identifica gaps e edge cases | **Provocador** |
+| /sincronizar | PO decide publicar | Agente grava no Azure DevOps | **Executor** |
+| /plan | TL fecha recorte técnico | Agente estrutura contratos e riscos | **Estruturador** |
+| /tasks | Dev assume US | Agente decompõe em tarefas acionáveis | **Decompositor** |
+| /implement | Dev valida resultado | Agente implementa a US assumida | **Implementador** |
+| Flywheel | Time analisa feedback | Agente identifica padrões de retrabalho | **Analista** |
+
+**Harness**: Templates, checklists, gates, C4 e constitution.md são o harness. O agente opera exclusivamente dentro dele. As pessoas projetam o _why loop_.
 
 ---
 
@@ -122,19 +160,134 @@ O fluxo não termina em merge. Ele volta para o flywheel de melhoria, ajustando 
 
 ### UX Upstream (M1-M5) — equipe de UX conduz
 
-1. **M1 · O Mergulho (Discovery)** — reunião com sponsors, download do problema, levantamento de dores. Output: Matriz CSD + Diagnóstico de Dores.
-2. **M2 · O Propósito (Estratégia)** — missão, OKRs, alinhamento de valor. Output: Visão Produto + 3 OKRs + Hipóteses.
-3. **M3 · Olhar Usuário (Modelagem)** — personas, mapa de empatia, jornada As-Is/To-Be. Output: Protopersona + Jornada To-Be Visual.
-4. **M4 · Mãos à Obra (Design Sprint)** — brainstorming, USM, priorização MVP. Output: USM (Épicos/Features/Stories) + Fibonacci.
-5. **M5 · Do Mapa à Tela (Prototipação)** — fluxos de tela, hierarquia de informação, happy path. Output: Contexto Geral, Contexto do Épico, Protótipo HiFi (Figma), Feature Framing (lista).
+A equipe de UX conduz os módulos de upstream usando frameworks consolidados de Design Thinking, Lean UX e Design Sprint.
+
+#### M1 · O Mergulho (Discovery)
+
+| Item | Conteúdo |
+| --- | --- |
+| **Atividades** | Reunião com Sponsors, Download do Problema, Levantamento de Dores |
+| **Framework** | Design Thinking (Empatia) |
+| **Discussão central** | "Quanto conhecemos o problema?" |
+| **Input IA** | Transcrições + Atas + Premissas |
+| **Output** | Matriz CSD + Diagnóstico de Dores |
+| **Gate** | Contexto de Dores — equipe tem entendimento compartilhado do problema |
+
+#### M2 · O Propósito (Estratégia)
+
+| Item | Conteúdo |
+| --- | --- |
+| **Atividades** | Missão + OKRs, Alinhamento de Valor |
+| **Framework** | Golden Circle + Lean UX |
+| **Discussão central** | "Por que existimos?" |
+| **Input IA** | Resumo M1 + Metas da Diretoria |
+| **Output** | Visão do Produto + 3 OKRs + Hipóteses |
+| **Gate** | Estratégia Validada — visão e métricas alinhadas com sponsors |
+
+#### M3 · Olhar Usuário (Modelagem)
+
+| Item | Conteúdo |
+| --- | --- |
+| **Atividades** | Personas + Mapa de Empatia, Jornada As-Is / To-Be |
+| **Framework** | User Centered Design |
+| **Discussão central** | "Quem é e qual seu medo?" |
+| **Input IA** | Insights M2 + Pesquisas |
+| **Output** | Protopersona + Jornada To-Be Visual |
+| **Gate** | Jornada Humanizada — jornada do usuário está mapeada e validada |
+
+#### M4 · Mãos à Obra (Design Sprint)
+
+| Item | Conteúdo |
+| --- | --- |
+| **Atividades** | Brainstorming + User Story Mapping, Priorização MVP |
+| **Framework** | Lean Inception + Design Sprint |
+| **Discussão central** | "O que é essencial para o MVP?" |
+| **Input IA** | Jornada M3 + Restrições Técnicas |
+| **Output** | USM (Épicos / Features / Stories) + Fibonacci |
+| **Gate** | Backlog Priorizado — épicos e features fatiados e priorizados |
+
+#### M5 · Do Mapa à Tela (Prototipação)
+
+| Item | Conteúdo |
+| --- | --- |
+| **Atividades** | Fluxos de Tela, Hierarquia de Informação, Happy Path |
+| **Framework** | Agile Prototyping |
+| **Discussão central** | "Como reduzir carga cognitiva?" |
+| **Input IA** | USM M4 + Design System + APIs |
+| **Output** | **4 artefatos formais** (ver tabela abaixo) |
+| **Gate** | Protótipo Validado — protótipo HiFi aprovado pelos stakeholders |
+
+**Os 4 artefatos de saída do M5:**
+
+| Artefato | Descrição | Quem consome |
+| --- | --- | --- |
+| **Contexto Geral** | Visão consolidada do produto, problema, OKRs e decisões estratégicas de M1 a M5 | Time de Arquitetura (para C4 + constitution.md) |
+| **Contexto do Épico** | Detalhamento do épico: objetivo, atores, regras de negócio, fronteiras, dependências | PO (referência no /specify) |
+| **Protótipo HiFi (Figma)** | Protótipo de alta fidelidade no Figma, acessível via link | PO (referência no /specify via MCP) |
+| **Feature Framing (lista)** | Lista das features candidatas do épico, com objetivo, atores e prioridade | PO (escolhe 1 feature por vez para /specify) |
+
+> **Nota sobre Feature Framing**: Feature Framing é uma convenção de board (lista cadastrada no Épico do Azure DevOps), não um template do Spec Kit. Cada item deve conter no mínimo: nome da feature, objetivo, atores envolvidos e prioridade (definida no M4/M5 com Fibonacci). O PO consome essa lista sequencialmente ao iniciar cada ciclo de `/specify`.
 
 ### Gate Handover: UX → SDD
 
-1. **Gate Handover** — gravado no épico do Azure DevOps. Checklist: ✓ Contexto Geral, ✓ Contexto do Épico, ✓ Protótipo HiFi (Figma link), ✓ Feature Framing (lista).
+O Gate Handover é o ponto formal de transição entre o upstream (UX) e o downstream (SDD). Ele é **gravado no Épico do Azure DevOps** como checklist.
+
+**Checklist:**
+
+- ✓ Contexto Geral — disponível e referenciado no épico do board
+- ✓ Contexto do Épico — cadastrado no épico do board
+- ✓ Protótipo HiFi (Figma) — link funcional compartilhado
+- ✓ Feature Framing (lista) — cadastrada no épico do board
+
+**Regras:**
+
+- O Gate Handover só é considerado completo quando os 4 artefatos estão disponíveis.
+- O PO valida a completude antes de iniciar o ciclo de features.
+- Se algum artefato estiver incompleto, o PO devolve à equipe de UX com indicação clara do gap.
+
+**Convenções de board (Azure DevOps):**
+
+- **Contexto Geral**: cadastrado como campo ou anexo no épico.
+- **Contexto do Épico**: cadastrado no corpo ou campo dedicado do épico.
+- **Protótipo HiFi (Figma)**: link funcional registrado no épico.
+- **Feature Framing (lista)**: cadastrada no épico junto com o Contexto do Épico.
+
+O PO verifica a presença dos 4 itens no épico antes de iniciar `/specify`. Não há automação — é validação humana.
 
 ### Arquitetura
 
-1. **C4 + constitution.md** — time de Arquitetura usa o Contexto Geral para desenhar o diagrama C4 e definir `constitution.md`.
+Após o Gate Handover e **antes** do PO iniciar a escrita de features, o time de Arquitetura atua usando o Contexto Geral como input.
+
+| Item | Conteúdo |
+| --- | --- |
+| **Input** | Contexto Geral (saída de M5, via Gate Handover) |
+| **Quem** | Time de Arquitetura |
+| **Atividade** | Desenhar diagrama C4 e definir a constitution.md |
+| **Output** | Diagrama C4 + `constitution.md` |
+| **Consumidor** | /plan (referência técnica), /specify (restrições arquiteturais), devs (guardrails) |
+
+**Diagrama C4** — posiciona o sistema no ecossistema (Container level): containers envolvidos (APIs, frontend, bancos, filas, integrações), relacionamentos entre containers e sistemas externos com boundaries.
+
+**constitution.md** — artefato nativo do Spec Kit, gerenciado pelo comando `/speckit.constitution`. Define princípios e restrições técnicas: stack e versões, padrões de API, autenticação/autorização, convenções de código e testes, limites de performance/SLA, dependências externas e guardrails para o agente. O Spec Kit gerencia com versionamento semântico — não é necessário criar template customizado.
+
+**Relação entre C4 e constitution.md:**
+
+| Aspecto | constitution.md | Diagrama C4 |
+| --- | --- | --- |
+| **Natureza** | Princípios abstratos e estáveis | Estrutura concreta do sistema |
+| **Escopo** | Repositório inteiro | Épico ou produto |
+| **Evolução** | Muda quando princípios mudam | Muda quando topologia muda |
+| **Gerência** | `/speckit.constitution` (nativo) | Time de Arquitetura (manual) |
+
+A constitution pode ter um princípio que **aponta** para o C4 (ex: "A topologia de containers segue o diagrama C4 em `.specify/memory/`"), mas o C4 **não deve ser incorporado** dentro da constitution. Ambos ficam em `.specify/memory/` e evoluem de forma independente.
+
+**Como executar:**
+
+1. O Arquiteto desenha o diagrama C4 (Container level) e salva em `.specify/memory/` do repositório consumidor.
+2. O Arquiteto executa `/speckit.constitution` usando o Contexto Geral como input.
+3. Se necessário, adiciona um princípio na constitution referenciando o C4.
+
+**Regra**: O passo de Arquitetura **não bloqueia** a escrita de features — mas features escritas antes da conclusão podem precisar de revisão se houver restrições arquiteturais não previstas. Na prática, o ideal é concluir Arquitetura antes do primeiro `/specify`.
 
 ### Downstream Negócio — Ciclo de Features (repete 5-8x por épico)
 
@@ -158,8 +311,6 @@ O fluxo não termina em merge. Ele volta para o flywheel de melhoria, ajustando 
 ### Flywheel
 
 1. **Flywheel** — feedback do delivery retroalimenta o harness SDD e os módulos UX upstream.
-
-Para detalhamento do fluxo integrado completo, incluindo os módulos M1-M5, Gate Handover e passo de Arquitetura, veja [proposta-upstream-completo.md](./proposta-upstream-completo.md).
 
 ---
 
@@ -213,6 +364,24 @@ A definição textual oficial do processo é esta página. O diagrama apoia a le
 | Branch `feature/<feature>/usN` | Isolamento operacional da US | Execução |
 | PR da US | Integração na branch da feature | Execução |
 | Aprendizados de retro e ajuste | Feed do flywheel | Melhoria contínua |
+
+### Cadeia de dependência
+
+| Artefato | Depende de | Alimenta |
+| --- | --- | --- |
+| Matriz CSD (M1) | Reunião sponsors | Visão Produto (M2) |
+| Visão Produto + OKRs (M2) | M1 | Personas + Jornada (M3) |
+| Protopersona + Jornada (M3) | M2 | USM (M4) |
+| USM + Fibonacci (M4) | M3 | Protótipo + Feature Framing (M5) |
+| Contexto Geral (M5) | M1-M4 acumulados | Diagrama C4 + constitution.md |
+| Contexto do Épico (M5) | M4 + M5 | /specify (referência) |
+| Protótipo HiFi (M5) | M4 | /specify (link Figma via MCP) |
+| Feature Framing (M5) | M4 | PO escolhe features para /specify |
+| Diagrama C4 + constitution.md | Contexto Geral | /plan, /specify (restrições), devs |
+| `spec.md` | Feature Framing + Contexto Épico + Figma + C4 | `plan.md`, Board |
+| Board | `spec.md` validado (/sincronizar: Épico → Feature → USs) | Rastreabilidade |
+| `plan.md` | `spec.md` validado + C4 + constitution.md | `tasks.md` |
+| `tasks.md` | `plan.md` + `spec.md` | `/implement` |
 
 ---
 
@@ -308,13 +477,77 @@ Hotfix fica fora do fluxo SDD normal.
 
 ## Anti-patterns
 
-- Reescrever a feature do upstream em vez de clarificar.
-- Usar o board como fonte funcional primária.
-- Rodar `/tasks` sem US assumida e sem escopo explícito.
-- Deixar o agente decompor a feature inteira por falta de recorte.
-- Misturar fundação compartilhada com várias USs sem registrar o desbloqueio.
-- Abrir PR de uma US direto para `main`.
-- Tratar hotfix como se fosse o caminho padrão.
+### No upstream (UX M1-M5)
+
+| Anti-pattern | Por que é perigoso |
+| --- | --- |
+| Pular módulos (M1 direto para M4) | Fatiamento sem entendimento do problema gera features desconectadas |
+| Protótipo sem validação com stakeholder | Fluxos bonitos que ninguém testou; jornada não validada |
+| Feature Framing sem priorização | PO recebe lista sem critério; dificulta escolha no /specify |
+| Contexto Geral superficial | Arquitetura e constitution ficam genéricos; restrições não previstas |
+
+### No Gate Handover
+
+| Anti-pattern | Por que é perigoso |
+| --- | --- |
+| Handover sem checklist formal | Artefatos faltantes descobertos no meio do /specify |
+| Protótipo sem link acessível | PO não consegue referenciar Figma no /specify |
+| Feature Framing não cadastrado no board | Perda de rastreabilidade entre features e épico |
+
+### No ciclo de features
+
+| Anti-pattern | Por que é perigoso |
+| --- | --- |
+| /specify sem referenciar Contexto do Épico | Features nascem desconectadas do épico |
+| /specify sem link do Figma | USs geradas sem base visual; gaps de interface |
+| /clarify sem TL presente | Edge cases técnicos não identificados |
+| Features escritas antes da Arquitetura | Restrições arquiteturais não previstas geram retrabalho |
+
+### Na entrega SDD
+
+| Anti-pattern | Por que é perigoso |
+| --- | --- |
+| Reescrever a feature do upstream em vez de clarificar | Perde o trabalho de discovery do UX |
+| Usar o board como fonte funcional primária | Board deve espelhar o spec, não substituí-lo |
+| Rodar `/tasks` sem US assumida e sem escopo explícito | Agente decompõe a feature inteira |
+| Deixar o agente decompor a feature inteira por falta de recorte | Risco operacional de escopo solto |
+| Misturar fundação compartilhada com várias USs sem registrar o desbloqueio | Paralelismo inseguro |
+| Abrir PR de uma US direto para `main` | Quebra isolamento da branch integradora |
+| Tratar hotfix como se fosse o caminho padrão | Hotfix é exceção, não fluxo normal |
+
+---
+
+## Referências conceituais
+
+| Técnica / Referência | Autor | Onde aparece no fluxo |
+| --- | --- | --- |
+| **Design Thinking** | Design Council / IDEO | M1 (Empatia, divergir-convergir) |
+| **Golden Circle** | Simon Sinek | M2 (Why → How → What) |
+| **Lean UX** | Jeff Gothelf | M2 (Hipóteses, OKRs orientados a outcome) |
+| **User Centered Design** | Don Norman / ISO 9241 | M3 (Personas, jornada) |
+| **Lean Inception** | Paulo Caroli | M4 (Visão, personas, features, sequenciador) |
+| **Design Sprint** | Jake Knapp (Google Ventures) | M4 (Prototipação rápida, validação) |
+| **User Story Mapping** | Jeff Patton | M4 (Backbone de atividades + stories) |
+| **Agile Prototyping** | — | M5 (HiFi, happy path, fluxos) |
+| **Spec-Driven Development** | GitHub / Spec Kit | Ciclo Features + Entrega SDD |
+| **BDD** | Dan North / Matt Wynne | /clarify (exemplos, critérios de aceite) |
+| **C4 Model** | Simon Brown | Passo de Arquitetura |
+| **Harness Engineering** | Kief Morris / Martin Fowler | Modelo geral — templates, gates, guardrails |
+| **Humans in the loop** | AIDD / Fowler-Morris | Princípio invariante em todo o fluxo |
+
+---
+
+## Alinhamento com referências externas
+
+| Princípio | Como aparece no fluxo integrado |
+| --- | --- |
+| **Double Diamond** (Design Council) | M1-M3 são o primeiro diamante (divergir → convergir no problema). M4-M5 são o segundo diamante (divergir em soluções → convergir em protótipos validados). |
+| **4 Riscos** (Cagan/SVPG) | Valor e usabilidade validados no upstream (M1-M5). Viabilidade e negócio validados no passo de Arquitetura e /clarify. |
+| **Opportunity Solution Tree** (Teresa Torres) | M2 define outcomes, M3 mapeia oportunidades, M4 gera soluções, M5 valida. |
+| **User Story Mapping** (Jeff Patton) | M4 usa USM como backbone. Feature Framing é o slice priorizado. |
+| **Harness Engineering** (Morris/Fowler) | Templates + checklists + gates + C4 + constitution são o harness. O agente opera dentro dele. As pessoas projetam o _why loop_. |
+| **Flywheel de melhoria** | Feedback do delivery retroalimenta tanto o harness SDD quanto os módulos UX upstream. |
+| **Humans in the loop** (AIDD) | Nenhuma decisão de fluxo é delegada ao agente. UX conduz upstream, PO+TL conduzem features, devs conduzem entrega. O agente opera com guardrails. |
 
 ---
 
@@ -323,7 +556,6 @@ Hotfix fica fora do fluxo SDD normal.
 | Para... | Abra |
 | --- | --- |
 | Visão geral da plataforma | [../../README.md](../../README.md) |
-| Fluxo integrado UX + Arquitetura + SDD | [proposta-upstream-completo.md](./proposta-upstream-completo.md) |
 | Instalar em repositório consumidor | [../guia-instalacao.md](../guia-instalacao.md) |
 | Exemplos e convenções reutilizáveis de artefatos | [modelos-operacionais.md](./modelos-operacionais.md) |
 | Cenários com múltiplos devs e trilhas separadas | [colaboracao-e-paralelismo.md](./colaboracao-e-paralelismo.md) |
