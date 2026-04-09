@@ -78,10 +78,12 @@ Ao instalar, a extension registra automaticamente seus hooks em `.specify/extens
 
 ### `/speckit.mrv-aidd-producao.sincronizar-us-devops`
 
-Use quando precisar sincronizar histórias do spec com a Feature pai do Azure DevOps.
+Use quando precisar sincronizar histórias do spec com o Azure DevOps, criando a hierarquia Épico → Feature → USs.
 
 - Suporta `--dry-run` para validar rastreabilidade, leitura, deduplicação e ações previstas sem gravar work items.
-- Cria ou atualiza histórias de usuário filhas.
+- Resolve o Épico pai no Azure DevOps.
+- Cria a Feature como filha do Épico quando ela não existe; reutiliza quando já existe.
+- Cria ou atualiza histórias de usuário como filhas da Feature.
 - Escreve no `spec.md` o campo `ID da US no Azure DevOps` em cada história sincronizada.
 
 ### `/speckit.mrv-aidd-producao.configurar-us USn`
@@ -106,9 +108,8 @@ Use quando a US atual estiver pronta para sair da branch de trabalho e seguir pa
 
 ## Pré-requisitos
 
-- O spec ativo contém o link ou o ID da Feature pai na seção `Rastreabilidade Azure DevOps`.
+- O spec ativo contém o link ou o ID do Épico pai na seção `Rastreabilidade Azure DevOps`.
 - O usuário está autenticado e o servidor MCP do Azure DevOps está configurado no ambiente do agente.
-- A Feature pai já existe no Azure DevOps.
 - Para a etapa de PR, os MCPs do GitHub precisam estar disponíveis no ambiente.
 
 ---
@@ -117,6 +118,7 @@ Use quando a US atual estiver pronta para sair da branch de trabalho e seguir pa
 
 | Artefato / Efeito                       | Quando                       |
 | --------------------------------------- | ---------------------------- |
+| Feature criada no Azure DevOps          | Após `sincronizar-us-devops` |
 | Work items filhos no Azure DevOps       | Após `sincronizar-us-devops` |
 | IDs de work items escritos no `spec.md` | Após `sincronizar-us-devops` |
 | Branch `feature/<feature>/usN`          | Após `configurar-us`         |

@@ -101,6 +101,9 @@ Instale apenas um preset por repositório consumidor.
 - Preserva histórias owned pelo backend.
 - Gera handoff quando necessário.
 - Mantém mensagens e artefatos em pt-BR.
+- No `/specify`, exige seleção da feature do Feature Framing e conduz entrevista progressiva com o PO.
+- No `/plan`, referencia o diagrama C4 de `.specify/memory/` quando disponível.
+- No `/sincronizar`, cria a Feature como filha do Épico e as USs como filhas da Feature.
 
 ---
 

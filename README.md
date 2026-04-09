@@ -79,9 +79,11 @@ O Spec Kit é o toolkit open source do GitHub que fornece a CLI `specify`, coman
 
 ## 🔄 Fluxo de Trabalho MRV AIDD
 
-![Diagrama do fluxo MRV AIDD](./docs/aidd/diagrama-aidd.png)
+![Diagrama do fluxo MRV AIDD integrado](./docs/aidd/diagrama-aidd-integrado.png)
 
-O fluxo MRV AIDD não parte do código. Ele parte de clarificação, definição de artefatos e recorte de escopo.
+> **Diagrama editável**: [diagrama-aidd-integrado.drawio](./docs/aidd/diagrama-aidd-integrado.drawio) (abra no draw.io / VS Code)
+
+O fluxo MRV AIDD não parte do código. Ele parte de discovery UX, clarificação, definição de artefatos e recorte de escopo.
 
 | #   | Etapa                                                                                          | Quem         |
 | --- | ---------------------------------------------------------------------------------------------- | ------------ |
@@ -91,8 +93,8 @@ O fluxo MRV AIDD não parte do código. Ele parte de clarificação, definição
 | 4   | **Protótipo validado** — upstream fecha a referência funcional de entrada                      | Upstream     |
 | 5   | **Feature framing** — objetivo, métricas, NFRs e dependências são consolidados                 | PO           |
 | 6   | **Recebimento do downstream** — a feature chega como entrada principal do trabalho             | PO → Dev     |
-| 7   | `/speckit.specify` + `/speckit.clarify` — downstream fecha gaps e gera `spec.md` testável      | Dev + Agente |
-| 8   | **Publicação no board** — feature e USs derivadas do spec são sincronizadas                    | Dev + Agente |
+| 7   | `/speckit.specify` + `/speckit.clarify` — PO indica a feature do Feature Framing, conduz entrevista progressiva com o agente e fecha gaps. Gera `spec.md` testável | Dev + Agente |
+| 8   | **Publicação no board** — /sincronizar resolve o Épico, cria a Feature (se não existir) e grava USs como filhas | Dev + Agente |
 | 9   | **Ready para técnico** — spec está validado, publicado e rastreável                            | TL           |
 | 10  | `/speckit.plan` — TL fecha o recorte técnico e os contratos da feature                         | TL + Agente  |
 | 11  | **Refinamento técnico** — devs e TL alinham riscos, dependências e estratégia                  | TL + Dev     |
@@ -137,7 +139,7 @@ Para detalhes de gates, critérios de passagem, paralelismo e hotfix, veja [docs
 | ------------------------------ | ------------------------------------ | ------------------------------ |
 | Feature de upstream            | Entrada de negócio                   | Upstream                       |
 | `spec.md`                      | Verdade funcional consolidada        | Downstream (após clarificação) |
-| Board                          | Espelho operacional do spec validado | Derivado do spec               |
+| Board                          | Espelho operacional: Épico → Feature → USs | Derivado do spec               |
 | `plan.md`                      | Verdade técnica consolidada          | Planejamento técnico           |
 | `tasks.md`                     | Detalhamento operacional da US       | Derivado do plan e do spec     |
 | Branch `feature/<feature>/usN` | Isolamento operacional da US         | Execução                       |
@@ -348,7 +350,7 @@ Após instalar a base do Spec Kit mais os pacotes MRV, os seguintes comandos fic
 
 | Comando                                            | O que faz                                                                           |
 | -------------------------------------------------- | ----------------------------------------------------------------------------------- |
-| `/speckit.mrv-aidd-producao.sincronizar-us-devops` | Sincroniza histórias do spec com a Feature pai no Azure DevOps via MCP              |
+| `/speckit.mrv-aidd-producao.sincronizar-us-devops` | Resolve o Épico, cria a Feature como filha do Épico e sincroniza USs do spec como filhas da Feature no Azure DevOps |
 | `/speckit.mrv-aidd-producao.configurar-us USn`     | Cria ou reutiliza a branch `feature/<feature>/usN` e prepara o contexto operacional |
 | `/speckit.mrv-aidd-producao.terminar-us USn`       | Valida, commita, faz push e abre PR para a branch base da feature                   |
 

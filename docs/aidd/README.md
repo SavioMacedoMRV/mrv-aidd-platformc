@@ -120,38 +120,61 @@ O fluxo não termina em merge. Ele volta para o flywheel de melhoria, ajustando 
 
 ## Workflow ponta a ponta
 
-1. **Imersão no problema** — PO, UX, arquitetura e TL alinham o problema e o objetivo.
-2. **Mapeamento de features** — impacto, riscos, jornada e hipóteses ficam visíveis.
-3. **Protótipos UX** — fluxos, validações e fronteiras de escopo são amadurecidos.
-4. **Protótipo validado** — o upstream fecha a referência funcional de entrada.
-5. **Feature framing** — objetivo, métricas, NFRs e dependências são consolidados.
-6. **Recebimento do downstream** — a feature chega como entrada principal do trabalho.
-7. `/speckit.specify` e `/speckit.clarify` — o downstream fecha gaps e transforma a entrada em `spec.md` testável.
-8. **Publicação no board** — a feature e as USs derivadas do spec são sincronizadas e rastreadas.
-9. **Ready para técnico** — o spec está validado, publicado e rastreável.
-10. `/speckit.plan` — o TL fecha o recorte técnico e os contratos da feature.
-11. **Refinamento técnico** — devs e TL alinham riscos, dependências e estratégia.
-12. **Planning e readiness** — as USs ficam prontas para assunção operacional.
-13. **US assumida** — um dev ou par assume ownership explícito de uma US.
-14. `/speckit.mrv-aidd-producao.configurar-us USn` — a branch da US e o contexto operacional são preparados.
-15. `/speckit.tasks USn` — a US é detalhada em tarefas acionáveis.
-16. `/speckit.implement USn` — o agente implementa somente a US assumida.
-17. `/speckit.mrv-aidd-producao.terminar-us USn` — a entrega é validada, commitada e enviada para PR.
-18. **Validação e merge** — a branch da US retorna para a branch integradora da feature.
-19. **Flywheel** — feedback do delivery e do processo volta para melhoria da plataforma e do backlog.
+### UX Upstream (M1-M5) — equipe de UX conduz
+
+1. **M1 · O Mergulho (Discovery)** — reunião com sponsors, download do problema, levantamento de dores. Output: Matriz CSD + Diagnóstico de Dores.
+2. **M2 · O Propósito (Estratégia)** — missão, OKRs, alinhamento de valor. Output: Visão Produto + 3 OKRs + Hipóteses.
+3. **M3 · Olhar Usuário (Modelagem)** — personas, mapa de empatia, jornada As-Is/To-Be. Output: Protopersona + Jornada To-Be Visual.
+4. **M4 · Mãos à Obra (Design Sprint)** — brainstorming, USM, priorização MVP. Output: USM (Épicos/Features/Stories) + Fibonacci.
+5. **M5 · Do Mapa à Tela (Prototipação)** — fluxos de tela, hierarquia de informação, happy path. Output: Contexto Geral, Contexto do Épico, Protótipo HiFi (Figma), Feature Framing (lista).
+
+### Gate Handover: UX → SDD
+
+1. **Gate Handover** — gravado no épico do Azure DevOps. Checklist: ✓ Contexto Geral, ✓ Contexto do Épico, ✓ Protótipo HiFi (Figma link), ✓ Feature Framing (lista).
+
+### Arquitetura
+
+1. **C4 + constitution.md** — time de Arquitetura usa o Contexto Geral para desenhar o diagrama C4 e definir `constitution.md`.
+
+### Downstream Negócio — Ciclo de Features (repete 5-8x por épico)
+
+1. **PO escolhe 1 feature** — do Feature Framing cadastrado no épico do board.
+2. `/speckit.specify` — PO indica a feature do Feature Framing e conduz entrevista progressiva com o agente (objetivo, atores, regras de negócio, fronteiras, dependências, prioridade). O agente pergunta apenas o que falta, uma rodada por vez, e encerra assim que houver informação suficiente. Gera `spec.md` com USs. Referências obrigatórias: Contexto do Épico + link Figma via MCP.
+3. `/speckit.clarify` — PO + Tech Lead validam e refinam feature + USs. Edge cases, critérios.
+4. `/speckit.mrv-aidd-producao.sincronizar-us-devops` — resolve o Épico pai no Azure DevOps, cria a Feature como filha do Épico (se não existir) e grava USs como filhas da Feature.
+5. **Ready para técnico** — spec validado, publicado e rastreável no board.
+
+### SDD + Entrega
+
+1. `/speckit.plan` — TL fecha o recorte técnico. Referencia C4 + constitution.md.
+2. **Refinamento técnico** — devs e TL alinham riscos, dependências e estratégia.
+3. **US assumida** — um dev ou par assume ownership explícito de uma US.
+4. `/speckit.mrv-aidd-producao.configurar-us USn` — a branch da US e o contexto operacional são preparados.
+5. `/speckit.tasks USn` — a US é detalhada em tarefas acionáveis.
+6. `/speckit.implement USn` — o agente implementa somente a US assumida.
+7. `/speckit.mrv-aidd-producao.terminar-us USn` — a entrega é validada, commitada e enviada para PR.
+8. **Validação e merge** — a branch da US retorna para a branch integradora da feature.
+
+### Flywheel
+
+1. **Flywheel** — feedback do delivery retroalimenta o harness SDD e os módulos UX upstream.
+
+Para detalhamento do fluxo integrado completo, incluindo os módulos M1-M5, Gate Handover e passo de Arquitetura, veja [proposta-upstream-completo.md](./proposta-upstream-completo.md).
 
 ---
 
 ## Diagrama do fluxo
 
-O diagrama abaixo representa visualmente as quatro macro-áreas do fluxo AIDD:
+O diagrama abaixo representa visualmente as macro-áreas do fluxo AIDD integrado:
 
-- **Upstream / Descoberta** — etapas 1 a 5
-- **Downstream / Negócio** — etapas 6 a 9
-- **SDD + Entrega** — etapas 10 a 18
-- **Flywheel de melhoria** — etapa 19
+- **UX Upstream (M1-M5)** — módulos 1 a 5, conduzidos pela equipe de UX
+- **Gate Handover** — transição formal UX → SDD com 4 artefatos
+- **Arquitetura** — C4 + constitution.md
+- **Downstream Negócio** — ciclo de features (/specify → /clarify → /sincronizar)
+- **SDD + Entrega** — /plan → /tasks → /implement → terminar-us
+- **Flywheel de melhoria** — retroalimenta upstream e harness
 
-![Diagrama do fluxo MRV AIDD](./diagrama-aidd.png)
+O diagrama integrado está em [diagrama-aidd-integrado.drawio](./diagrama-aidd-integrado.drawio).
 
 A definição textual oficial do processo é esta página. O diagrama apoia a leitura, não substitui.
 
@@ -159,27 +182,37 @@ A definição textual oficial do processo é esta página. O diagrama apoia a le
 
 ## Gates oficiais
 
-| Gate                              | O que garante                                                         |
-| --------------------------------- | --------------------------------------------------------------------- |
-| **Protótipo da feature validado** | Fecha a entrada de descoberta                                         |
-| **Feature framing fechado**       | Consolida objetivo, métricas, NFRs e dependências antes do downstream |
-| **Ready para técnico**            | Garante que o spec está validado, publicado e rastreável no board     |
-| **Escopo explícito da US**        | Garante que o _how loop_ não opera com escopo solto                   |
+| Gate | Transição | O que garante |
+| --- | --- | --- |
+| **Contexto de Dores** | M1 → M2 | Equipe tem entendimento compartilhado do problema |
+| **Estratégia Validada** | M2 → M3 | Visão e métricas alinhadas com sponsors |
+| **Jornada Humanizada** | M3 → M4 | Jornada do usuário mapeada e validada |
+| **Backlog Priorizado** | M4 → M5 | Épicos e features fatiados com prioridade |
+| **Protótipo Validado** | M5 → Gate Handover | Protótipo HiFi aprovado, 4 artefatos prontos |
+| **Gate Handover** | UX → Arquitetura + SDD | 4 artefatos entregues e verificados no épico do board |
+| **Arquitetura pronta** | Arquitetura → Features | C4 + constitution.md disponíveis |
+| **Ready para técnico** | Features → SDD Entrega | Spec validado, publicado e rastreável no board |
+| **Escopo explícito da US** | SDD → /tasks + /implement | O _how loop_ não opera com escopo solto |
 
 ---
 
 ## Artefatos oficiais
 
-| Artefato                       | Papel no fluxo                       | Fonte de verdade                           |
-| ------------------------------ | ------------------------------------ | ------------------------------------------ |
-| Feature de upstream            | Entrada de negócio                   | Upstream                                   |
-| `spec.md`                      | Verdade funcional consolidada        | Downstream (após clarificação e validação) |
-| Board                          | Espelho operacional do spec validado | Derivado do spec                           |
-| `plan.md`                      | Verdade técnica consolidada          | Planejamento técnico                       |
-| `tasks.md`                     | Detalhamento operacional da US       | Derivado do plan e do spec                 |
-| Branch `feature/<feature>/usN` | Isolamento operacional da US         | Execução                                   |
-| PR da US                       | Integração na branch da feature      | Execução                                   |
-| Aprendizados de retro e ajuste | Feed do flywheel                     | Melhoria contínua                          |
+| Artefato | Papel no fluxo | Fonte de verdade |
+| --- | --- | --- |
+| Contexto Geral (M5) | Visão consolidada do produto | UX Upstream |
+| Contexto do Épico (M5) | Detalhamento do épico | UX Upstream (cadastrado no board) |
+| Protótipo HiFi (M5) | Referência visual (Figma link) | UX Upstream |
+| Feature Framing (M5) | Lista de features candidatas | UX Upstream (cadastrado no board) |
+| Diagrama C4 | Visão de containers e integrações | Arquitetura |
+| `constitution.md` | Princípios e restrições técnicas | Arquitetura |
+| `spec.md` | Verdade funcional consolidada | Downstream (após /specify + /clarify) |
+| Board | Épico → Feature → USs na hierarquia Azure DevOps | Derivado do spec (/sincronizar) |
+| `plan.md` | Verdade técnica consolidada | Planejamento técnico (/plan) |
+| `tasks.md` | Detalhamento operacional da US | Derivado do plan e do spec (/tasks) |
+| Branch `feature/<feature>/usN` | Isolamento operacional da US | Execução |
+| PR da US | Integração na branch da feature | Execução |
+| Aprendizados de retro e ajuste | Feed do flywheel | Melhoria contínua |
 
 ---
 
@@ -287,10 +320,12 @@ Hotfix fica fora do fluxo SDD normal.
 
 ## Como usar este acervo
 
-| Para...                                          | Abra                                                           |
-| ------------------------------------------------ | -------------------------------------------------------------- |
-| Visão geral da plataforma                        | [../../README.md](../../README.md)                             |
-| Instalar em repositório consumidor               | [../guia-instalacao.md](../guia-instalacao.md)                 |
-| Exemplos e convenções reutilizáveis de artefatos | [modelos-operacionais.md](./modelos-operacionais.md)           |
-| Cenários com múltiplos devs e trilhas separadas  | [colaboracao-e-paralelismo.md](./colaboracao-e-paralelismo.md) |
-| Prompts operacionais por etapa                   | [prompt-pack.md](./prompt-pack.md)                             |
+| Para... | Abra |
+| --- | --- |
+| Visão geral da plataforma | [../../README.md](../../README.md) |
+| Fluxo integrado UX + Arquitetura + SDD | [proposta-upstream-completo.md](./proposta-upstream-completo.md) |
+| Instalar em repositório consumidor | [../guia-instalacao.md](../guia-instalacao.md) |
+| Exemplos e convenções reutilizáveis de artefatos | [modelos-operacionais.md](./modelos-operacionais.md) |
+| Cenários com múltiplos devs e trilhas separadas | [colaboracao-e-paralelismo.md](./colaboracao-e-paralelismo.md) |
+| Prompts operacionais por etapa | [prompt-pack.md](./prompt-pack.md) |
+| Diagrama visual do fluxo integrado | [diagrama-aidd-integrado.drawio](./diagrama-aidd-integrado.drawio) |

@@ -180,15 +180,19 @@ feature AB#12345: expor endpoint de simulacao de parcelas
 
 ## Alinhamento com o diagrama oficial
 
-Para ficar coerente com o diagrama em [diagrama-aidd.png](./diagrama-aidd.png), os textos e exemplos devem preservar estes marcos:
+Para ficar coerente com o diagrama integrado em [diagrama-aidd-integrado.drawio](./diagrama-aidd-integrado.drawio), os textos e exemplos devem preservar estes marcos:
 
-- `Imersao no problema`
-- `Mapeamento de features`
-- `Prototipos UX`
-- `Prototipo da feature validado`
-- `Feature framing fechado`
-- `Ready para tecnico`
-- `Loop SDD de implementacao`
+- `M1 · O Mergulho (Discovery)`
+- `M2 · O Propósito (Estratégia)`
+- `M3 · Olhar Usuário (Modelagem)`
+- `M4 · Mãos à Obra (Design Sprint)`
+- `M5 · Do Mapa à Tela (Prototipação)`
+- `Gate Handover: UX → SDD`
+- `Arquitetura (C4 + constitution.md)`
+- `Downstream Negócio — Ciclo de Features`
+- `Ready para técnico`
+- `SDD + Entrega`
+- `Flywheel de melhoria`
 
 ---
 

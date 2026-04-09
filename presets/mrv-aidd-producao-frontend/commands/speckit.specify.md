@@ -32,6 +32,7 @@ Before proceeding, load the following skills by reading their SKILL.md files:
 ## MCP Prerequisites
 
 Before proceeding, verify that the required MCP servers are active:
+
 - **Azure DevOps MCP**: call `microsoft/azure-devops-mcp/core_list_projects` to confirm the server is reachable.
 - **Figma MCP**: call `com.figma.mcp/mcp/whoami` to confirm the server is reachable and the user is authenticated.
 - If any call fails or the tool is unavailable, **stop immediately** and tell the user to enable the corresponding MCP server in VS Code before retrying.
@@ -104,13 +105,34 @@ The text the user typed after `/speckit.specify` is the feature description.
 - Trate a feature do upstream como entrada principal, nao como verdade final; ela pode conter gaps funcionais relevantes.
 - O papel deste comando e clarificar, aprofundar e fechar esses gaps antes de consolidar a especificacao.
 - O `spec.md` gerado por este fluxo deve ser tratado como a fonte de verdade funcional consolidada da feature.
+- **Feature do Feature Framing**: o PO deve indicar qual feature da lista de Feature Framing (cadastrada no epico do board) ele quer especificar. Se o input nao mencionar a feature escolhida, use `vscode_askQuestions` para perguntar qual feature do Feature Framing sera trabalhada neste ciclo. Inclua na pergunta a orientacao de que o PO pode copiar o nome/objetivo da feature diretamente do board.
+- **Contexto do Epico**: o PO deve referenciar o Contexto do Epico disponivel no epico do Azure DevOps. Se o input nao mencionar o Contexto do Epico, use `vscode_askQuestions` para solicitar a URL ou ID do epico no board antes de prosseguir.
+- **Prototipo Figma**: o PO deve fornecer o link do prototipo de alta fidelidade no Figma. Use o MCP do Figma (`com.figma.mcp`) para acessar o contexto visual e gerar USs com base no prototipo. Se o link nao for fornecido no input, solicite via `vscode_askQuestions`.
+- Use o Contexto do Epico e o prototipo Figma como referencias primarias ao gerar user stories, cenarios e criterios de aceite.
+
+### Entrevista de complemento com o PO
+
+Se o prompt inicial do PO nao cobrir todos os aspectos funcionais necessarios, conduza uma entrevista progressiva via `vscode_askQuestions` **antes** de gerar o spec. Foque apenas no escopo funcional — aspectos tecnicos, edge cases e ambiguidades sao responsabilidade do `/clarify`.
+
+**Abordagem progressiva**: pergunte apenas o que falta, uma rodada por vez. Avalie cada resposta antes de decidir se a proxima pergunta ainda e necessaria. Nao faca todas as perguntas de uma vez.
+
+**Roteiro de referencia** (use apenas os itens ainda nao cobertos pelo input, Contexto do Epico ou prototipo Figma):
+
+1. **Objetivo da feature**: qual problema de negocio esta sendo resolvido? qual o resultado esperado para o usuario?
+2. **Atores envolvidos**: quem sao os usuarios ou sistemas que interagem com essa feature? ha perfis distintos?
+3. **Regras de negocio principais**: restricoes, limites, condicoes obrigatorias que o PO ja conhece.
+4. **Fronteiras explicitas**: o que esta fora do escopo desta feature? ha funcionalidades que nao devem ser incluidas?
+5. **Dependencias conhecidas**: ha features anteriores, APIs existentes ou fluxos de outras equipes dos quais esta feature depende?
+6. **Prioridade e urgencia**: qual a prioridade relativa dentro do epico? ha prazo externo?
+
+A cada resposta, reavalie: se a informacao recebida ja cobre itens seguintes do roteiro, pule-os. Encerre a entrevista assim que houver informacao suficiente para gerar o spec com qualidade.
+
 - Preserve `## Azure DevOps Traceability` quando houver contexto de Azure DevOps no input.
 - Este preset so pode criar ou atualizar historias de ownership `frontend`.
 - Se a demanda for puramente de backend, interrompa e direcione para o preset `mrv-aidd-producao-backend`.
-- Se o fluxo de frontend nao trouxer Figma, colete o link via `vscode_askQuestions` antes de finalizar a spec.
 - Para cada historia owned por este repositorio:
   - `**Ownership Scope**` deve permanecer `frontend`
-  - o titulo deve comecar com `[FRONT] `
+  - o titulo deve comecar com `[FRONT]`
   - `**Azure DevOps Tags**` deve usar `[FRONT]`
 - Preserve historias de escopo oposto verbatim quando estiverem marcadas por `**Ownership Scope**: backend`, `**Azure DevOps Tags**: [BACK]` ou titulo iniciado por `[BACK]`.
 - Quando houver dependencia de backend, registre em `## Backend Follow-up` em vez de criar historia owned pelo backend neste spec.
@@ -174,13 +196,34 @@ Given that feature description, do this:
 ## Regras adicionais do preset
 
 - Sempre que informacoes faltarem, estiverem ambiguas ou exigirem confirmacao, voce **DEVE** usar `vscode_askQuestions`.
+- **Feature do Feature Framing**: o PO deve indicar qual feature da lista de Feature Framing (cadastrada no epico do board) ele quer especificar. Se o input nao mencionar a feature escolhida, use `vscode_askQuestions` para perguntar qual feature do Feature Framing sera trabalhada neste ciclo.
+- **Contexto do Epico**: o PO deve referenciar o Contexto do Epico disponivel no epico do Azure DevOps. Se o input nao mencionar o Contexto do Epico, use `vscode_askQuestions` para solicitar a URL ou ID do epico no board antes de prosseguir.
+- **Prototipo Figma**: o PO deve fornecer o link do prototipo de alta fidelidade no Figma. Use o MCP do Figma para acessar o contexto visual e gerar USs com base no prototipo. Se o link nao for fornecido no input, solicite via `vscode_askQuestions`.
+- Use o Contexto do Epico e o prototipo Figma como referencias primarias ao gerar user stories, cenarios e criterios de aceite.
+
+### Entrevista de complemento com o PO
+
+Se o prompt inicial do PO nao cobrir todos os aspectos funcionais necessarios, conduza uma entrevista progressiva via `vscode_askQuestions` **antes** de gerar o spec. Foque apenas no escopo funcional — aspectos tecnicos, edge cases e ambiguidades sao responsabilidade do `/clarify`.
+
+**Abordagem progressiva**: pergunte apenas o que falta, uma rodada por vez. Avalie cada resposta antes de decidir se a proxima pergunta ainda e necessaria. Nao faca todas as perguntas de uma vez.
+
+**Roteiro de referencia** (use apenas os itens ainda nao cobertos pelo input, Contexto do Epico ou prototipo Figma):
+
+1. **Objetivo da feature**: qual problema de negocio esta sendo resolvido? qual o resultado esperado para o usuario?
+2. **Atores envolvidos**: quem sao os usuarios ou sistemas que interagem com essa feature? ha perfis distintos?
+3. **Regras de negocio principais**: restricoes, limites, condicoes obrigatorias que o PO ja conhece.
+4. **Fronteiras explicitas**: o que esta fora do escopo desta feature? ha funcionalidades que nao devem ser incluidas?
+5. **Dependencias conhecidas**: ha features anteriores, APIs existentes ou fluxos de outras equipes dos quais esta feature depende?
+6. **Prioridade e urgencia**: qual a prioridade relativa dentro do epico? ha prazo externo?
+
+A cada resposta, reavalie: se a informacao recebida ja cobre itens seguintes do roteiro, pule-os. Encerre a entrevista assim que houver informacao suficiente para gerar o spec com qualidade.
+
 - Preserve a secao `## Azure DevOps Traceability` sempre que o input trouxer URL de Feature, ID, organizacao ou projeto do Azure DevOps.
 - Este preset so pode criar ou atualizar historias de ownership `frontend`.
 - Se a demanda for puramente de backend, interrompa e oriente o uso do preset `mrv-aidd-producao-backend` no repositorio correto.
-- Se o input nao trouxer Figma para fluxo de frontend, colete o link via `vscode_askQuestions` antes de finalizar a spec.
 - Para cada historia owned por este repositorio:
   - `**Ownership Scope**` deve permanecer `frontend`
-  - o titulo deve comecar com `[FRONT] `
+  - o titulo deve comecar com `[FRONT]`
   - `**Azure DevOps Tags**` deve usar `[FRONT]`
 - Preserve historias de escopo oposto verbatim quando estiverem marcadas por `**Ownership Scope**: backend`, `**Azure DevOps Tags**: [BACK]` ou titulo iniciado por `[BACK]`.
 - Quando houver dependencia de backend, registre em `## Backend Follow-up` em vez de criar historia owned pelo backend neste spec.

@@ -36,6 +36,7 @@ Before proceeding, load the following skills by reading their SKILL.md files:
 ## MCP Prerequisites
 
 Before proceeding, verify that the required MCP servers are active:
+
 - **Azure DevOps MCP**: call `microsoft/azure-devops-mcp/core_list_projects` to confirm the server is reachable.
 - **Microsoft Docs MCP**: call `microsoftdocs/mcp/microsoft_docs_search` with a minimal query (e.g. `"test"`) to confirm the server is reachable.
 - If any call fails or the tool is unavailable, **stop immediately** and tell the user to enable the corresponding MCP server in VS Code before retrying.
@@ -189,4 +190,5 @@ Before proceeding, verify that the required MCP servers are active:
 - O `plan.md` produzido aqui deve ser tratado como a fonte de verdade tecnica da feature.
 - Este comando so deve fechar o plano depois que o `spec.md` estiver validado e o board refletir esse spec de forma coerente.
 - O plano nao deve reabrir discussoes funcionais resolvidas no `spec.md`; ele deve registrar fundacao, contratos, riscos e readiness de execucao.
+- **Diagrama C4**: alem da `constitution.md` (ja carregada nativamente no passo 2 do Outline), consulte o diagrama C4 disponivel em `.specify/memory/` (arquivo `.drawio` ou equivalente) como referencia tecnica de containers, boundaries e integracoes. Use-o para validar decisoes de design, contratos e dependencias no plano.
 - Todas as mensagens voltadas ao usuario e todos os artefatos gerados por este comando DEVEM estar em portugues do Brasil, incluindo `plan.md`, `research.md`, `data-model.md`, `quickstart.md` e os arquivos em `contracts/`, salvo nomes tecnicos, caminhos, comandos, identificadores e termos oficiais que precisem permanecer no idioma original.

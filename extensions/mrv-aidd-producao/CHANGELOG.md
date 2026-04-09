@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.7.0
+
+- Comando `sincronizar-us-devops` agora resolve o Épico pai e cria a Feature como filha do Épico quando ela não existe, antes de criar as USs. A hierarquia no Azure DevOps passa a ser Épico → Feature → USs.
+- Removido pré-requisito de que a Feature já deveria existir no Azure DevOps antes da sincronização.
+
 ## 0.6.0
 
 - Bump de versão alinhado à release compartilhada `mrv-aidd-platform-v0.6.0`. Sem mudanças funcionais neste pacote.

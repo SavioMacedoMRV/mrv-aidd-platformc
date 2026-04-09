@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.7.0
+
+- Comando `speckit.specify` agora exige seleção da feature do Feature Framing e conduz entrevista progressiva com o PO (uma rodada por vez, adaptativa, encerra quando há informação suficiente).
+- Comando `speckit.specify` agora referencia obrigatoriamente Contexto do Épico e link do Figma via MCP.
+- Comando `speckit.plan` agora referencia o diagrama C4 de `.specify/memory/` quando disponível.
+- Comando `sincronizar-us-devops` agora resolve o Épico pai e cria a Feature como filha do Épico antes de criar as USs (hierarquia Épico → Feature → USs).
+
 ## 0.6.0
 
 - Bump de versão alinhado à release compartilhada `mrv-aidd-platform-v0.6.0`. Sem mudanças funcionais neste pacote.
