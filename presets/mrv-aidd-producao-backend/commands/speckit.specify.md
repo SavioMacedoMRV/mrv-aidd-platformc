@@ -144,3 +144,14 @@ A cada resposta, reavalie: se a informacao recebida ja cobre itens seguintes do 
 - Preserve historias de escopo oposto verbatim quando estiverem marcadas por `**Ownership Scope**: frontend`, `**Azure DevOps Tags**: [FRONT]` ou titulo iniciado por `[FRONT]`.
 - Quando houver dependencia de frontend, registre em `## Frontend Follow-up` em vez de criar historia owned pelo frontend neste spec.
 - Ao concluir, recomende `/speckit.clarify` como proximo comando e `/speckit.plan` na sequencia natural do fluxo.
+
+### Modo maestro (multi-repo)
+
+- Antes de iniciar o Outline, verifique se `.specify/extensions/mrv-aidd-producao/maestro-config.json` existe e se `role` e `"maestro"`.
+- Se o modo maestro estiver ativo:
+  - Desbloqueie a geracao de historias para **ambos os ownerships** (backend e frontend) no mesmo `spec.md`.
+  - Para cada historia owned por este repositorio, mantenha as regras normais: `**Ownership Scope**: backend`, titulo com `[BACK]`, tags com `[BACK]`.
+  - Para cada historia de ownership oposto (frontend), gere normalmente com `**Ownership Scope**: frontend`, titulo com `[FRONT]`, tags com `[FRONT]`.
+  - Nao registre historias de frontend em `## Frontend Follow-up` quando o modo maestro estiver ativo — elas devem ser historias completas no spec.
+  - Informe o PO no inicio da conversa que o modo maestro esta ativo e que historias de ambos os ownerships serao geradas neste repositorio.
+- Se o modo maestro nao estiver ativo, mantenha o comportamento padrao de ownership unico (somente backend).

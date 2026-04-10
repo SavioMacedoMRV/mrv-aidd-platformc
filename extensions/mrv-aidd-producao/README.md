@@ -7,7 +7,7 @@
 
     <p>
     <img src="https://img.shields.io/badge/type-extension-264D1F?style=for-the-badge" alt="Type extension" />
-    <img src="https://img.shields.io/badge/comandos-3-F7941D?style=for-the-badge" alt="3 comandos" />
+    <img src="https://img.shields.io/badge/comandos-4-F7941D?style=for-the-badge" alt="4 comandos" />
     <img src="https://img.shields.io/badge/hooks-3-7FB239?style=for-the-badge" alt="3 hooks" />
     <img src="https://img.shields.io/badge/spec%20kit-%3E%3D0.5.0-0C1A0E?style=for-the-badge" alt="Spec Kit version" />
     </p>
@@ -38,6 +38,7 @@ Ao instalar `mrv-aidd-producao`, o projeto consumidor passa a ter:
 - `/speckit.mrv-aidd-producao.sincronizar-us-devops`
 - `/speckit.mrv-aidd-producao.configurar-us`
 - `/speckit.mrv-aidd-producao.terminar-us`
+- `/speckit.mrv-aidd-producao.configurar-maestro`
 
 Ela também registra hooks opcionais para sugerir `configurar-us` antes de `tasks` e `implement`, e `terminar-us` depois de `implement`.
 
@@ -50,6 +51,7 @@ Use esta extension quando o fluxo precisar:
 - Sincronizar histórias com Azure DevOps via MCP.
 - Preparar a branch correta da US assumida.
 - Encerrar a US com commit, push e PR no padrão esperado.
+- Configurar o repositório como maestro para cenários multi-repo (front + back separados).
 
 ---
 
@@ -104,6 +106,17 @@ Use quando a US atual estiver pronta para sair da branch de trabalho e seguir pa
 - Faz push da branch.
 - Abre a PR para a branch base da feature usando os MCPs do GitHub.
 
+### `/speckit.mrv-aidd-producao.configurar-maestro`
+
+Use quando o time operar com repositórios separados de frontend e backend para a mesma feature e quiser centralizar a especificação em um único repositório (maestro).
+
+- Detecta o preset instalado para determinar o ownership do maestro.
+- Pergunta via `vscode_askQuestions` qual é o repositório pareado.
+- Valida que o repositório pareado possui `.specify/` inicializado.
+- Persiste `maestro-config.json` em `.specify/extensions/mrv-aidd-producao/`.
+- Após configuração, `/speckit.specify` passa a gerar USs de ambos os ownerships (dual-ownership).
+- Após configuração, `/sincronizar-us-devops` passa a replicar automaticamente `spec.md` e `contracts/` para o repositório pareado.
+
 ---
 
 ## Pré-requisitos
@@ -121,8 +134,10 @@ Use quando a US atual estiver pronta para sair da branch de trabalho e seguir pa
 | Feature criada no Azure DevOps          | Após `sincronizar-us-devops` |
 | Work items filhos no Azure DevOps       | Após `sincronizar-us-devops` |
 | IDs de work items escritos no `spec.md` | Após `sincronizar-us-devops` |
+| Spec e contratos replicados (maestro)   | Após `sincronizar-us-devops` |
 | Branch `feature/<feature>/usN`          | Após `configurar-us`         |
 | US movida para `DEV` no board           | Após `configurar-us`         |
+| `maestro-config.json` salvo             | Após `configurar-maestro`    |
 | Commit no padrão `feature AB#...`       | Após `terminar-us`           |
 | Push da branch                          | Após `terminar-us`           |
 | PR aberta na branch base da feature     | Após `terminar-us`           |

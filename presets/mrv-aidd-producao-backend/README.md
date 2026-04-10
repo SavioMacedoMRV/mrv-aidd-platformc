@@ -104,6 +104,7 @@ Instale apenas um preset por repositório consumidor.
 - No `/specify`, exige seleção da feature do Feature Framing e conduz entrevista progressiva com o PO.
 - No `/plan`, referencia o diagrama C4 de `.specify/memory/` quando disponível.
 - No `/sincronizar`, cria a Feature como filha do Épico e as USs como filhas da Feature.
+- No modo **maestro**, o `/specify` gera USs de ambos os ownerships (backend e frontend) no mesmo spec, e o `/sincronizar` replica spec e contratos para os repositórios pareados.
 
 ---
 

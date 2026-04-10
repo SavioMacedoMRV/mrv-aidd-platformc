@@ -23,6 +23,7 @@ Este documento é a fonte de verdade textual do fluxo AIDD dentro do MRV AIDD Pl
 - [Artefatos oficiais](#artefatos-oficiais)
 - [Critérios de passagem](#critérios-de-passagem)
 - [Convenções operacionais](#convenções-operacionais)
+- [Multi-repo (front + back separados)](#multi-repo-front--back-separados)
 - [Paralelismo real](#paralelismo-real)
 - [Hotfix como exceção](#hotfix-como-exceção)
 - [Anti-patterns](#anti-patterns)
@@ -447,6 +448,30 @@ A definição textual oficial do processo é esta página. O diagrama apoia a le
 - Backend e frontend vivem como ownership de histórias.
 - O repositório consumidor instala apenas o preset do próprio ownership.
 - Handoff não significa duplicar a feature nem quebrar a fonte de verdade funcional.
+
+### Multi-repo (front + back separados)
+
+Quando a feature exige repositórios separados de frontend e backend, o fluxo usa o conceito de **maestro**:
+
+- Um dos repositórios é eleito como maestro via `/speckit.mrv-aidd-producao.configurar-maestro`.
+- O maestro persiste `maestro-config.json` em `.specify/extensions/mrv-aidd-producao/`.
+- No modo maestro, `/speckit.specify` gera USs de ambos os ownerships (`[BACK]` e `[FRONT]`) no mesmo `spec.md`.
+- Após `/sincronizar-us-devops`, o step 13 replica automaticamente `spec.md` e `contracts/` para os repositórios pareados.
+- Cada repositório continua executando `/plan`, `/tasks` e `/implement` de forma independente, filtrando apenas as USs do seu ownership.
+
+**Fluxo resumido:**
+
+1. PO configura o repositório maestro uma vez: `/configurar-maestro`.
+2. PO roda `/specify` no maestro — gera spec com USs de ambos os ownerships.
+3. PO roda `/clarify` — PO + TL validam todas as USs.
+4. Dev roda `/sincronizar-us-devops` — publica no Azure DevOps e replica spec para o repositório pareado.
+5. Cada repositório segue o fluxo normal: `/plan` → `/configurar-us` → `/tasks` → `/implement` → `/terminar-us`.
+
+**Regras:**
+
+- O `spec.md` do maestro é a fonte de verdade funcional. O repositório pareado recebe uma cópia de referência com header indicando a origem.
+- Não edite o spec replicado no repositório pareado. Alterações devem ser feitas no maestro.
+- O `plan.md` é independente por repositório — cada ownership produz seu próprio plano técnico.
 
 ---
 

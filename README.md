@@ -237,6 +237,8 @@ Instale apenas um preset por repositório consumidor.
 /speckit.mrv-aidd-producao.terminar-us USn
 ```
 
+> **Multi-repo (front + back separados)?** Execute `/speckit.mrv-aidd-producao.configurar-maestro` antes do `/speckit.specify` para ativar o modo maestro. Isso faz o spec gerar USs de ambos os ownerships e o `/sincronizar` replicar automaticamente para o repositório pareado.
+
 O racional, os gates e os artefatos estão detalhados em [docs/aidd/README.md](./docs/aidd/README.md). O passo a passo de instalação está em [docs/guia-instalacao.md](./docs/guia-instalacao.md).
 
 ---
@@ -288,7 +290,7 @@ https://raw.githubusercontent.com/SavioMacedoMRV/mrv-aidd-platformc/main/extensi
 
 | ID                  | Nome              | O que adiciona                                                                 | Comandos | Hooks |
 | ------------------- | ----------------- | ------------------------------------------------------------------------------ | -------- | ----- |
-| `mrv-aidd-producao` | MRV AIDD Produção | Sincronização com Azure DevOps, preparo de branch por US e encerramento com PR | 3        | 3     |
+| `mrv-aidd-producao` | MRV AIDD Produção | Sincronização com Azure DevOps, preparo de branch por US, encerramento com PR e modo maestro multi-repo | 4        | 3     |
 
 Para instalar:
 
@@ -353,6 +355,7 @@ Após instalar a base do Spec Kit mais os pacotes MRV, os seguintes comandos fic
 | `/speckit.mrv-aidd-producao.sincronizar-us-devops` | Resolve o Épico, cria a Feature como filha do Épico e sincroniza USs do spec como filhas da Feature no Azure DevOps |
 | `/speckit.mrv-aidd-producao.configurar-us USn`     | Cria ou reutiliza a branch `feature/<feature>/usN` e prepara o contexto operacional |
 | `/speckit.mrv-aidd-producao.terminar-us USn`       | Valida, commita, faz push e abre PR para a branch base da feature                   |
+| `/speckit.mrv-aidd-producao.configurar-maestro`    | Configura o repositório como maestro multi-repo, vinculando repositórios pareados para replicação automática de spec e contratos |
 
 ---
 
@@ -366,6 +369,7 @@ Após instalar a base do Spec Kit mais os pacotes MRV, os seguintes comandos fic
 | Escolher ou entender o preset backend                 | [presets/mrv-aidd-producao-backend/README.md](./presets/mrv-aidd-producao-backend/README.md)   |
 | Escolher ou entender o preset frontend                | [presets/mrv-aidd-producao-frontend/README.md](./presets/mrv-aidd-producao-frontend/README.md) |
 | Cenários de paralelismo e múltiplos devs              | [docs/aidd/colaboracao-e-paralelismo.md](./docs/aidd/colaboracao-e-paralelismo.md)             |
+| Cenários multi-repo (front + back separados)          | [docs/aidd/README.md#multi-repo](./docs/aidd/README.md#multi-repo-front--back-separados)      |
 | Prompts operacionais por etapa do fluxo               | [docs/aidd/prompt-pack.md](./docs/aidd/prompt-pack.md)                                         |
 | Modelos e convenções reutilizáveis de artefatos       | [docs/aidd/modelos-operacionais.md](./docs/aidd/modelos-operacionais.md)                       |
 | Evoluir a plataforma com segurança                    | [docs/guia-contribuicao.md](./docs/guia-contribuicao.md)                                       |

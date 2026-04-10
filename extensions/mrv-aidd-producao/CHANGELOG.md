@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.9.0
+
+- Novo comando `/speckit.mrv-aidd-producao.configurar-maestro`: configura o repositorio atual como maestro multi-repo, vinculando repositorios pareados (front + back) para replicacao automatica de spec e contratos.
+- Comando `/sincronizar-us-devops` agora replica automaticamente `spec.md` e `contracts/` para repositorios pareados quando o modo maestro esta ativo (step 13).
+- Extension passa de 3 para 4 comandos.
+
 ## 0.8.0
 
 - Bump de versao alinhado a release compartilhada `mrv-aidd-platform-v0.8.0`. Sem mudancas funcionais neste pacote.

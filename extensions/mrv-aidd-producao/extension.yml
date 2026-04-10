@@ -3,7 +3,7 @@ schema_version: "1.0"
 extension:
   id: "mrv-aidd-producao"
   name: "MRV AIDD Producao"
-  version: "0.8.0"
+  version: "0.9.0"
   description: "Pacote operacional do ecossistema MRV para AIDD, reunindo sincronizacao com Azure DevOps, configuracao de branch e encerramento de historia"
   author: "MRV"
   repository: "https://github.com/SavioMacedoMRV/mrv-aidd-platformc"
@@ -24,6 +24,9 @@ provides:
     - name: "speckit.mrv-aidd-producao.terminar-us"
       file: "commands/terminar-us.md"
       description: "Finaliza a US atual com validacoes, commit no padrao da constituicao e abertura de PR para a branch base da feature usando GitHub MCP"
+    - name: "speckit.mrv-aidd-producao.configurar-maestro"
+      file: "commands/configurar-maestro.md"
+      description: "Configura o repositorio atual como maestro multi-repo, vinculando repositorios pareados para replicacao automatica de spec e contratos"
 
   config:
     - name: "mrv-aidd-producao-config.yml"

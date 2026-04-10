@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.9.0
+
+- Comando `speckit.specify` agora detecta `maestro-config.json` e ativa modo dual-ownership: quando o repositorio e maestro, gera historias de backend e frontend no mesmo `spec.md` em vez de registrar frontend em `## Frontend Follow-up`.
+
 ## 0.8.0
 
 - Alinhamento com Spec Kit v0.6.0 core: Outline do `speckit.specify` agora resolve `SPECIFY_FEATURE_DIRECTORY` com ordem de prioridade, persiste `feature.json`, limita marcadores `[NEEDS CLARIFICATION]` a no maximo 3 e gera `checklists/requirements.md` na validacao de qualidade.
