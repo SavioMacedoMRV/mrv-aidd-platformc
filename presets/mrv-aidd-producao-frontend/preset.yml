@@ -3,14 +3,14 @@ schema_version: "1.0"
 preset:
   id: "mrv-aidd-producao-frontend"
   name: "MRV AIDD Producao Frontend"
-  version: "0.6.0"
+  version: "0.8.0"
   description: "Preset plug and play de frontend para AIDD na MRV, reunindo ownership Azure DevOps e artefatos em portugues do Brasil"
   author: "MRV"
   repository: "https://github.com/SavioMacedoMRV/mrv-aidd-platformc"
   license: "MIT"
 
 requires:
-  speckit_version: ">=0.5.0"
+  speckit_version: ">=0.6.0"
 
 provides:
   templates:

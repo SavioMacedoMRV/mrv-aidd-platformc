@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.8.0
+
+- Alinhamento com Spec Kit v0.6.0 core: Outline do `speckit.specify` agora resolve `SPECIFY_FEATURE_DIRECTORY` com ordem de prioridade, persiste `feature.json`, limita marcadores `[NEEDS CLARIFICATION]` a no maximo 3 e gera `checklists/requirements.md` na validacao de qualidade.
+- Removido conteudo duplicado no `speckit.specify` (artefato de merge com duas copias de Outline, Quick Guidelines e Regras).
+- Restauradas regras AIDD de upstream no `speckit.specify`: feature upstream como entrada (nao verdade final), spec.md como fonte de verdade funcional apos clarificacao.
+- Adicionado suporte a extension hooks no `speckit.checklist`: Pre-Execution Checks (`hooks.before_checklist`) e Post-Execution Hooks (`hooks.after_checklist`).
+- Atualizado `speckit_version` para `>=0.6.0`.
+
 ## 0.7.0
 
 - Comando `speckit.specify` agora exige seleção da feature do Feature Framing e conduz entrevista progressiva com o PO (uma rodada por vez, adaptativa, encerra quando há informação suficiente).

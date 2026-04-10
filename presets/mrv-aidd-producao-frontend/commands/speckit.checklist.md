@@ -44,8 +44,48 @@ Before proceeding, load the following skills by reading their SKILL.md files:
 ## MCP Prerequisites
 
 Before proceeding, verify that the **Figma MCP** server is active:
+
 - Call `com.figma.mcp/mcp/whoami` to confirm the server is reachable and the user is authenticated.
 - If the call fails or the tool is unavailable, **stop immediately** and tell the user to enable the `com.figma.mcp/mcp` server in VS Code before retrying.
+
+## Pre-Execution Checks
+
+**Check for extension hooks (before checklist)**:
+
+- Check if `.specify/extensions.yml` exists in the project root.
+- If it exists, read it and look for entries under the `hooks.before_checklist` key
+- If the YAML cannot be parsed or is invalid, skip hook checking silently and continue normally
+- Filter out hooks where `enabled` is explicitly `false`. Treat hooks without an `enabled` field as enabled by default.
+- For each remaining hook, do **not** attempt to interpret or evaluate hook `condition` expressions:
+  - If the hook has no `condition` field, or it is null/empty, treat the hook as executable
+  - If the hook defines a non-empty `condition`, skip the hook and leave condition evaluation to the HookExecutor implementation
+- For each executable hook, output the following based on its `optional` flag:
+  - **Optional hook** (`optional: true`):
+
+    ```
+    ## Extension Hooks
+
+    **Optional Pre-Hook**: {extension}
+    Command: `/{command}`
+    Description: {description}
+
+    Prompt: {prompt}
+    To execute: `/{command}`
+    ```
+
+  - **Mandatory hook** (`optional: false`):
+
+    ```
+    ## Extension Hooks
+
+    **Automatic Pre-Hook**: {extension}
+    Executing: `/{command}`
+    EXECUTE_COMMAND: {command}
+
+    Wait for the result of the hook command before proceeding to the Execution Steps.
+    ```
+
+- If no hooks are registered or `.specify/extensions.yml` does not exist, skip silently
 
 ## Execution Steps
 
@@ -152,6 +192,8 @@ Before proceeding, verify that the **Figma MCP** server is active:
 6. **Structure Reference**: Generate the checklist following the canonical template in `templates/checklist-template.md` for title, meta section, category headings, and ID formatting.
 
 7. **Report**: Output full path to checklist file, item count, and summarize whether the run created a new file or appended to an existing one.
+
+8. **Post-Execution Hooks**: Process any `hooks.after_checklist` entries from `.specify/extensions.yml` using the native Spec Kit hook rules.
 
 ## Regras adicionais do preset
 

@@ -77,110 +77,27 @@ Before proceeding, verify that the **Azure DevOps MCP** server is active:
 
 ## Outline
 
-The text the user typed after `/speckit.specify` is the feature description.
-
-1. Generate a concise short name for the branch.
-2. Create the feature branch/spec once using the native Spec Kit script with `-Json` and `-ShortName`, respecting `.specify/init-options.json` when present.
-3. Load `.specify/templates/spec-template.md` and use it as the source of truth for section structure.
-4. Follow the native Spec Kit specification workflow:
-   - extract actors, actions, data, and constraints
-   - make informed guesses when reasonable
-   - use `[NEEDS CLARIFICATION]` only for high-impact unresolved decisions
-   - generate user scenarios, functional requirements, success criteria, and entities
-5. Write the spec to the resolved SPEC_FILE.
-6. Run the native spec quality validation loop and update the requirements checklist as needed.
-7. Report completion with branch, spec path, checklist status, and readiness for the next command.
-
-## Quick Guidelines
-
-- Focus on **WHAT** users need and **WHY**.
-- Avoid HOW to implement.
-- Write for business stakeholders, not developers.
-- Do not embed checklist content inside the spec.
-
-## Regras adicionais do preset
-
-- Sempre que informacoes faltarem, estiverem ambiguas ou exigirem confirmacao, use `vscode_askQuestions`.
-- Trate a feature do upstream como entrada principal, nao como verdade final; ela pode conter gaps funcionais relevantes.
-- O papel deste comando e clarificar, aprofundar e fechar esses gaps antes de consolidar a especificacao.
-- O `spec.md` gerado por este fluxo deve ser tratado como a fonte de verdade funcional consolidada da feature.
-- **Feature do Feature Framing**: o PO deve indicar qual feature da lista de Feature Framing (cadastrada no epico do board) ele quer especificar. Se o input nao mencionar a feature escolhida, use `vscode_askQuestions` para perguntar qual feature do Feature Framing sera trabalhada neste ciclo. Inclua na pergunta a orientacao de que o PO pode copiar o nome/objetivo da feature diretamente do board.
-- **Contexto do Epico**: o PO deve referenciar o Contexto do Epico disponivel no epico do Azure DevOps. Se o input nao mencionar o Contexto do Epico, use `vscode_askQuestions` para solicitar a URL ou ID do epico no board antes de prosseguir.
-- **Prototipo Figma**: o PO deve fornecer o link do prototipo de alta fidelidade no Figma. Use o MCP do Figma (`com.figma.mcp`) para acessar o contexto visual e gerar USs com base no prototipo. Se o link nao for fornecido no input, solicite via `vscode_askQuestions`.
-- Use o Contexto do Epico e o prototipo Figma como referencias primarias ao gerar user stories, cenarios e criterios de aceite.
-
-### Entrevista de complemento com o PO
-
-Se o prompt inicial do PO nao cobrir todos os aspectos funcionais necessarios, conduza uma entrevista progressiva via `vscode_askQuestions` **antes** de gerar o spec. Foque apenas no escopo funcional — aspectos tecnicos, edge cases e ambiguidades sao responsabilidade do `/clarify`.
-
-**Abordagem progressiva**: pergunte apenas o que falta, uma rodada por vez. Avalie cada resposta antes de decidir se a proxima pergunta ainda e necessaria. Nao faca todas as perguntas de uma vez.
-
-**Roteiro de referencia** (use apenas os itens ainda nao cobertos pelo input, Contexto do Epico ou prototipo Figma):
-
-1. **Objetivo da feature**: qual problema de negocio esta sendo resolvido? qual o resultado esperado para o usuario?
-2. **Atores envolvidos**: quem sao os usuarios ou sistemas que interagem com essa feature? ha perfis distintos?
-3. **Regras de negocio principais**: restricoes, limites, condicoes obrigatorias que o PO ja conhece.
-4. **Fronteiras explicitas**: o que esta fora do escopo desta feature? ha funcionalidades que nao devem ser incluidas?
-5. **Dependencias conhecidas**: ha features anteriores, APIs existentes ou fluxos de outras equipes dos quais esta feature depende?
-6. **Prioridade e urgencia**: qual a prioridade relativa dentro do epico? ha prazo externo?
-
-A cada resposta, reavalie: se a informacao recebida ja cobre itens seguintes do roteiro, pule-os. Encerre a entrevista assim que houver informacao suficiente para gerar o spec com qualidade.
-
-- Preserve `## Azure DevOps Traceability` quando houver contexto de Azure DevOps no input.
-- Este preset so pode criar ou atualizar historias de ownership `backend`.
-- Se a demanda for puramente de frontend, interrompa e direcione para o preset `mrv-aidd-producao-frontend`.
-- Para cada historia owned por este repositorio:
-  - `**Ownership Scope**` deve permanecer `backend`
-  - o titulo deve comecar com `[BACK]`
-  - `**Azure DevOps Tags**` deve usar `[BACK]`
-- Preserve historias de escopo oposto verbatim quando estiverem marcadas por `**Ownership Scope**: frontend`, `**Azure DevOps Tags**: [FRONT]` ou titulo iniciado por `[FRONT]`.
-- Quando houver dependencia de frontend, registre em `## Frontend Follow-up` em vez de criar historia owned pelo frontend neste spec.
-- Ao concluir, recomende `/speckit.clarify` e depois `/speckit.plan`.
-
-      **Optional Pre-Hook**: {extension}
-      Command: `/{command}`
-      Description: {description}
-
-      Prompt: {prompt}
-      To execute: `/{command}`
-      ```
-
-  - **Mandatory hook** (`optional: false`):
-
-    ```
-    ## Extension Hooks
-
-    **Automatic Pre-Hook**: {extension}
-    Executing: `/{command}`
-    EXECUTE_COMMAND: {command}
-
-    Wait for the result of the hook command before proceeding to the Outline.
-    ```
-
-- If no hooks are registered or `.specify/extensions.yml` does not exist, skip silently
-
-## Outline
-
 The text the user typed after `/speckit.specify` in the triggering message **is** the feature description. Assume you always have it available in this conversation even if `$ARGUMENTS` appears literally below. Do not ask the user to repeat it unless they provided an empty command.
 
 Given that feature description, do this:
 
-1. **Generate a concise short name** (2-4 words) for the branch.
-2. **Create the feature branch** by running the feature creation script once, with `-Json` and `-ShortName`, respecting `.specify/init-options.json` when present.
-3. Load `.specify/templates/spec-template.md` to understand required sections.
-4. Follow the native Spec Kit specification workflow:
+1. **Resolve `SPECIFY_FEATURE_DIRECTORY`** following this priority: `.specify/init-options.json` → config → default `.specify/features/`.
+2. **Generate a concise short name** (2-4 words, kebab-case) for the branch.
+3. **Create the feature branch** by running the feature creation script once, with `-Json` and `-ShortName`, respecting `.specify/init-options.json` when present. Persist `feature.json` with `{name, directory, branch, specFile, createdAt}` in the resolved feature directory.
+4. Load `.specify/templates/spec-template.md` to understand required sections.
+5. Follow the native Spec Kit specification workflow:
    - Parse the user description
    - Extract actors, actions, data, and constraints
    - Use informed guesses where reasonable
-   - Limit `[NEEDS CLARIFICATION]` markers to the most critical cases
+   - Limit `[NEEDS CLARIFICATION]` markers to **at most 3** — only for high-impact unresolved decisions
    - Fill user scenarios and testing
    - Generate testable functional requirements
    - Define measurable, technology-agnostic success criteria
    - Identify key entities when data is involved
-5. Write the specification to SPEC_FILE using the resolved template structure.
-6. Run specification quality validation, maintain the requirements checklist, and resolve validation failures before reporting completion.
-7. Report completion with branch name, spec file path, checklist results, and readiness for `/speckit.clarify` or `/speckit.plan`.
-8. After reporting, process any `hooks.after_specify` entries from `.specify/extensions.yml` using the native Spec Kit rules.
+6. Write the specification to SPEC_FILE using the resolved template structure.
+7. Run specification quality validation and generate/update `checklists/requirements.md`. Resolve validation failures before reporting completion.
+8. Report completion with branch name, spec file path, checklist results, and readiness for `/speckit.clarify` or `/speckit.plan`.
+9. After reporting, process any `hooks.after_specify` entries from `.specify/extensions.yml` using the native Spec Kit rules.
 
 ## Quick Guidelines
 
@@ -192,9 +109,12 @@ Given that feature description, do this:
 ## Regras adicionais do preset
 
 - Sempre que informacoes faltarem, estiverem ambiguas ou exigirem confirmacao, voce **DEVE** usar `vscode_askQuestions`.
+- Trate a feature do upstream como entrada principal, nao como verdade final; ela pode conter gaps funcionais relevantes.
+- O papel deste comando e clarificar, aprofundar e fechar esses gaps antes de consolidar a especificacao.
+- O `spec.md` gerado por este fluxo deve ser tratado como a fonte de verdade funcional consolidada da feature.
 - **Feature do Feature Framing**: o PO deve indicar qual feature da lista de Feature Framing (cadastrada no epico do board) ele quer especificar. Se o input nao mencionar a feature escolhida, use `vscode_askQuestions` para perguntar qual feature do Feature Framing sera trabalhada neste ciclo.
 - **Contexto do Epico**: o PO deve referenciar o Contexto do Epico disponivel no epico do Azure DevOps. Se o input nao mencionar o Contexto do Epico, use `vscode_askQuestions` para solicitar a URL ou ID do epico no board antes de prosseguir.
-- **Prototipo Figma**: o PO deve fornecer o link do prototipo de alta fidelidade no Figma. Use o MCP do Figma para acessar o contexto visual e gerar USs com base no prototipo. Se o link nao for fornecido no input, solicite via `vscode_askQuestions`.
+- **Prototipo Figma**: o PO deve fornecer o link do prototipo de alta fidelidade no Figma. Registre o link no spec como referencia visual. Se o link nao for fornecido no input, solicite via `vscode_askQuestions`. O acesso direto ao Figma via MCP e responsabilidade do preset de frontend.
 - Use o Contexto do Epico e o prototipo Figma como referencias primarias ao gerar user stories, cenarios e criterios de aceite.
 
 ### Entrevista de complemento com o PO
